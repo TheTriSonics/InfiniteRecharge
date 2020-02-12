@@ -1,0 +1,12 @@
+\.gradle
+\.settings
+.project
+\vendordeps
+\.wpilib
+\build
+\gradle
+\bin
+\.vscode
+.classpath
+build.gradle
+imgui.ini
