@@ -28,23 +28,23 @@ public class InfiniteDriveTrain extends SubsystemBase {
     rightDriveEncoder = new DutyCycleEncoder(Constants.DRIVE_TRAIN_RIGHT);
     leftMaster = new TalonFX(Constants.LEFT_MASTER);
     leftSlave1 = new TalonFX(Constants.LEFT_SLAVE1);
-    leftSlave2 = new TalonFX(Constants.LEFT_SLAVE2);
+    // leftSlave2 = new TalonFX(Constants.LEFT_SLAVE2);
     rightMaster = new TalonFX(Constants.RIGHT_MASTER);
     rightSlave1 = new TalonFX(Constants.RIGHT_SLAVE1);
-    rightSlave2 = new TalonFX(Constants.RIGHT_SLAVE2);
+    // rightSlave2 = new TalonFX(Constants.RIGHT_SLAVE2);
 
     leftDriveEncoder.setDistancePerRotation(Constants.INCHES_PER_REV);
     rightDriveEncoder.setDistancePerRotation(-Constants.INCHES_PER_REV);
 
     leftMaster.setInverted(true);
     rightSlave1.setInverted(true);
-    rightSlave2.setInverted(true);
+    // rightSlave2.setInverted(true);
 
     leftSlave1.follow(leftMaster);
-    leftSlave2.follow(leftMaster);
+    // leftSlave2.follow(leftMaster);
 
     rightSlave1.follow(rightMaster);
-    rightSlave2.follow(rightMaster);
+    // rightSlave2.follow(rightMaster);
 
     leftMaster.setNeutralMode(NeutralMode.Brake);
     rightMaster.setNeutralMode(NeutralMode.Brake);
