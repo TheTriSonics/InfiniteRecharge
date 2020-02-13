@@ -13,10 +13,15 @@ import frc.robot.Robot;
  * Add your docs here.
  */
 public class RobotState {
+    boolean spinUpShooter = false;
     boolean shooterOn = false;
     boolean targetAligned = false;
     boolean intakeOn = false;
     boolean alignOn = false;
+
+    public void toggleSpinUpShooter() {
+        spinUpShooter = !spinUpShooter;
+    }
 
     public void toggleShooterOn(){
         shooterOn = !shooterOn;
