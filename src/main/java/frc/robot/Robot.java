@@ -30,6 +30,9 @@ public class Robot extends TimedRobot {
   public static Pneumatics pneumatics;
   public static ColorWheelRotateSubsystem colorWheelRotateSubsystem; 
   public static Position position;
+  public static IntakeSubsystem intake;
+  public static BallDeliverySubsystem ballDelivery;
+  public static SingulatorSubsystem singulator;
   
   @Override
   public void robotInit() {
@@ -46,7 +49,9 @@ public class Robot extends TimedRobot {
     pneumatics = new Pneumatics();
     colorWheelRotateSubsystem = new ColorWheelRotateSubsystem();
     */
-    
+    intake = new IntakeSubsystem();
+    singulator = new SingulatorSubsystem();
+    ballDelivery = new BallDeliverySubsystem();
     driveTrain.setDefaultCommand(new ArcadeDriveCommand());
     /*
     turret.setDefaultCommand(new TurretCommand());
