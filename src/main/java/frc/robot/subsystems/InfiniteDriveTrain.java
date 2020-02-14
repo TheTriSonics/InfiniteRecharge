@@ -22,6 +22,7 @@ public class InfiniteDriveTrain extends SubsystemBase {
   double leftDriveOffset = 0, rightDriveOffset = 0, leftDistanceOffset = 0, rightDistanceOffset = 0;
   double yLimit = 1;
   double xLimit = 1;
+  boolean switched = false;
 
   public InfiniteDriveTrain() {
     leftDriveEncoder = new DutyCycleEncoder(Constants.DRIVE_TRAIN_LEFT);
@@ -66,10 +67,18 @@ public class InfiniteDriveTrain extends SubsystemBase {
   }
 
   public double[] getDriveEncoder() {
-    return new double[] { leftDriveEncoder.get() - leftDriveOffset, rightDriveEncoder.get() - rightDriveOffset};
+    double left = leftDriveEncoder.get() - leftDriveOffset;
+    double right = rightDriveEncoder.get() - rightDriveOffset;
+    if (switched) {
+      return new double[] {-right, -left};
+    } 
+    return new double[] {left, right};
   }
 
   public double[] getDriveDistance() {
+    if (switched) {
+      return new double[] {-getRightDistance() , -getLeftDistance()}
+    }
     return new double[] { getLeftDistance(), getRightDistance() };
   }
 
@@ -81,7 +90,23 @@ public class InfiniteDriveTrain extends SubsystemBase {
     return rightDriveEncoder.getDistance() - rightDistanceOffset;
   }
 
+  public void switchDirection() {
+    TalonFX tmp = leftMaster;
+    leftMaster = rightMaster;
+    rightMaster = tmp;
+    switched = !switched;
+    Robot.sensors.resetDriveEncoders();
+  }
+
+  public boolean isSwitched() {
+    return switched;
+  }
+
   public void setPower(double leftPower, double rightPower){
+    if (switched) {
+      leftPower *= -1;
+      rightPower *= -1;
+    }
     leftMaster.set(ControlMode.PercentOutput, leftPower);
     rightMaster.set(ControlMode.PercentOutput, rightPower);
   }

@@ -89,6 +89,7 @@ public class Robot extends TimedRobot {
   long lastTime;
   @Override
   public void teleopInit() {
+    if (driveTrain.isSwitched()) driveTrain.switchDirection();
     driveTrain.resetDriveEncoders();
     lastDriveEncoders = driveTrain.getDriveDistance();
     lastTime = System.currentTimeMillis();
