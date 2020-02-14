@@ -36,7 +36,8 @@ public class InfiniteDriveTrain extends SubsystemBase {
     leftDriveEncoder.setDistancePerRotation(Constants.INCHES_PER_REV);
     rightDriveEncoder.setDistancePerRotation(-Constants.INCHES_PER_REV);
 
-    leftMaster.setInverted(true);
+    // leftMaster.setInverted(true);
+    rightMaster.setInverted(true);
     rightSlave1.setInverted(true);
     // rightSlave2.setInverted(true);
 
@@ -48,6 +49,13 @@ public class InfiniteDriveTrain extends SubsystemBase {
 
     leftMaster.setNeutralMode(NeutralMode.Brake);
     rightMaster.setNeutralMode(NeutralMode.Brake);
+    leftSlave1.setNeutralMode(NeutralMode.Coast);
+    rightSlave1.setNeutralMode(NeutralMode.Coast);
+
+    leftMaster.configClosedloopRamp(1.5);
+    leftSlave1.configClosedloopRamp(1.5);
+    rightMaster.configClosedloopRamp(1.5);
+    rightSlave1.configClosedloopRamp(1.5);
   }
 
   public void resetDriveEncoders() {
