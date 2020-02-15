@@ -72,6 +72,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+    robotState.setAuton(true);
     m_autonomousCommand = new SimpleAutonomous(); //ExecuteProfile("startcentertorsvp-profile.csv");  
     navx.resetGyro();
     position.resetPosition();
@@ -91,6 +92,7 @@ public class Robot extends TimedRobot {
   long lastTime;
   @Override
   public void teleopInit() {
+    robotState.setAuton(false);
     if (driveTrain.isSwitched()) driveTrain.switchDirection();
     
     driveTrain.resetDriveEncoders();

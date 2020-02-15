@@ -35,7 +35,7 @@ public class IntakeSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
     
     if(Robot.robotState.isIntakeOn()){
-      extendIntake(true);
+      // extendIntake(true);
       if(Robot.oi.operator.getTriggerAxis(Hand.kRight) > 0.1){
         setPower(Robot.oi.operator.getTriggerAxis(Hand.kRight));
       } else if(Robot.oi.operator.getTriggerAxis(Hand.kLeft) > 0.1){

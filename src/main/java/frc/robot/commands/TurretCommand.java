@@ -32,7 +32,7 @@ public class TurretCommand extends CommandBase {
     double spinPower = Robot.oi.operator.getX(Hand.kRight);
     if (Math.abs(tiltPower)<0.1)tiltPower=0;
     if (Math.abs(spinPower)<0.1)spinPower=0;
-    Robot.turret.setTiltPower(tiltPower);
+    // Robot.turret.setTiltPower(tiltPower);
     Robot.turret.setSpinPower(spinPower);
   }
 

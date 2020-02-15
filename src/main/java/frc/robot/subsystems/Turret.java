@@ -20,18 +20,14 @@ import frc.robot.utilities.AS5600EncoderPwm;
 public class Turret extends SubsystemBase {
   // TalonSRX spin;
   // Servo hoodTilt;
-  TalonSRX spin, tilt;
+  TalonSRX spin;
 
   // private final AS5600EncoderPwm encoderPwm = new
   // AS5600EncoderPwm(spin.getSensorCollection()); //Absolute encoder for new robot turret
 
   public Turret() {
-    // spin = new TalonSRX(Constants.TURRET_ROTATE);
+    spin = new TalonSRX(Constants.TURRET_ROTATE);
     // hoodTilt = new Servo(Constants.SHOOTER_HOOD_SERVO);
-    spin = new TalonSRX(11);
-    tilt = new TalonSRX(12);
-
-    tilt.setInverted(true);
   }
 
   public void setSpinPower(double power) {
@@ -39,7 +35,7 @@ public class Turret extends SubsystemBase {
   }
 
   public void setTiltPower(double power) {
-    tilt.set(ControlMode.PercentOutput, power);
+    //tilt.set(ControlMode.PercentOutput, power);
   }
 
   public void extendHood(boolean extend){

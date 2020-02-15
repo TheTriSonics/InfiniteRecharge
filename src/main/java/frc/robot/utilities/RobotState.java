@@ -19,6 +19,7 @@ public class RobotState {
     boolean intakeOn = false;
     boolean alignOn = false;
     boolean nothing = true;
+    boolean auton = false;
 
     public void setShooterOn(boolean on){
         shooterOn = on;
@@ -31,7 +32,9 @@ public class RobotState {
         return targetAligned;
     }
 
-    
+    public boolean inAuton() {
+        return auton;
+    }
     public boolean isIntakeOn() {
         return intakeOn;
     }
@@ -45,6 +48,9 @@ public class RobotState {
         return shooterOn && Robot.shooter.isShooterAtSpeed();
     }
 
+    public void setAuton(boolean b) {
+        auton = b;
+    }
     public void setIntakeOn(boolean on) {
         intakeOn = on;
         if (on) nothing = true;
