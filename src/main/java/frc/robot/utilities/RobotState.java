@@ -18,6 +18,7 @@ public class RobotState {
     boolean targetAligned = false;
     boolean intakeOn = false;
     boolean alignOn = false;
+    boolean nothing = true;
 
     public void toggleSpinUpShooter() {
         spinUpShooter = !spinUpShooter;
@@ -58,6 +59,14 @@ public class RobotState {
 
     public boolean isAligning() {
         return alignOn;
+    }
+
+    public void setNothing(boolean b) {
+        nothing = b;
+    }
+
+    public boolean isNothing() {
+        return nothing;
     }
 }
 

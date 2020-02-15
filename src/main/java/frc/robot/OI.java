@@ -25,8 +25,12 @@ public class OI {
         trackingOnOff.toggleWhenActive(trackTarget, true);
         */
 
+        SpinUpShooterCommand spinUpShooterCommand = new SpinUpShooterCommand();
+        XboxTrigger spinUpShooter = new XboxTrigger(operator, XboxTrigger.LB);
+        spinUpShooter.toggleWhenActive(spinUpShooterCommand);
+
         ShooterOnCommand shooterOnCommand = new ShooterOnCommand();
-        XboxTrigger shooterOn = new XboxTrigger(operator, XboxTrigger.DPADUP);
+        XboxTrigger shooterOn = new XboxTrigger(operator, XboxTrigger.RB);
         shooterOn.toggleWhenActive(shooterOnCommand, true);
         
         /*
