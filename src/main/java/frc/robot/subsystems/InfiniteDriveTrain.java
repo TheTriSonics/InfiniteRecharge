@@ -13,7 +13,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.*;
 
 public class InfiniteDriveTrain extends SubsystemBase {
   TalonFX leftMaster, leftSlave1, leftSlave2, rightMaster, rightSlave1, rightSlave2;
@@ -77,7 +77,7 @@ public class InfiniteDriveTrain extends SubsystemBase {
 
   public double[] getDriveDistance() {
     if (switched) {
-      return new double[] {-getRightDistance() , -getLeftDistance()}
+      return new double[] {-getRightDistance() , -getLeftDistance()};
     }
     return new double[] { getLeftDistance(), getRightDistance() };
   }
@@ -95,7 +95,7 @@ public class InfiniteDriveTrain extends SubsystemBase {
     leftMaster = rightMaster;
     rightMaster = tmp;
     switched = !switched;
-    Robot.sensors.resetDriveEncoders();
+    resetDriveEncoders();
   }
 
   public boolean isSwitched() {
