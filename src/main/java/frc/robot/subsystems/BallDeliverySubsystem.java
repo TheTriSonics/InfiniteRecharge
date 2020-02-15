@@ -12,7 +12,7 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.*;
 
 public class BallDeliverySubsystem extends SubsystemBase {
   VictorSPX ballDeliveryVictor;
@@ -24,7 +24,7 @@ public class BallDeliverySubsystem extends SubsystemBase {
     photoeyeBottom = new DigitalInput(Constants.PHOTOEYE_BOTTOM);
   }
 
-  public void setBallDelliveryPower(double power){
+  public void setPower(double power){
     ballDeliveryVictor.set(ControlMode.PercentOutput, power);
   }
 
@@ -39,5 +39,15 @@ public class BallDeliverySubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    if (getTopPhotoeye()) {
+      setPower(0);
+      return;
+    }
+    if (Robot.robotState.isIntakeOn() || Robot.robotState.isShooterReady()) {
+      setPower(1);
+      return;
+    }
+    setPower(0);
+
   }
 }

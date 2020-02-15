@@ -11,7 +11,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.*;
 
 public class ShooterFeederSubsystem extends SubsystemBase {
   VictorSPX turretFeederVictor;
@@ -20,12 +20,17 @@ public class ShooterFeederSubsystem extends SubsystemBase {
     turretFeederVictor = new VictorSPX(Constants.SHOOTER_FEEDER);
   }
 
-  public void setTurretFeederPower(double power){
+  public void setPower(double power){
     turretFeederVictor.set(ControlMode.PercentOutput, power);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    if (Robot.robotState.isShooterReady()) {
+      setPower(1);
+      return;
+    }
+    setPower(0);
   }
 }

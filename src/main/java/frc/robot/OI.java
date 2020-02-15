@@ -19,19 +19,27 @@ public class OI {
         driver = new XboxController(0);
         operator = new XboxController(1);
         
-        /*
         TrackTarget trackTarget = new TrackTarget();
         XboxTrigger trackingOnOff = new XboxTrigger(operator, XboxTrigger.Y);
         trackingOnOff.toggleWhenActive(trackTarget, true);
-        */
 
         SpinUpShooterCommand spinUpShooterCommand = new SpinUpShooterCommand();
         XboxTrigger spinUpShooter = new XboxTrigger(operator, XboxTrigger.LB);
-        spinUpShooter.toggleWhenActive(spinUpShooterCommand);
+        spinUpShooter.whenActive(spinUpShooterCommand, true);
 
         ShooterOnCommand shooterOnCommand = new ShooterOnCommand();
         XboxTrigger shooterOn = new XboxTrigger(operator, XboxTrigger.RB);
-        shooterOn.toggleWhenActive(shooterOnCommand, true);
+        shooterOn.whenActive(shooterOnCommand, true);
+
+        SetNothingCommand nothingCommand = new SetNothingCommand(true);
+        XboxTrigger nothingButton = new XboxTrigger(operator, XboxTrigger.X);
+        nothingButton.whenActive(nothingCommand, true);
+
+        SetIntakeState setIntakeState = new SetIntakeState(true);
+        XboxTrigger setIntakeButton = new XboxTrigger(operator, XboxTrigger.B);
+        setIntakeButton.whenActive(setIntakeState);
+
+
         
         /*
         XboxTrigger colorCount = new XboxTrigger(operator, XboxTrigger.DPADLEFT);

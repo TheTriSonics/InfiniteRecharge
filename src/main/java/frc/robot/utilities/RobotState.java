@@ -20,15 +20,6 @@ public class RobotState {
     boolean alignOn = false;
     boolean nothing = true;
 
-    public void toggleSpinUpShooter() {
-        spinUpShooter = !spinUpShooter;
-    }
-
-    public void toggleShooterOn(){
-        shooterOn = !shooterOn;
-        Robot.shooter.setShooterOn(shooterOn);
-    }
-
     public void setShooterOn(boolean on){
         shooterOn = on;
     }
@@ -36,37 +27,46 @@ public class RobotState {
     public boolean isShooterOn(){
         return shooterOn;
     }
-
-    public void setTargetAligned(boolean aligned){
-        targetAligned = aligned;
-    }
-
     public boolean isTargetAligned(){
         return targetAligned;
     }
 
-    public void setIntakeOn(boolean on) {
-        intakeOn = on;
-    }
-
+    
     public boolean isIntakeOn() {
         return intakeOn;
     }
+    public boolean isAligning() {
+        return alignOn;
+    }
+    public boolean isNothing() {
+        return nothing;
+    }
+    public boolean isShooterReady() {
+        return shooterOn && Robot.shooter.isShooterAtSpeed();
+    }
 
+    public void setIntakeOn(boolean on) {
+        intakeOn = on;
+        if (on) nothing = true;
+    }
     public void setAlignOn(boolean on) {
         alignOn = on;
     }
 
-    public boolean isAligning() {
-        return alignOn;
-    }
-
     public void setNothing(boolean b) {
         nothing = b;
+        if (nothing) intakeOn = false;
+    }
+    public void setTargetAligned(boolean aligned){
+        targetAligned = aligned;
+    }
+    public void toggleSpinUpShooter() {
+        spinUpShooter = !spinUpShooter;
+        Robot.shooter.setShooterOn(spinUpShooter);
     }
 
-    public boolean isNothing() {
-        return nothing;
+    public void toggleShooterOn(){
+        shooterOn = !shooterOn;
     }
 }
 

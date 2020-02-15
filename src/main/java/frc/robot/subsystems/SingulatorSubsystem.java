@@ -11,7 +11,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.*;
 
 public class SingulatorSubsystem extends SubsystemBase {
   VictorSPX singulatorVictor;
@@ -27,5 +27,14 @@ public class SingulatorSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    if (Robot.ballDelivery.getTopPhotoeye() && Robot.ballDelivery.getBottomPhotoeye()) {
+      setPower(0);
+      return;
+    }
+    if (Robot.robotState.isIntakeOn() || Robot.robotState.isShooterReady()) {
+      setPower(1);
+      return;
+    }
+    setPower(0);
   }
 }
