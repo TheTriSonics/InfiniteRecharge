@@ -36,7 +36,7 @@ public class RotateToHeading extends CommandBase {
   public void execute() {
     double angle = VectorMath.normalizeAngle(Robot.navx.getHeading(), cutpoint);
     double angleError = heading - angle;
-    double powerFactor = 0.04 * angleError;
+    double powerFactor = 0.02 * angleError;
     if (powerFactor > 1) powerFactor = 1;
     if (powerFactor <-1) powerFactor = -1;
     Robot.driveTrain.setPower(-powerFactor*power, powerFactor*power);

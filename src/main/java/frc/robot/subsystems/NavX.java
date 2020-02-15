@@ -32,7 +32,7 @@ public class NavX extends SubsystemBase {
   public double getHeading(){
     double switchCorrection = 0;
     if (Robot.driveTrain.isSwitched()) switchCorrection = 180;
-    return readGyro()- gyroOffset + 180;
+    return readGyro()- gyroOffset + switchCorrection;
   }
 
   public void resetGyro(){

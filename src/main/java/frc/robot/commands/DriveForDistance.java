@@ -9,6 +9,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveForDistance extends CommandBase {
   double stopDistance;
@@ -40,6 +41,7 @@ public class DriveForDistance extends CommandBase {
     currentPower = currentPower + 0.03;
     if(currentPower>power)currentPower = power;
     double remainingDistance = stopDistance - Robot.driveTrain.getLeftDistance();
+    SmartDashboard.putNumber("remainingDistance", remainingDistance);
     if(remainingDistance<15)currentPower = power * remainingDistance/15;
     double angleError = heading - Robot.navx.getHeading();
     double correction = 0.02*angleError;
