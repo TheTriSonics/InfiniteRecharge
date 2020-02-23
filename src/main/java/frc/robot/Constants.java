@@ -19,36 +19,28 @@ package frc.robot;
  */
 public final class Constants {
     // Falcons
-    // public static final int LEFT_MASTER = 1;
-    // public static final int LEFT_SLAVE1 = 2;
-    // public static final int LEFT_SLAVE2 = 3;
-    // public static final int RIGHT_MASTER = 4;
-    // public static final int RIGHT_SLAVE1 = 5;
-    // public static final int RIGHT_SLAVE2 = 6;
-
-    //Falcons temp
-    public static final int LEFT_MASTER = 2;
-    public static final int LEFT_SLAVE1 = 3;
-    // public static final int LEFT_SLAVE2 = 3;
-    public static final int RIGHT_MASTER = 5;
-    public static final int RIGHT_SLAVE1 = 6;
-    // public static final int RIGHT_SLAVE2 = 6;
+    public static final int LEFT_MASTER = 1;
+    public static final int LEFT_SLAVE1 = 2;
+    public static final int LEFT_SLAVE2 = 3;
+    public static final int RIGHT_MASTER = 4;
+    public static final int RIGHT_SLAVE1 = 5;
+    public static final int RIGHT_SLAVE2 = 6;
     public static final int SHOOTER_MASTER = 7;
     public static final int SHOOTER_SLAVE = 8;
 
     // Victors
-    public static final int BALL_DELIVERY = 0;
-    public static final int SHOOTER_FEEDER = 1;
-    public static final int HANGING_MOTOR1 = 2;
+    public static final int BALL_DELIVERY = 6;
+    public static final int SHOOTER_FEEDER = 5;
+    public static final int HANGING_MOTOR1 = 4;
     public static final int HANGING_MOTOR2 = 3;
-    public static final int THE_SINGULATOR = 4;
-    public static final int INTAKE_MOTOR = 5;
+    public static final int THE_SINGULATOR = 1;
+    public static final int INTAKE_MOTOR = 2;
 
     // Spark Max
     public static final int CONTROL_WHEEL = 1;
 
     // Talons
-    public static final int TURRET_ROTATE = 0;
+    public static final int TURRET_ROTATE = 9;
 
     // Servo
     public static final int SHOOTER_HOOD_SERVO = 0;

@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -35,6 +36,8 @@ public class Robot extends TimedRobot {
   
   @Override
   public void robotInit() {
+    Compressor compressor = new Compressor(0);
+    compressor.setClosedLoopControl(true);
     driveTrain = new InfiniteDriveTrain();
     navx = new NavX();
     position = new Position();
