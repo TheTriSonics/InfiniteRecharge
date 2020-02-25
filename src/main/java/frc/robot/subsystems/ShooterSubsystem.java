@@ -13,13 +13,15 @@ import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXSensorCollection;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Robot;
 
 public class ShooterSubsystem extends SubsystemBase {
   TalonFX master, follower;
   TalonFXSensorCollection sensors;
-  public final int shooterSpeed = 10000;
+  public final int shooterSpeed = 19000;
 
   public ShooterSubsystem() {
     master = new TalonFX(Constants.SHOOTER_MASTER);
@@ -32,25 +34,31 @@ public class ShooterSubsystem extends SubsystemBase {
     follower.setInverted(true);
     follower.set(TalonFXControlMode.Follower, Constants.SHOOTER_MASTER);;
 
-    master.config_kF(0, 0.03);
-    master.config_kP(0, 0.21);
-    master.config_kF(1, 0.03);
+    double kF = 1023.0/20600.0;
+    double kP = 0.28;
+    master.config_kF(0, kF);
+    master.config_kP(0, kP);
+    master.config_kF(1, kF);
     master.config_kP(1, 0);
-    master.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
+    master.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
 
-    follower.config_kF(0, 0.03);
-    follower.config_kP(0, 0.21);
-    follower.config_kF(1, 0.03);
+    follower.config_kF(0, kF);
+    follower.config_kP(0, kP);
+    follower.config_kF(1, kF);
     follower.config_kP(1, 0);
   }
 
   public void setShooterVelocity(double velocity) {
+    
     if (velocity >= 2000) {
       master.selectProfileSlot(0, 0);
     } else {
       master.selectProfileSlot(1, 0);
     }
+    
+    
     master.set(TalonFXControlMode.Velocity, velocity);
+    System.out.println(velocity);
   }
 
   public void setShooterPower(double power) {
@@ -67,5 +75,7 @@ public class ShooterSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    // if(Robot.oi.driver.getBButton()) setShooterPower(1);
+    SmartDashboard.putNumber("shooterSpeed", sensors.getIntegratedSensorVelocity());
   }
 }

@@ -18,6 +18,7 @@ public class SingulatorSubsystem extends SubsystemBase {
 
   public SingulatorSubsystem() {
     singulatorVictor = new VictorSPX(Constants.THE_SINGULATOR);
+    singulatorVictor.setInverted(true);
   }
 
   public void setPower(double power){

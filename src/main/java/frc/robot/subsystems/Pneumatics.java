@@ -20,7 +20,7 @@ public class Pneumatics extends SubsystemBase {
   public static final int HANGING_TILT = 4;
   public static final int HANGING_LOCK = 5;
 
-  int numValves = 6;
+  int numValves = 8;
 
   Solenoid[] solenoids = new Solenoid[numValves];
   boolean[] states = new boolean[numValves];
@@ -28,12 +28,15 @@ public class Pneumatics extends SubsystemBase {
   public Pneumatics() {
     solenoids[INTAKE] = new Solenoid(Constants.INTAKE);
     solenoids[SHIFT] = new Solenoid(Constants.SHIFT);
-
     solenoids[SHOOTER_HOOD] = new Solenoid(Constants.SHOOTER_HOOD);
-    
     solenoids[CONTROL_WHEEL] = new Solenoid(Constants.CONTROL_WHEEL_EXTEND);
     solenoids[HANGING_TILT] = new Solenoid(Constants.HANGING_TILT);
     solenoids[HANGING_LOCK] = new Solenoid(Constants.HANGING_LOCK);
+    solenoids[6] = new Solenoid(6);
+    solenoids[7] = new Solenoid(7);
+    
+    setState(6, true);
+    setState(7, true);
   }
 
   public void setState(int valve, boolean state){

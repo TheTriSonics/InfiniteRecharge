@@ -46,20 +46,20 @@ public final class Constants {
     public static final int SHOOTER_HOOD_SERVO = 0;
 
     // Encoders
-    public static final int DRIVE_TRAIN_LEFT = 0;
-    public static final int DRIVE_TRAIN_RIGHT = 4;
+    public static final int DRIVE_TRAIN_LEFT = 2;
+    public static final int DRIVE_TRAIN_RIGHT = 6;
 
     // Pneumatics
-    public static final int SHIFT = 0;
-    public static final int INTAKE = 1;
-    public static final int CONTROL_WHEEL_EXTEND = 2;
-    public static final int SHOOTER_HOOD = 3;
-    public static final int HANGING_TILT = 4;
+    public static final int SHIFT = 3;
+    public static final int INTAKE = 2;
+    public static final int CONTROL_WHEEL_EXTEND = 1;
+    public static final int SHOOTER_HOOD = 4;
+    public static final int HANGING_TILT = 0;
     public static final int HANGING_LOCK = 5;
 
     //DIO
-    public static final int PHOTOEYE_TOP = 8;
-    public static final int PHOTOEYE_BOTTOM = 9;
+    public static final int PHOTOEYE_TOP = 1;
+    public static final int PHOTOEYE_BOTTOM = 0;
 
     //OTHER
     public static final double INCHES_PER_REV = (6.0 * Math.PI) * (100.0/97.0);

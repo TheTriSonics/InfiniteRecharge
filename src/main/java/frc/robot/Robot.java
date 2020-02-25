@@ -33,24 +33,33 @@ public class Robot extends TimedRobot {
   public static ColorWheelRotateSubsystem colorWheelRotateSubsystem; 
   public static Position position;
   public static BallDeliverySubsystem ballDelivery;
-  
+  public static IntakeSubsystem intakeSubsystem;
+  public static SingulatorSubsystem singulatorSubsystem;
+  public static ShooterFeederSubsystem shooterFeederSubsystem;
+
   @Override
   public void robotInit() {
     Compressor compressor = new Compressor(0);
     compressor.setClosedLoopControl(true);
+
     driveTrain = new InfiniteDriveTrain();
+    shooterFeederSubsystem = new ShooterFeederSubsystem();
+    intakeSubsystem = new IntakeSubsystem();
+    singulatorSubsystem = new SingulatorSubsystem();
+    ballDelivery = new BallDeliverySubsystem();
+    shooter = new ShooterSubsystem();
+
+    pneumatics = new Pneumatics();
+
     navx = new NavX();
     position = new Position();
 
     /*
     turret = new Turret();
-    shooter = new ShooterSubsystem();
     limelight = new LimeLight();
-    navx = new NavX();
     colorSensor = new ColorSensor();
-    pneumatics = new Pneumatics();
-    colorWheelRotateSubsystem = new ColorWheelRotateSubsystem();
-    */
+    colorWheelRotateSubsystem = new ColorWheelRotateSubsystem(); */
+    
     
     driveTrain.setDefaultCommand(new ArcadeDriveCommand());
     /*
@@ -101,7 +110,6 @@ public class Robot extends TimedRobot {
     driveTrain.resetDriveEncoders();
     lastDriveEncoders = driveTrain.getDriveDistance();
     lastTime = System.currentTimeMillis();
-    // System.out.println(Filesystem.getDeployDirectory());
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }

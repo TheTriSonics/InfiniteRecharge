@@ -29,16 +29,15 @@ public class BallDeliverySubsystem extends SubsystemBase {
   }
 
   public boolean getTopPhotoeye(){
-    return photoeyeTop.get();
+    return !photoeyeTop.get();
   }
 
   public boolean getBottomPhotoeye(){
-    return photoeyeBottom.get();
+    return !photoeyeBottom.get();
   }
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
     if (getTopPhotoeye()) {
       setPower(0);
       return;
@@ -48,6 +47,7 @@ public class BallDeliverySubsystem extends SubsystemBase {
       return;
     }
     setPower(0);
-
+    SmartDashboard
+    // System.out.println("Bottom: " + getBottomPhotoeye() + "Top: " + getTopPhotoeye());
   }
 }

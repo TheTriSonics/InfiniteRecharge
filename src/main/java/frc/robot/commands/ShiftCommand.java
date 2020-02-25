@@ -9,44 +9,37 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
+import frc.robot.subsystems.Pneumatics;
 
-public class TrackTarget extends CommandBase {
-  public TrackTarget() {
-    addRequirements(Robot.turret);
+public class ShiftCommand extends CommandBase {
+  /**
+   * Creates a new ShiftCommand.
+   */
+  boolean low;
+  public ShiftCommand(boolean low) {
+    // Use addRequirements() here to declare subsystem dependencies.
+    this.low = low;
   }
 
-
+  // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    Robot.pneumatics.setState(Pneumatics.SHIFT, low);
   }
 
+  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(Robot.limelight.isTargetSeen()==false){
-      System.out.println("not seen");
-      Robot.turret.setSpinPower(0);
-      Robot.turret.setTiltPower(0);
-      return;
-    }
-    double x = Robot.limelight.getX();
-    double y = Robot.limelight.getY();
-    double tiltPower = 0.04*y;
-    double spinPower = 0.08*x;
-    if(tiltPower>1)tiltPower = 1;
-    if(tiltPower<-1)tiltPower = -1;
-    if(spinPower>1)spinPower = 1;
-    if(spinPower<-1)spinPower = -1;
-    System.out.println("trackTarget" + spinPower);
-    Robot.turret.setSpinPower(spinPower);
-    Robot.turret.setTiltPower(tiltPower);
   }
 
+  // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
   }
 
+  // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

@@ -26,7 +26,7 @@ public class ShooterFeederSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    // System.out.println(Robot.robotState.isShooterReady());
     if (Robot.robotState.isShooterReady()) {
       setPower(1);
       return;

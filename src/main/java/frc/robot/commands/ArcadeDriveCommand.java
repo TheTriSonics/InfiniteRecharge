@@ -22,16 +22,13 @@ public class ArcadeDriveCommand extends CommandBase {
   double lastSteering = 0;
 
   public ArcadeDriveCommand() {
-    // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(Robot.driveTrain);
   }
 
-  // Called when the command is initially scheduled.
   @Override
   public void initialize() {
   }
 
-  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     double throttle = -Robot.oi.driver.getY(Hand.kLeft);
@@ -47,13 +44,11 @@ public class ArcadeDriveCommand extends CommandBase {
     lastSteering = steering;
   }
 
-  // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     Robot.driveTrain.setPower(0, 0);
   }
 
-  // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     return false;
