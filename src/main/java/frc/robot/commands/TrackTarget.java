@@ -25,20 +25,18 @@ public class TrackTarget extends CommandBase {
     if(Robot.limelight.isTargetSeen()==false){
       System.out.println("not seen");
       Robot.turret.setSpinPower(0);
-      Robot.turret.setTiltPower(0);
       return;
     }
     double x = Robot.limelight.getX();
     double y = Robot.limelight.getY();
-    double tiltPower = 0.04*y;
+    
     double spinPower = 0.08*x;
-    if(tiltPower>1)tiltPower = 1;
-    if(tiltPower<-1)tiltPower = -1;
+    
     if(spinPower>1)spinPower = 1;
     if(spinPower<-1)spinPower = -1;
     System.out.println("trackTarget" + spinPower);
     Robot.turret.setSpinPower(spinPower);
-    Robot.turret.setTiltPower(tiltPower);
+    
   }
 
   @Override

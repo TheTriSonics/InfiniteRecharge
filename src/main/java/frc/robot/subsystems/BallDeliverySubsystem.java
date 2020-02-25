@@ -47,7 +47,6 @@ public class BallDeliverySubsystem extends SubsystemBase {
       return;
     }
     setPower(0);
-    SmartDashboard
     // System.out.println("Bottom: " + getBottomPhotoeye() + "Top: " + getTopPhotoeye());
   }
 }

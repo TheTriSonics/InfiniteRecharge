@@ -34,10 +34,6 @@ public class Turret extends SubsystemBase {
     spin.set(ControlMode.PercentOutput, power);
   }
 
-  public void setTiltPower(double power) {
-    //tilt.set(ControlMode.PercentOutput, power);
-  }
-
   public void extendHood(boolean extend){
     Robot.pneumatics.setState(Pneumatics.SHOOTER_HOOD, extend);
   }
