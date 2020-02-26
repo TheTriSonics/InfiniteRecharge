@@ -39,6 +39,7 @@ public class Turret extends SubsystemBase {
   SensorCollection sensors;
   double hoodTarget = HOOD_LOWER_LIMIT;
   double turretTarget;
+  boolean turretTargetSet = false;
   double[] targetLocation;
 
   public Turret() {
@@ -67,6 +68,11 @@ public class Turret extends SubsystemBase {
     if (turretPosition > TURRET_UPPER_LIMIT && power > 0) power = 0;
     if (turretPosition < TURRET_LOWER_LIMIT && power < 0) power = 0;
     spin.set(ControlMode.PercentOutput, power);
+  }
+
+  public void setTurretTarget(double target) {
+    turretTarget = target;
+    turretTargetSet = true;
   }
 
   public void setTargetSeen(boolean targetSeen) {
@@ -101,7 +107,7 @@ public class Turret extends SubsystemBase {
     double error = hoodTarget - hoodPosition;
     if (hoodPosition < HOOD_LOWER_LIMIT && error < 0) error = 0;
     if (hoodPosition > HOOD_UPPER_LIMIT && error > 0) error = 0;
-    System.out.println("hood power = " + kHood*error + " " + hoodPosition + " " + hoodTarget);
+    // System.out.println("hood power = " + kHood*error + " " + hoodPosition + " " + hoodTarget);
     setRawHoodPower(kHood * error);
   }
 
@@ -117,19 +123,25 @@ public class Turret extends SubsystemBase {
 
   @Override
   public void periodic() {
-    if (Robot.robotState.isShooterOn()) {
-      Robot.pneumatics.setState(Pneumatics.SHOOTER_HOOD, true);
-      if (targetSeen == false) hoodTarget = HOOD_DEFAULT;
-      moveHood();
-    } else {
-      hoodTarget = HOOD_RETRACT;
-      moveHood();
-      if (Math.abs(hoodEncoder.get() - HOOD_RETRACT) < HOOD_TOLERANCE) {
-        Robot.pneumatics.setState(Pneumatics.SHOOTER_HOOD, false);
+    boolean shooterOn = Robot.robotState.isShooterOn();
+    if (shooterOn) {
+      Robot.pneumatics.setState(Pneumatics.SHOOTER_HOOD, true); 
+    } 
+
+    if(targetSeen == false) {
+      if (shooterOn) hoodTarget = HOOD_DEFAULT;
+      else {
+        hoodTarget = HOOD_RETRACT;
+        if (Math.abs(hoodEncoder.get() - HOOD_RETRACT) < HOOD_TOLERANCE) {
+          Robot.pneumatics.setState(Pneumatics.SHOOTER_HOOD, false);
+        }
       }
+      moveHood();
+      if (turretTargetSet) moveTurret();
+      return;
     }
-    if(targetSeen == false) return;
     
+    turretTargetSet = false;
     hoodTarget = determineHoodPositionFromCamera(targetLocation[1]);
     moveHood();
 
