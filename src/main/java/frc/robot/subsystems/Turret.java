@@ -28,8 +28,8 @@ public class Turret extends SubsystemBase {
   double turretTarget;
   double[] targetLocation;
 
-  final double UPPER_ENCODER_LIMIT = 1000;
-  final double LOWER_ENCODER_LIMIT = -1000;
+  final double UPPER_ENCODER_LIMIT = 4096;
+  final double LOWER_ENCODER_LIMIT = -4096;
   final double HOOD_RETRACT = 0;
   final double HOOD_DEFAULT = 100;
   final double HOOD_TOLERANCE = 10;
