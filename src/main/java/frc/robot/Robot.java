@@ -9,6 +9,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -132,6 +133,13 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("left Drive", driveEncoders[0]);
     SmartDashboard.putNumber("right Drive", driveEncoders[1]);
     SmartDashboard.putNumber("gyro", navx.getHeading());
+
+    double hoodPower = oi.driver.getTriggerAxis(Hand.kRight);
+    double leftTrigger = -oi.driver.getTriggerAxis(Hand.kLeft);
+    if (Math.abs(leftTrigger) > 0.2) hoodPower = leftTrigger;
+    turret.setHoodPower(0.5*hoodPower);
+    SmartDashboard.putNumber("hood position", turret.getHoodEncoder());
+    SmartDashboard.putNumber("turret position", turret.getTurretPosition());
   }
 
   @Override
