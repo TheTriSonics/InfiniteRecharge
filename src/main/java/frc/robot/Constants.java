@@ -48,6 +48,7 @@ public final class Constants {
     // Encoders
     public static final int DRIVE_TRAIN_LEFT = 2;
     public static final int DRIVE_TRAIN_RIGHT = 6;
+    public static final int HOOD_ENCODER = 10;
 
     // Pneumatics
     public static final int SHIFT = 3;

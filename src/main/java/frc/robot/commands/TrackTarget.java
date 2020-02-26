@@ -15,7 +15,6 @@ public class TrackTarget extends CommandBase {
     addRequirements(Robot.turret);
   }
 
-
   @Override
   public void initialize() {
   }
@@ -23,24 +22,30 @@ public class TrackTarget extends CommandBase {
   @Override
   public void execute() {
     if(Robot.limelight.isTargetSeen()==false){
+      Robot.turret.setTargetSeen(false);
       System.out.println("not seen");
       Robot.turret.setSpinPower(0);
       return;
     }
     double x = Robot.limelight.getX();
     double y = Robot.limelight.getY();
+    Robot.turret.setTargetSeen(true);
+    Robot.turret.setTargetLocation(new double[]{x,y});
     
+    /*
     double spinPower = 0.08*x;
     
     if(spinPower>1)spinPower = 1;
     if(spinPower<-1)spinPower = -1;
     System.out.println("trackTarget" + spinPower);
     Robot.turret.setSpinPower(spinPower);
+    */
     
   }
 
   @Override
   public void end(boolean interrupted) {
+    Robot.turret.setTargetSeen(false);
   }
 
   @Override
