@@ -26,7 +26,7 @@ public class RobotState {
     }
 
     public boolean isShooterOn(){
-        return shooterOn;
+        return spinUpShooter;
     }
     public boolean isTargetAligned(){
         return targetAligned;

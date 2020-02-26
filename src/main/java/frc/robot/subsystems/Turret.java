@@ -19,28 +19,27 @@ import frc.robot.Constants;
 import frc.robot.Robot;
 
 public class Turret extends SubsystemBase {
+  final double TURRET_UPPER_LIMIT = 4096;
+  final double TURRET_LOWER_LIMIT = -4096;
+  final double HOOD_LOWER_LIMIT = 0;
+  final double HOOD_UPPER_LIMIT = 3.1;
+  final double HOOD_RETRACT = HOOD_LOWER_LIMIT;
+  final double HOOD_DEFAULT = 2;
+  final double HOOD_TOLERANCE = 0.5;
+  final double DEGREES_PER_ENCODER = 360.0/4096;
+  final double kHood = 1;
+  final double kTurret = 0.003;
+  private volatile int lastValue = Integer.MIN_VALUE;
+
+  double hoodOffset = 0;
   Servo hood;
   TalonSRX spin;
   boolean targetSeen = false;
   DutyCycleEncoder hoodEncoder;
   SensorCollection sensors;
-  double hoodTarget;
+  double hoodTarget = HOOD_LOWER_LIMIT;
   double turretTarget;
   double[] targetLocation;
-
-  final double UPPER_ENCODER_LIMIT = 4096;
-  final double LOWER_ENCODER_LIMIT = -4096;
-  final double HOOD_RETRACT = 0;
-  final double HOOD_DEFAULT = 100;
-  final double HOOD_TOLERANCE = 10;
-  final double HOOD_LOWER_LIMIT = 0;
-  final double HOOD_UPPER_LIMIT = 200;
-  final double kHood = 0.1;
-  final double kTurret = 0.1;
-  private volatile int lastValue = Integer.MIN_VALUE;
-
-  // private final AS5600EncoderPwm encoderPwm = new
-  // AS5600EncoderPwm(spin.getSensorCollection()); //Absolute encoder for new robot turret
 
   public Turret() {
     spin = new TalonSRX(Constants.TURRET_ROTATE);
@@ -65,8 +64,8 @@ public class Turret extends SubsystemBase {
 
   public void setSpinPower(double power) {
     int turretPosition = getTurretPosition();
-    // if (turretPosition > UPPER_ENCODER_LIMIT && power > 0) power = 0;
-    // if (turretPosition < LOWER_ENCODER_LIMIT && power < 0) power = 0;
+    if (turretPosition > TURRET_UPPER_LIMIT && power > 0) power = 0;
+    if (turretPosition < TURRET_LOWER_LIMIT && power < 0) power = 0;
     spin.set(ControlMode.PercentOutput, power);
   }
 
@@ -78,23 +77,38 @@ public class Turret extends SubsystemBase {
     targetLocation = location;
   }
 
+  public void resetHoodEncoder() {
+    hoodOffset = hoodEncoder.get();
+  }
+
   public double getHoodEncoder() {
-    return hoodEncoder.get();
+    return hoodEncoder.get() - hoodOffset;
+  }
+
+  public void setRawHoodPower(double power) {
+    hood.set(1-0.5*(power+1));
   }
 
   public void setHoodPower(double power) {
     double hoodPosition = hoodEncoder.getPositionOffset();
     if (hoodPosition < HOOD_LOWER_LIMIT && power < 0) power = 0;
     if (hoodPosition > HOOD_UPPER_LIMIT && power > 0) power = 0;
-    hood.setSpeed(power);
+    setRawHoodPower(power);
   }
 
   public void moveHood() {
-    double hoodPosition = hoodEncoder.get();
+    double hoodPosition = getHoodEncoder();
     double error = hoodTarget - hoodPosition;
     if (hoodPosition < HOOD_LOWER_LIMIT && error < 0) error = 0;
     if (hoodPosition > HOOD_UPPER_LIMIT && error > 0) error = 0;
-    hood.setSpeed(kHood * error);
+    System.out.println("hood power = " + kHood*error + " " + hoodPosition + " " + hoodTarget);
+    setRawHoodPower(kHood * error);
+  }
+
+  public void moveTurret() {
+    double turretPosition = getTurretPosition();
+    double error = turretTarget - turretPosition;
+    setSpinPower(kTurret * error);
   }
 
   public double determineHoodPositionFromCamera(double y) {
@@ -106,6 +120,7 @@ public class Turret extends SubsystemBase {
     if (Robot.robotState.isShooterOn()) {
       Robot.pneumatics.setState(Pneumatics.SHOOTER_HOOD, true);
       if (targetSeen == false) hoodTarget = HOOD_DEFAULT;
+      moveHood();
     } else {
       hoodTarget = HOOD_RETRACT;
       moveHood();
@@ -118,6 +133,7 @@ public class Turret extends SubsystemBase {
     hoodTarget = determineHoodPositionFromCamera(targetLocation[1]);
     moveHood();
 
-    setSpinPower(kTurret*targetLocation[0]);
+    turretTarget = getTurretPosition() + targetLocation[0]/DEGREES_PER_ENCODER;
+    moveTurret();
   }
 }

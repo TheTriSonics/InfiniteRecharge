@@ -28,11 +28,8 @@ public class TurretCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double tiltPower = -Robot.oi.operator.getY(Hand.kRight);
     double spinPower = Robot.oi.operator.getX(Hand.kRight);
-    if (Math.abs(tiltPower)<0.1)tiltPower=0;
-    if (Math.abs(spinPower)<0.1)spinPower=0;
-    // Robot.turret.setTiltPower(tiltPower);
+    if (Math.abs(spinPower)<0.03)spinPower=0;
     Robot.turret.setSpinPower(spinPower);
   }
 

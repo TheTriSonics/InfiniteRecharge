@@ -43,6 +43,7 @@ public class IntakeSubsystem extends SubsystemBase {
       } else {
         setPower(1);
       }
-    }
+      
+    } else setPower(0);
   }
 }

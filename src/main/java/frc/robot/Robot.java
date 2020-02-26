@@ -21,7 +21,7 @@ import frc.robot.utilities.*;
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand; 
-  public static OI oi = new OI();
+  public static OI oi; 
   public static RobotState robotState = new RobotState();
   
   public static InfiniteDriveTrain driveTrain;
@@ -55,19 +55,22 @@ public class Robot extends TimedRobot {
     navx = new NavX();
     position = new Position();
 
-    /*
     turret = new Turret();
     limelight = new LimeLight();
+    /*
     colorSensor = new ColorSensor();
-    colorWheelRotateSubsystem = new ColorWheelRotateSubsystem(); */
+    colorWheelRotateSubsystem = new ColorWheelRotateSubsystem(); 
+    */
     
     
     driveTrain.setDefaultCommand(new ArcadeDriveCommand());
-    /*
+    
     turret.setDefaultCommand(new TurretCommand());
     limelight.setDefaultCommand(new LimeLightCommand());
+    /*
     colorSensor.setDefaultCommand(new ColorSensorCommand());
     */
+    oi = new OI();
   }
 
   @Override
@@ -77,10 +80,12 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledInit() {
+    turret.setRawHoodPower(0);
   }
 
   @Override
   public void disabledPeriodic() {
+    
   }
 
   @Override
@@ -114,6 +119,7 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+    turret.resetHoodEncoder();
     // navx.resetGyro();
     // position.resetPosition();
   }
@@ -134,10 +140,14 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("right Drive", driveEncoders[1]);
     SmartDashboard.putNumber("gyro", navx.getHeading());
 
+    /*
     double hoodPower = oi.driver.getTriggerAxis(Hand.kRight);
     double leftTrigger = -oi.driver.getTriggerAxis(Hand.kLeft);
     if (Math.abs(leftTrigger) > 0.2) hoodPower = leftTrigger;
-    turret.setHoodPower(0.5*hoodPower);
+    //hoodPower = 0.5*(hoodPower + 1);
+    //System.out.println(hoodPower);
+    //turret.setHoodPower(hoodPower);
+    */
     SmartDashboard.putNumber("hood position", turret.getHoodEncoder());
     SmartDashboard.putNumber("turret position", turret.getTurretPosition());
   }
