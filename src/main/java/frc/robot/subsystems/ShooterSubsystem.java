@@ -16,7 +16,6 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.Robot;
 
 public class ShooterSubsystem extends SubsystemBase {
   TalonFX master, follower;
@@ -56,9 +55,8 @@ public class ShooterSubsystem extends SubsystemBase {
       master.selectProfileSlot(1, 0);
     }
     
-    
     master.set(TalonFXControlMode.Velocity, velocity);
-    System.out.println(velocity);
+    // System.out.println(velocity);
   }
 
   public void setShooterPower(double power) {
