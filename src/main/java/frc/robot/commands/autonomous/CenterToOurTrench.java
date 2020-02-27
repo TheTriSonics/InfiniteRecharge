@@ -27,7 +27,7 @@ public class CenterToOurTrench extends SequentialCommandGroup {
     );
 
     addCommands(
-      new WaitForTime(50),
+      new WaitForTime(1),
       initial
     );
   }

@@ -42,6 +42,7 @@ public class Pneumatics extends SubsystemBase {
   }
 
   public void setState(int valve, boolean state){
+    if (value == SHIFT) state = !state;
     solenoids[valve].set(state);
   }
 
