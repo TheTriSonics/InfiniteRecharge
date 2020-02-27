@@ -37,6 +37,7 @@ public class Robot extends TimedRobot {
   public static IntakeSubsystem intakeSubsystem;
   public static SingulatorSubsystem singulatorSubsystem;
   public static ShooterFeederSubsystem shooterFeederSubsystem;
+  public static PhotoEyes photoEyes;
 
   @Override
   public void robotInit() {
@@ -49,6 +50,7 @@ public class Robot extends TimedRobot {
     singulatorSubsystem = new SingulatorSubsystem();
     ballDelivery = new BallDeliverySubsystem();
     shooter = new ShooterSubsystem();
+    photoEyes = new PhotoEyes();
 
     pneumatics = new Pneumatics();
 
@@ -85,7 +87,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
-    
+    pneumatics.setState(Pneumatics.PHOTOEYE_RECEIVER, false);    
   }
 
   @Override

@@ -19,6 +19,8 @@ public class Pneumatics extends SubsystemBase {
   public static final int SHOOTER_HOOD = 3;
   public static final int HANGING_TILT = 4;
   public static final int HANGING_LOCK = 5;
+  public static final int PHOTOEYE_RECEIVER = 6;
+  public static final int PHOTOEYE_TRANSMITTER = 7;
 
   int numValves = 8;
 
@@ -32,11 +34,11 @@ public class Pneumatics extends SubsystemBase {
     solenoids[CONTROL_WHEEL] = new Solenoid(Constants.CONTROL_WHEEL_EXTEND);
     solenoids[HANGING_TILT] = new Solenoid(Constants.HANGING_TILT);
     solenoids[HANGING_LOCK] = new Solenoid(Constants.HANGING_LOCK);
-    solenoids[6] = new Solenoid(6);
-    solenoids[7] = new Solenoid(7);
+    solenoids[PHOTOEYE_RECEIVER] = new Solenoid(PHOTOEYE_RECEIVER);
+    solenoids[PHOTOEYE_TRANSMITTER] = new Solenoid(PHOTOEYE_TRANSMITTER);
     
-    setState(6, true);
-    setState(7, true);
+    setState(PHOTOEYE_RECEIVER, true);
+    setState(PHOTOEYE_TRANSMITTER, true);
   }
 
   public void setState(int valve, boolean state){

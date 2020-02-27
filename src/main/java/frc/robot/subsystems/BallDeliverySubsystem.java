@@ -10,18 +10,21 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
-import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.*;
 
 public class BallDeliverySubsystem extends SubsystemBase {
   VictorSPX ballDeliveryVictor;
-  DigitalInput photoeyeTop, photoeyeBottom;
+  // AnalogInput photoeyeTop;
+  // AnalogInput photoeyeBottom;
 
   public BallDeliverySubsystem() {
     ballDeliveryVictor = new VictorSPX(Constants.BALL_DELIVERY);
-    photoeyeTop = new DigitalInput(Constants.PHOTOEYE_TOP);
-    photoeyeBottom = new DigitalInput(Constants.PHOTOEYE_BOTTOM);
+    // photoeyeTop = new AnalogInput(1);
+    // photoeyeBottom = new AnalogInput(Constants.PHOTOEYE_BOTTOM);
   }
 
   public void setPower(double power){
@@ -29,24 +32,31 @@ public class BallDeliverySubsystem extends SubsystemBase {
   }
 
   public boolean getTopPhotoeye(){
-    return !photoeyeTop.get();
+    return Robot.photoEyes.getTopPhotoEye();
+    // return photoeyeTop.getVoltage() > 0.83;
   }
 
   public boolean getBottomPhotoeye(){
-    return !photoeyeBottom.get();
+    return Robot.photoEyes.getBottomPhotoEye();
+    // return photoeyeBottom.getVoltage() > 0.83;
   }
 
   @Override
   public void periodic() {
-    if (getTopPhotoeye()) {
-      setPower(0);
+    if (Robot.robotState.isShooterReady()) {
+      setPower(1);
       return;
     }
-    if (Robot.robotState.isIntakeOn() || Robot.robotState.isShooterReady()) {
+    
+    if (Robot.robotState.isIntakeOn() && getTopPhotoeye() == false) {
       setPower(1);
       return;
     }
     setPower(0);
-    System.out.println("Bottom: " + getBottomPhotoeye() + "Top: " + getTopPhotoeye());
+    SmartDashboard.putBoolean("Photoeye Top: ", getTopPhotoeye());
+    SmartDashboard.putBoolean("Photoeye Bottom: ", getBottomPhotoeye());
+    SmartDashboard.putNumber("Photoeye Top V: ", Robot.photoEyes.getTopVoltage());
+    SmartDashboard.putNumber("Photoeye Bottom V: ", Robot.photoEyes.getBottomVoltage());
+    // System.out.println("Bottom: " + getBottomPhotoeye() + " Top: " + getTopPhotoeye() + " | " + photoeyeTop.getVoltage());
   }
 }

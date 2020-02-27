@@ -28,11 +28,12 @@ public class SingulatorSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    if (Robot.ballDelivery.getTopPhotoeye() && Robot.ballDelivery.getBottomPhotoeye()) {
-      setPower(0);
+    if (Robot.robotState.isShooterReady()) {
+      setPower(1);
       return;
     }
-    if (Robot.robotState.isIntakeOn() || Robot.robotState.isShooterReady()) {
+    if (Robot.robotState.isIntakeOn() && 
+        (Robot.ballDelivery.getTopPhotoeye() == false || Robot.ballDelivery.getBottomPhotoeye() == false)) {
       setPower(1);
       return;
     }
