@@ -15,6 +15,7 @@ public class RotateToHeading extends CommandBase {
   double heading;
   double power;
   double cutpoint;
+  long stopTime;
   /**
    * Creates a new RotateToHeading.
    */
@@ -29,6 +30,7 @@ public class RotateToHeading extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    stopTime = System.currentTimeMillis() + 2000;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -36,7 +38,7 @@ public class RotateToHeading extends CommandBase {
   public void execute() {
     double angle = VectorMath.normalizeAngle(Robot.navx.getHeading(), cutpoint);
     double angleError = heading - angle;
-    double powerFactor = 0.02 * angleError;
+    double powerFactor = 0.03 * angleError;
     if (powerFactor > 1) powerFactor = 1;
     if (powerFactor <-1) powerFactor = -1;
     Robot.driveTrain.setPower(-powerFactor*power, powerFactor*power);
@@ -52,6 +54,6 @@ public class RotateToHeading extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(heading-Robot.navx.getHeading()) < 4;
+    return Math.abs(heading-Robot.navx.getHeading()) < 4 || System.currentTimeMillis() > stopTime;
   }
 }

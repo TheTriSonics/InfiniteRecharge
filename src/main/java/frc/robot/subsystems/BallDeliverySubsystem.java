@@ -47,6 +47,6 @@ public class BallDeliverySubsystem extends SubsystemBase {
       return;
     }
     setPower(0);
-    // System.out.println("Bottom: " + getBottomPhotoeye() + "Top: " + getTopPhotoeye());
+    System.out.println("Bottom: " + getBottomPhotoeye() + "Top: " + getTopPhotoeye());
   }
 }

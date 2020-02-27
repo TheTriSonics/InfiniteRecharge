@@ -59,8 +59,8 @@ public final class Constants {
     public static final int HANGING_LOCK = 5;
 
     //DIO
-    public static final int PHOTOEYE_TOP = 1;
-    public static final int PHOTOEYE_BOTTOM = 0;
+    public static final int PHOTOEYE_TOP = 14;
+    public static final int PHOTOEYE_BOTTOM = 15;
 
     //OTHER
     public static final double INCHES_PER_REV = (6.0 * Math.PI) * (100.0/97.0);

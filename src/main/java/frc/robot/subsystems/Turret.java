@@ -71,6 +71,10 @@ public class Turret extends SubsystemBase {
   }
 
   public void setTurretTarget(double target) {
+    if (Double.isNaN(target)) {
+      turretTargetSet = false;
+      return;
+    }
     turretTarget = target;
     turretTargetSet = true;
   }

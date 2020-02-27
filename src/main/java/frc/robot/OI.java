@@ -19,16 +19,16 @@ public class OI {
         driver = new XboxController(0);
         operator = new XboxController(1);
         
-        TrackTarget trackTarget = new TrackTarget();
-        XboxTrigger trackingOnOff = new XboxTrigger(operator, XboxTrigger.Y);
-        trackingOnOff.toggleWhenActive(trackTarget, true);
-
         ShiftCommand shiftHighCommand = new ShiftCommand(false);
         ShiftCommand shiftLowCommand = new ShiftCommand(true);
         XboxTrigger shiftHighButton = new XboxTrigger(driver, XboxTrigger.RB);
         XboxTrigger shiftLowButton = new XboxTrigger(driver, XboxTrigger.LB);
         shiftHighButton.whenActive(shiftHighCommand);
         shiftLowButton.whenActive(shiftLowCommand);
+
+        TrackTarget trackTarget = new TrackTarget();
+        XboxTrigger trackingOnOff = new XboxTrigger(operator, XboxTrigger.Y);
+        trackingOnOff.toggleWhenActive(trackTarget, true);
 
         SpinUpShooterCommand spinUpShooterCommand = new SpinUpShooterCommand();
         XboxTrigger spinUpShooter = new XboxTrigger(operator, XboxTrigger.LB);

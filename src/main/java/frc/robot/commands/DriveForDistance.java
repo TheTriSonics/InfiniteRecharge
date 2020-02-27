@@ -17,6 +17,9 @@ public class DriveForDistance extends CommandBase {
   double heading;
   double currentPower;
   double distance;
+  long stopTime;
+  double speedRamp = 10.0;
+  double kAngle = 0.02;
   /**
    * Creates a new DriveForDistance.
    */
@@ -31,6 +34,7 @@ public class DriveForDistance extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    stopTime = System.currentTimeMillis() + 2000;
     stopDistance = Robot.driveTrain.getLeftDistance() + distance;
     currentPower = 0.2;
   }
@@ -42,9 +46,9 @@ public class DriveForDistance extends CommandBase {
     if(currentPower>power)currentPower = power;
     double remainingDistance = stopDistance - Robot.driveTrain.getLeftDistance();
     SmartDashboard.putNumber("remainingDistance", remainingDistance);
-    if(remainingDistance<15)currentPower = power * remainingDistance/15;
+    if (remainingDistance<speedRamp) currentPower = power * remainingDistance / speedRamp;
     double angleError = heading - Robot.navx.getHeading();
-    double correction = 0.02*angleError;
+    double correction = kAngle*angleError;
     Robot.driveTrain.setPower(currentPower - correction, currentPower + correction);
   }
 
@@ -57,6 +61,6 @@ public class DriveForDistance extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Robot.driveTrain.getLeftDistance()>stopDistance;
+    return Robot.driveTrain.getLeftDistance()>stopDistance || System.currentTimeMillis() > stopTime;
   }
 }

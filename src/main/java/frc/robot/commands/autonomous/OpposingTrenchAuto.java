@@ -27,12 +27,14 @@ public class OpposingTrenchAuto extends SequentialCommandGroup {
     );
 
     addCommands(
+      new WaitForTime(1),
       initial,
       new SwitchDirection(),
       new ExecuteProfile("trenchtocenter-profile.csv"),
       new SwitchDirection(),
       new RotateToHeading(0.5, 22.5),
-      new DriveForDistance(0.6, 55, 22.5)
+      new DriveForDistance(0.6, 55, 22.5),
+      new SetIntakeState(false)
     );
   }
 }

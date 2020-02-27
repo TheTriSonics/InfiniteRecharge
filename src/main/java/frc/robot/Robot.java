@@ -90,9 +90,9 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+    m_autonomousCommand = new OpposingTrenchAuto(); //ExecuteProfile("startcentertorsvp-profile.csv");  
     robotState.setAuton(true);
     pneumatics.setState(Pneumatics.SHIFT, true);
-    m_autonomousCommand = new OpposingTrenchAuto(); //ExecuteProfile("startcentertorsvp-profile.csv");  
     navx.resetGyro();
     position.resetPosition();
     

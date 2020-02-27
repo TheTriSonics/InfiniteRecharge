@@ -41,7 +41,7 @@ public class IntakeSubsystem extends SubsystemBase {
       } else if(Robot.oi.operator.getTriggerAxis(Hand.kLeft) > 0.1){
         setPower(-Robot.oi.operator.getTriggerAxis(Hand.kLeft));
       } else {
-        setPower(1);
+        setPower(0.5);
       }
       
     } else setPower(0);

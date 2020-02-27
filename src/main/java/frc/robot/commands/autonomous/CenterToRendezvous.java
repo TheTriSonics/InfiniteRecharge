@@ -27,6 +27,7 @@ public class CenterToRendezvous extends SequentialCommandGroup {
     );
 
     addCommands(
+      new WaitForTime(50),
       initial
     );
   }

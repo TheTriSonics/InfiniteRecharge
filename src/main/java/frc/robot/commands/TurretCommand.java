@@ -30,6 +30,7 @@ public class TurretCommand extends CommandBase {
   public void execute() {
     double spinPower = Robot.oi.operator.getX(Hand.kRight);
     if (Math.abs(spinPower)<0.03)spinPower=0;
+    else Robot.turret.setTurretTarget(Double.NaN);
     Robot.turret.setSpinPower(spinPower);
   }
 

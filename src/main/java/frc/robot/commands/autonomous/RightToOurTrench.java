@@ -27,6 +27,7 @@ public class RightToOurTrench extends SequentialCommandGroup {
     );
 
     addCommands(
+      new WaitForTime(50),
       initial
     );
   }
