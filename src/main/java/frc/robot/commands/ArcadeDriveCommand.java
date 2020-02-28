@@ -32,7 +32,7 @@ public class ArcadeDriveCommand extends CommandBase {
   @Override
   public void execute() {
     double throttle = -Robot.oi.driver.getY(Hand.kLeft);
-    double steering = -Robot.oi.driver.getX(Hand.kRight);
+    double steering = -0.5*Robot.oi.driver.getX(Hand.kRight);
     if(Math.abs(throttle) <= 0.05) throttle = 0;
     if(Math.abs(steering) <= 0.05) steering = 0;
     double power = (alpha * throttle) + (alpham1 * lastThrottle);

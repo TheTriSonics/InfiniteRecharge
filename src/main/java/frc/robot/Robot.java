@@ -97,6 +97,7 @@ public class Robot extends TimedRobot {
     pneumatics.setState(Pneumatics.SHIFT, true);
     navx.resetGyro();
     position.resetPosition();
+    turret.resetHoodEncoder();
     
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
@@ -143,14 +144,14 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("right Drive", driveEncoders[1]);
     SmartDashboard.putNumber("gyro", navx.getHeading());
 
-    /*
     double hoodPower = oi.driver.getTriggerAxis(Hand.kRight);
     double leftTrigger = -oi.driver.getTriggerAxis(Hand.kLeft);
     if (Math.abs(leftTrigger) > 0.2) hoodPower = leftTrigger;
-    //hoodPower = 0.5*(hoodPower + 1);
+    
     //System.out.println(hoodPower);
-    //turret.setHoodPower(hoodPower);
-    */
+    turret.setHoodPower(hoodPower);
+    System.out.println("shooter on = " + robotState.isShooterOn());
+    
     SmartDashboard.putNumber("hood position", turret.getHoodEncoder());
     SmartDashboard.putNumber("turret position", turret.getTurretPosition());
   }

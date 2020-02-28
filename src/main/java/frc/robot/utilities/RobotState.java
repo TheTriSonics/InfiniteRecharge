@@ -21,11 +21,7 @@ public class RobotState {
     boolean nothing = true;
     boolean auton = false;
 
-    public void setShooterOn(boolean on){
-        shooterOn = on;
-    }
-
-    public boolean isShooterOn(){
+    public boolean isShooterSpinning(){
         return spinUpShooter;
     }
     public boolean isTargetAligned(){
@@ -68,11 +64,17 @@ public class RobotState {
     }
     public void toggleSpinUpShooter() {
         spinUpShooter = !spinUpShooter;
+        if (spinUpShooter == false) shooterOn = false;
         Robot.shooter.setShooterOn(spinUpShooter);
     }
 
     public void toggleShooterOn(){
         shooterOn = !shooterOn;
     }
+
+    public boolean isShooterOn() {
+        return shooterOn;
+    }
+
 }
 

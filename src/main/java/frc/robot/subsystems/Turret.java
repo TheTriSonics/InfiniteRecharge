@@ -10,6 +10,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.SensorCollection;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.sensors.CANCoder;
 
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Servo;
@@ -34,7 +35,7 @@ public class Turret extends SubsystemBase {
   Servo hood;
   TalonSRX spin;
   boolean targetSeen = false;
-  DutyCycleEncoder hoodEncoder;
+  CANCoder hoodEncoder;
   SensorCollection sensors;
   double hoodTarget = HOOD_LOWER_LIMIT;
   double turretTarget;
@@ -45,7 +46,7 @@ public class Turret extends SubsystemBase {
     spin = new TalonSRX(Constants.TURRET_ROTATE);
     sensors = spin.getSensorCollection();
     hood = new Servo(Constants.SHOOTER_HOOD_SERVO);
-    hoodEncoder = new DutyCycleEncoder(Constants.HOOD_ENCODER);
+    hoodEncoder = new CANCoder(Constants.HOOD_ENCODER);
   }
 
   public int getTurretPosition() {
@@ -87,11 +88,11 @@ public class Turret extends SubsystemBase {
   }
 
   public void resetHoodEncoder() {
-    hoodOffset = hoodEncoder.get();
+    hoodOffset = hoodEncoder.getPosition();
   }
 
   public double getHoodEncoder() {
-    return hoodEncoder.get() - hoodOffset;
+    return hoodEncoder.getPosition() - hoodOffset;
   }
 
   public void setRawHoodPower(double power) {
@@ -99,19 +100,21 @@ public class Turret extends SubsystemBase {
   }
 
   public void setHoodPower(double power) {
-    double hoodPosition = hoodEncoder.getPositionOffset();
+    double hoodPosition = getHoodEncoder();
     if (hoodPosition < HOOD_LOWER_LIMIT && power < 0) power = 0;
     if (hoodPosition > HOOD_UPPER_LIMIT && power > 0) power = 0;
     setRawHoodPower(power);
   }
 
   public void moveHood() {
+    /*
     double hoodPosition = getHoodEncoder();
     double error = hoodTarget - hoodPosition;
     if (hoodPosition < HOOD_LOWER_LIMIT && error < 0) error = 0;
     if (hoodPosition > HOOD_UPPER_LIMIT && error > 0) error = 0;
     // System.out.println("hood power = " + kHood*error + " " + hoodPosition + " " + hoodTarget);
     setRawHoodPower(kHood * error);
+    */
   }
 
   public void moveTurret() {
@@ -126,7 +129,7 @@ public class Turret extends SubsystemBase {
 
   @Override
   public void periodic() {
-    boolean shooterOn = Robot.robotState.isShooterOn();
+    boolean shooterOn = Robot.robotState.isShooterSpinning();
     if (shooterOn) {
       Robot.pneumatics.setState(Pneumatics.SHOOTER_HOOD, true); 
     } 
@@ -135,7 +138,7 @@ public class Turret extends SubsystemBase {
       if (shooterOn) hoodTarget = HOOD_DEFAULT;
       else {
         hoodTarget = HOOD_RETRACT;
-        if (Math.abs(hoodEncoder.get() - HOOD_RETRACT) < HOOD_TOLERANCE) {
+        if (Math.abs(getHoodEncoder() - HOOD_RETRACT) < HOOD_TOLERANCE) {
           Robot.pneumatics.setState(Pneumatics.SHOOTER_HOOD, false);
         }
       }
