@@ -87,12 +87,13 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
-    pneumatics.setState(Pneumatics.PHOTOEYE_RECEIVER, false);    
+    pneumatics.setState(Pneumatics.PHOTOEYE_RECEIVER, false);
+    limelight.setLEDState(false);
   }
 
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = new OpposingTrenchAuto(); //ExecuteProfile("startcentertorsvp-profile.csv");  
+    m_autonomousCommand = new CenterToOurTrench(); //ExecuteProfile("startcentertorsvp-profile.csv");  
     robotState.setAuton(true);
     pneumatics.setState(Pneumatics.SHIFT, true);
     navx.resetGyro();
@@ -146,11 +147,10 @@ public class Robot extends TimedRobot {
 
     double hoodPower = oi.driver.getTriggerAxis(Hand.kRight);
     double leftTrigger = -oi.driver.getTriggerAxis(Hand.kLeft);
-    if (Math.abs(leftTrigger) > 0.2) hoodPower = leftTrigger;
+    if (Math.abs(leftTrigger) > 0.25) hoodPower = leftTrigger;
     
-    //System.out.println(hoodPower);
     turret.setHoodPower(hoodPower);
-    System.out.println("shooter on = " + robotState.isShooterOn());
+    // System.out.println("shooter on = " + robotState.isShooterOn());
     
     SmartDashboard.putNumber("hood position", turret.getHoodEncoder());
     SmartDashboard.putNumber("turret position", turret.getTurretPosition());

@@ -51,6 +51,11 @@ public class LimeLight extends SubsystemBase {
   public double getY(){
     return y;
   }
+
+  public void setLEDState(boolean on) {
+    table.getEntry("ledMode").setNumber(on ? 3 : 0);
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

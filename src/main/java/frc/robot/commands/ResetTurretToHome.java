@@ -10,21 +10,14 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 
-public class SetNothingCommand extends CommandBase {
-  /**
-   * Creates a new SetNothingCommand.
-   */
-  boolean state;
-  public SetNothingCommand(boolean b) {
-    // Use addRequirements() here to declare subsystem dependencies.
-    state = b;
-  }
+public class ResetTurretToHome extends CommandBase {
+
+  public ResetTurretToHome() {}
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Robot.limelight.setLEDState(!state); // If nothing, set led off. If not nothing, set led on.
-    Robot.robotState.setNothing(state);
+    Robot.turret.resetTurret();
   }
 
   // Called every time the scheduler runs while the command is scheduled.

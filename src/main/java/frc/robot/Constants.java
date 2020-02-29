@@ -56,13 +56,13 @@ public final class Constants {
     public static final int SHIFT = 3;
     public static final int INTAKE = 2;
     public static final int CONTROL_WHEEL_EXTEND = 1;
-    public static final int SHOOTER_HOOD = 4;
-    public static final int HANGING_TILT = 0;
+    public static final int SHOOTER_HOOD = 0;
+    public static final int HANGING_TILT = 4;
     public static final int HANGING_LOCK = 5;
 
     //AIO
-    public static final int PHOTOEYE_TOP = 1;
-    public static final int PHOTOEYE_BOTTOM = 2;
+    public static final int PHOTOEYE_TOP = 0;
+    public static final int PHOTOEYE_BOTTOM = 1;
 
     //OTHER
     public static final double INCHES_PER_REV = (6.0 * Math.PI) * (100.0/97.0);

@@ -22,6 +22,7 @@ public class SpinUpShooterCommand extends CommandBase {
   @Override
   public void initialize() {
     Robot.robotState.toggleSpinUpShooter();
+    Robot.pneumatics.toggleState(Robot.pneumatics.SHOOTER_HOOD);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

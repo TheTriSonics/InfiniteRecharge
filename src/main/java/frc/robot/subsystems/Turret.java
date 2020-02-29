@@ -12,12 +12,13 @@ import com.ctre.phoenix.motorcontrol.SensorCollection;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.sensors.CANCoder;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
-
+ 
 public class Turret extends SubsystemBase {
   final double TURRET_UPPER_LIMIT = 4096;//Check these values
   final double TURRET_LOWER_LIMIT = -4096;
@@ -73,6 +74,10 @@ public class Turret extends SubsystemBase {
     spin.set(ControlMode.PercentOutput, power);
   }
 
+  public void resetTurret() {
+    this.setTurretTarget(TURRET_HOME);
+  }
+
   public void setTurretTarget(double target) {
     if (Double.isNaN(target)) {
       turretTargetSet = false;
@@ -120,6 +125,7 @@ public class Turret extends SubsystemBase {
     if(error <= 50 || errro >= -50) hoodAligned = true;
     else hoodAligned = false;
     */
+    hoodAligned = true; // TODO
   }
 
   public void moveTurret() {
@@ -131,7 +137,7 @@ public class Turret extends SubsystemBase {
   }
 
   public double determineHoodPositionFromCamera(double y) {
-    return HOOD_DEFAULT;
+    return HOOD_DEFAULT; // TODO - We need to figure out what this value should be, approximately...
   }
 
   @Override
@@ -158,9 +164,8 @@ public class Turret extends SubsystemBase {
     hoodTarget = determineHoodPositionFromCamera(targetLocation[1]);
     moveHood();
 
-    turretTarget = getTurretPosition() + targetLocation[0]/DEGREES_PER_ENCODER;
+        turretTarget = getTurretPosition() + targetLocation[0]/DEGREES_PER_ENCODER;
     moveTurret();
-
     Robot.robotState.setTargetAligned(turretAligned && hoodAligned);
   }
 }

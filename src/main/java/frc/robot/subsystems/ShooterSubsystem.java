@@ -39,7 +39,7 @@ public class ShooterSubsystem extends SubsystemBase {
     master.config_kP(0, kP);
     master.config_kF(1, kF);
     master.config_kP(1, 0);
-    master.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+    // master.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
 
     follower.config_kF(0, kF);
     follower.config_kP(0, kP);

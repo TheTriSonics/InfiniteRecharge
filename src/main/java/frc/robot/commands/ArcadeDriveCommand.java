@@ -13,7 +13,7 @@ import frc.robot.Robot;
 
 public class ArcadeDriveCommand extends CommandBase {
 
-  double alpha = 0.2;
+  double alpha = 0.1;
   double turnAlpha = 0.7;
   double lastTurn = 0;
   double turnAlpham1 = 1-turnAlpha;
@@ -38,6 +38,10 @@ public class ArcadeDriveCommand extends CommandBase {
     double power = (alpha * throttle) + (alpham1 * lastThrottle);
     if (Math.abs(throttle) < Math.abs(lastThrottle)) power = throttle;
     double turn = (turnAlpha * steering) + turnAlpham1 * lastSteering;
+
+    if (power < 0 && Math.abs(lastThrottle - power) > 0.25) {
+      power = power * 0.7; // Attempt to do this slower going backwards...
+    }
 
     Robot.driveTrain.arcadeDrive(power, turn, true);
     lastThrottle = power;

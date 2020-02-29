@@ -50,7 +50,9 @@ public class InfiniteDriveTrain extends SubsystemBase {
     leftMaster.setNeutralMode(NeutralMode.Brake);
     rightMaster.setNeutralMode(NeutralMode.Brake);
     leftSlave1.setNeutralMode(NeutralMode.Coast);
+    leftSlave2.setNeutralMode(NeutralMode.Coast);
     rightSlave1.setNeutralMode(NeutralMode.Coast);
+    rightSlave2.setNeutralMode(NeutralMode.Coast);
 
     leftMaster.configClosedloopRamp(1.5);
     leftSlave1.configClosedloopRamp(1.5);

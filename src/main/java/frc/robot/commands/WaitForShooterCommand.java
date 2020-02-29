@@ -10,21 +10,17 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 
-public class SetNothingCommand extends CommandBase {
+public class WaitForShooterCommand extends CommandBase {
   /**
-   * Creates a new SetNothingCommand.
+   * Creates a new ShooterOnCommand.
    */
-  boolean state;
-  public SetNothingCommand(boolean b) {
+  public WaitForShooterCommand() {
     // Use addRequirements() here to declare subsystem dependencies.
-    state = b;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Robot.limelight.setLEDState(!state); // If nothing, set led off. If not nothing, set led on.
-    Robot.robotState.setNothing(state);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -40,6 +36,6 @@ public class SetNothingCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return Robot.robotState.isShooterReady();
   }
 }

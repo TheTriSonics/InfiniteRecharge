@@ -11,19 +11,21 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 
 public class TrackTarget extends CommandBase {
+
   public TrackTarget() {
     addRequirements(Robot.turret);
   }
 
   @Override
   public void initialize() {
+    Robot.limelight.setLEDState(true);
   }
 
   @Override
   public void execute() {
     if(Robot.limelight.isTargetSeen()==false){
       Robot.turret.setTargetSeen(false);
-      System.out.println("not seen");
+      // System.out.println("not seen");
       Robot.turret.setSpinPower(0);
       return;
     }

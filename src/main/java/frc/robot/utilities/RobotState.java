@@ -68,6 +68,14 @@ public class RobotState {
         Robot.shooter.setShooterOn(spinUpShooter);
     }
 
+    public void setShooterOff() {
+        shooterOn = false;
+    }
+
+    public void setShooterOn() {
+        shooterOn = true;
+    }
+
     public void toggleShooterOn(){
         shooterOn = !shooterOn;
     }
