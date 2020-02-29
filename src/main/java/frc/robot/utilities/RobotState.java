@@ -41,7 +41,7 @@ public class RobotState {
         return nothing;
     }
     public boolean isShooterReady() {
-        return shooterOn && Robot.shooter.isShooterAtSpeed();
+        return shooterOn && Robot.shooter.isShooterAtSpeed() && isTargetAligned();
     }
 
     public void setAuton(boolean b) {

@@ -19,8 +19,9 @@ import frc.robot.Constants;
 import frc.robot.Robot;
 
 public class Turret extends SubsystemBase {
-  final double TURRET_UPPER_LIMIT = 4096;
+  final double TURRET_UPPER_LIMIT = 4096;//Check these values
   final double TURRET_LOWER_LIMIT = -4096;
+  final double TURRET_HOME = 0;
   final double HOOD_LOWER_LIMIT = 0;
   final double HOOD_UPPER_LIMIT = 3.1;
   final double HOOD_RETRACT = HOOD_LOWER_LIMIT;
@@ -41,6 +42,8 @@ public class Turret extends SubsystemBase {
   double turretTarget;
   boolean turretTargetSet = false;
   double[] targetLocation;
+  boolean turretAligned = false;
+  boolean hoodAligned = false;
 
   public Turret() {
     spin = new TalonSRX(Constants.TURRET_ROTATE);
@@ -114,6 +117,8 @@ public class Turret extends SubsystemBase {
     if (hoodPosition > HOOD_UPPER_LIMIT && error > 0) error = 0;
     // System.out.println("hood power = " + kHood*error + " " + hoodPosition + " " + hoodTarget);
     setRawHoodPower(kHood * error);
+    if(error <= 50 || errro >= -50) hoodAligned = true;
+    else hoodAligned = false;
     */
   }
 
@@ -121,6 +126,8 @@ public class Turret extends SubsystemBase {
     double turretPosition = getTurretPosition();
     double error = turretTarget - turretPosition;
     setSpinPower(kTurret * error);
+    if(error <= 50 || error >= -50) turretAligned = true;
+    else turretAligned = false;
   }
 
   public double determineHoodPositionFromCamera(double y) {
@@ -153,5 +160,7 @@ public class Turret extends SubsystemBase {
 
     turretTarget = getTurretPosition() + targetLocation[0]/DEGREES_PER_ENCODER;
     moveTurret();
+
+    Robot.robotState.setTargetAligned(turretAligned && hoodAligned);
   }
 }
