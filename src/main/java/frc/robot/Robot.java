@@ -37,7 +37,7 @@ public class Robot extends TimedRobot {
   public static SingulatorSubsystem singulatorSubsystem;
   public static ShooterFeederSubsystem shooterFeederSubsystem;
   public static PhotoEyes photoEyes;
-  // public static LEDSubsystem leds;
+  public static LEDSubsystem leds;
 
   @Override
   public void robotInit() {
@@ -59,7 +59,7 @@ public class Robot extends TimedRobot {
 
     turret = new Turret();
     limelight = new LimeLight();
-    // leds = new LEDSubsystem();
+    leds = new LEDSubsystem();
     /*
     colorSensor = new ColorSensor();
     colorWheelRotateSubsystem = new ColorWheelRotateSubsystem(); 

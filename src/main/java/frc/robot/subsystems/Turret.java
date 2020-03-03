@@ -139,7 +139,7 @@ public class Turret extends SubsystemBase {
 
   public double determineHoodPositionFromCamera(double distance) {
     double slope = (Constants.farAngle - Constants.closeAngle) / (Constants.farDistance - Constants.closeDistance);
-    double b = 348.936; // Computed.
+    double b = Constants.farAngle - (slope * Constants.farDistance);
     return (slope * distance) + b;
   }
 

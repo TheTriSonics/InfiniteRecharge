@@ -19,12 +19,12 @@ package frc.robot;
  */
 public final class Constants {
     // Falcons
-    public static final int LEFT_MASTER = 1;
-    public static final int LEFT_SLAVE1 = 2;
-    public static final int LEFT_SLAVE2 = 3;
-    public static final int RIGHT_MASTER = 4;
-    public static final int RIGHT_SLAVE1 = 5;
-    public static final int RIGHT_SLAVE2 = 6;
+    public static final int LEFT_MASTER = 2;
+    public static final int LEFT_SLAVE1 = 3;
+    // public static final int LEFT_SLAVE2 = 3;
+    public static final int RIGHT_MASTER = 5;
+    public static final int RIGHT_SLAVE1 = 6;
+    // public static final int RIGHT_SLAVE2 = 6;
     public static final int SHOOTER_MASTER = 7;
     public static final int SHOOTER_SLAVE = 8;
 
@@ -65,11 +65,11 @@ public final class Constants {
     public static final int PHOTOEYE_BOTTOM = 1;
 
     //OTHER - PWM
-    public static final int LED_STRIP = 10;
+    public static final int LED_STRIP = 9;
 
     // OTHER
     public static final double INCHES_PER_REV = (6.0 * Math.PI) * (100.0/97.0);
-    public static final int LED_STRIP_LENGTH = 60;
+    public static final int LED_STRIP_LENGTH = 150;
     public static final double CAMERA_HEIGHT = 24.5; // 22.25 inches
     public static final double TARGET_HEIGHT = 98.25; // inches
     public static final double CAMERA_ANGLE = 19.0;
@@ -79,5 +79,5 @@ public final class Constants {
     public static final double farDistance = 239;
 
     public static final double closeAngle = 600;
-    public static final double farAngle = 730;
+    public static final double farAngle = 770;
 }

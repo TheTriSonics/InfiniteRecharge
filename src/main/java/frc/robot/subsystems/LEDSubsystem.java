@@ -13,12 +13,7 @@ import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.*;
-
-enum LEDMode {
-    SOLID,
-    FLASH,
-    GLOW
-}
+import frc.robot.utilities.LEDMode;
 
 public class LEDSubsystem extends SubsystemBase {
   private AddressableLED ledStrip;
@@ -52,13 +47,14 @@ public class LEDSubsystem extends SubsystemBase {
     this.rgb = new int[3];
     this.hsv = new int[3];
 
-    this.setAllRGB(222, 31, 31);
+    this.setPrimaryRGB(255, 0, 0);
+    this.setAllRGB(255, 0, 0);
     this.enterMode(LEDMode.SOLID);
   }
 
   public void enterMode(LEDMode mode) {
     if (this.ledMode != mode) {
-        this.timer.reset();
+        this.timer.start();
     }
     this.ledMode = mode;
   }
@@ -69,10 +65,24 @@ public class LEDSubsystem extends SubsystemBase {
 
   public void setRGB(int index, int r, int g, int b) {
       this.ledBuffer.setRGB(index, r, g, b);
+      this.ledStrip.setData(this.ledBuffer);
   }
 
   public void setHSV(int index, int h, int s, int v) {
     this.ledBuffer.setHSV(index, h, s, v);
+    this.ledStrip.setData(this.ledBuffer);
+  }
+
+  public void setPrimaryRGB(int r, int g, int b) {
+    this.rgb[0] = r;
+    this.rgb[1] = g;
+    this.rgb[2] = b;
+  }
+
+  public void setPrimaryHSV(int h, int s, int v) {
+    this.hsv[0] = h;
+    this.hsv[1] = s;
+    this.hsv[2] = v;
   }
 
   public void setAllRGB(int r, int g, int b) {
@@ -81,9 +91,6 @@ public class LEDSubsystem extends SubsystemBase {
       }
       this.ledStrip.setData(this.ledBuffer);
       this.usingRGB = true;
-      this.rgb[0] = r;
-      this.rgb[1] = g;
-      this.rgb[2] = b;
   }
 
   public void setAllHSV(int h, int s, int v) {
@@ -92,9 +99,6 @@ public class LEDSubsystem extends SubsystemBase {
         }
         this.ledStrip.setData(this.ledBuffer);
         this.usingRGB = false;
-        this.hsv[0] = h;
-        this.hsv[1] = s;
-        this.hsv[2] = v;
     }
 
   @Override
@@ -104,10 +108,12 @@ public class LEDSubsystem extends SubsystemBase {
         if (this.timer.get() >= this.period) {
             if (cleared) {
                 this.setToCurrentConfig();
+                this.cleared = false;
             } else {
                 this.clear();
+                this.cleared = true;
             }
-            this.timer.reset();
+            this.timer.start();
         }
     }
   }
@@ -118,14 +124,13 @@ public class LEDSubsystem extends SubsystemBase {
       } else {
           this.setAllHSV(0, 0, 0);
       }
-      this.cleared = true;
   }
 
   private void setToCurrentConfig() {
       if (this.usingRGB) {
         this.setAllRGB(this.rgb[0], this.rgb[1], this.rgb[2]);
       } else {
-        this.setAllHSV(this.rgb[0], this.rgb[1], this.rgb[2]);
+        this.setAllHSV(this.hsv[0], this.hsv[1], this.hsv[2]);
       }
   }
 }

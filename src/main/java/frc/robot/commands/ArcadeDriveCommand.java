@@ -13,13 +13,12 @@ import frc.robot.Robot;
 
 public class ArcadeDriveCommand extends CommandBase {
 
-  double alpha = 0.9;
+  double alpha = 0.3;
   double turnAlpha = 0.9;
-  double lastTurn = 0;
   double turnAlpham1 = 1-turnAlpha;
   double alpham1 = 1 - alpha;
-  double lastThrottle = 0;
-  double lastSteering = 0;
+  double lastYPower = 0;
+  double lastTurn = 0;
 
   public ArcadeDriveCommand() {
     addRequirements(Robot.driveTrain);
@@ -31,21 +30,35 @@ public class ArcadeDriveCommand extends CommandBase {
 
   @Override
   public void execute() {
-    double throttle = -Robot.oi.driver.getY(Hand.kLeft);
-    double steering = -0.5*Robot.oi.driver.getX(Hand.kRight);
-    if(Math.abs(throttle) <= 0.05) throttle = 0;
-    if(Math.abs(steering) <= 0.05) steering = 0;
-    double power = (alpha * throttle) + (alpham1 * lastThrottle);
-    if (Math.abs(throttle) < Math.abs(lastThrottle)) power = throttle;
-    double turn = (turnAlpha * steering) + turnAlpham1 * lastSteering;
+    // double throttle = -Robot.oi.driver.getY(Hand.kLeft);
+    // double steering = -0.5*Robot.oi.driver.getX(Hand.kRight);
+    // if(Math.abs(throttle) <= 0.05) throttle = 0;
+    // if(Math.abs(steering) <= 0.05) steering = 0;
+    // double power = (alpha * throttle) + (alpham1 * lastThrottle);
+    // if (Math.abs(throttle) < Math.abs(lastThrottle)) power = throttle;
+    // double turn = (turnAlpha * steering) + turnAlpham1 * lastSteering;
 
-    if (power < 0 && Math.abs(lastThrottle - power) > 0.25) {
-      power = power * 0.7; // Attempt to do this slower going backwards...
+    // if (power < 0 && Math.abs(lastThrottle - power) > 0.25) {
+    //   power = power * 0.7; // Attempt to do this slower going backwards...
+    // }
+
+    // Robot.driveTrain.arcadeDrive(power, turn, true);
+    // lastThrottle = power;
+    // lastSteering = steering;
+
+    double yValues = -Robot.oi.driver.getY(Hand.kLeft);
+    double xValues = -0.7 * Robot.oi.driver.getX(Hand.kRight);
+    if (Math.abs(yValues) < 0.1) yValues = 0;
+    if (Math.abs(xValues) < 0.1) xValues = 0;
+    double power = (alpha * yValues) + (alpham1 * lastYPower);
+    double turn = (turnAlpha * xValues) + turnAlpham1 * lastTurn;
+    if (Math.abs(yValues) <= 0.15) {
+    	power = (0.4 * yValues) + (0.65 * lastYPower);   
+    	turn = xValues;
     }
-
-    Robot.driveTrain.arcadeDrive(power, turn, true);
-    lastThrottle = power;
-    lastSteering = steering;
+    Robot.driveTrain.arcadeDrive(-power, -turn, true);
+    lastYPower = power;
+    lastTurn = xValues;
   }
 
   @Override

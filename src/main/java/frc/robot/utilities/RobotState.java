@@ -8,6 +8,7 @@
 package frc.robot.utilities;
 
 import frc.robot.Robot;
+import frc.robot.utilities.LEDMode;
 
 /**
  * Add your docs here.
@@ -49,7 +50,11 @@ public class RobotState {
     }
     public void setIntakeOn(boolean on) {
         intakeOn = on;
-        if (on) nothing = true;
+        if (on) {
+            nothing = true;
+            Robot.leds.setPrimaryRGB(255, 0, 0);
+            Robot.leds.enterMode(LEDMode.FLASH);
+        }
     }
     public void setAlignOn(boolean on) {
         alignOn = on;
@@ -58,9 +63,13 @@ public class RobotState {
     public void setNothing(boolean b) {
         nothing = b;
         if (nothing) intakeOn = false;
+        Robot.leds.setAllRGB(255, 0, 0);
+        Robot.leds.enterMode(LEDMode.SOLID);
     }
     public void setTargetAligned(boolean aligned){
         targetAligned = aligned;
+        Robot.leds.setPrimaryRGB(0, 255, 0);
+        Robot.leds.enterMode(LEDMode.SOLID);
     }
     public void toggleSpinUpShooter() {
         spinUpShooter = !spinUpShooter;

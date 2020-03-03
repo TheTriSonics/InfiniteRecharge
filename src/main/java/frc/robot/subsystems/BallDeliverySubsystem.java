@@ -13,6 +13,7 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.*;
+import frc.robot.utilities.LEDMode;
 
 public class BallDeliverySubsystem extends SubsystemBase {
   VictorSPX ballDeliveryVictor;
@@ -50,6 +51,13 @@ public class BallDeliverySubsystem extends SubsystemBase {
       setPower(1);
       return;
     }
+
+    if (Robot.robotState.isShooterReady() && !getTopPhotoeye() && !getBottomPhotoeye()) {
+      // No balls are present, send white led status.
+      Robot.leds.setPrimaryRGB(255, 255, 255);
+      Robot.leds.enterMode(LEDMode.SOLID);
+    }
+
     setPower(0);
     SmartDashboard.putBoolean("Photoeye Top: ", getTopPhotoeye());
     SmartDashboard.putBoolean("Photoeye Bottom: ", getBottomPhotoeye());
