@@ -21,14 +21,29 @@ public class CenterToRendezvous extends SequentialCommandGroup {
   public CenterToRendezvous() {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
+
     ParallelCommandGroup initial = new ParallelCommandGroup(
-      new SetIntakeState(true),
-      new ExecuteProfile("startcentertorsvp-profile.csv")
+      new SpinUpShooterCommand(),
+      new ToggleTrackTarget(),
+      new ShootForTime(4000)
     );
 
     addCommands(
-      new WaitForTime(1),
-      initial
+      initial,
+      new SpinUpShooterCommand(),
+      new ToggleTrackTarget(),
+      new SetIntakeState(true),
+      new SetTurretTarget(2840),
+      // new WaitForTime(5000),
+      new ExecuteProfile("startcentertorsvp-profile.csv"),
+      new SwitchDirection(),
+      new DriveForDistance(0.4, 10, 112),
+      new ToggleTrackTarget(),
+      new SpinUpShooterCommand(),
+      new ShootForTime(4000),
+      new ToggleTrackTarget(),
+      new SetIntakeState(false)
     );
+    
   }
 }

@@ -26,9 +26,9 @@ public class OI {
         shiftHighButton.whenActive(shiftHighCommand);
         shiftLowButton.whenActive(shiftLowCommand);
 
-        TrackTarget trackTarget = new TrackTarget();
+        ToggleTrackTarget toggleTrackTarget = new ToggleTrackTarget();
         XboxTrigger trackingOnOff = new XboxTrigger(operator, XboxTrigger.Y);
-        trackingOnOff.toggleWhenActive(trackTarget, true);
+        trackingOnOff.toggleWhenActive(toggleTrackTarget, true);
 
         SpinUpShooterCommand spinUpShooterCommand = new SpinUpShooterCommand();
         XboxTrigger spinUpShooter = new XboxTrigger(operator, XboxTrigger.LB);

@@ -14,7 +14,7 @@ import frc.robot.Robot;
 public class ArcadeDriveCommand extends CommandBase {
 
   double alpha = 0.3;
-  double turnAlpha = 0.9;
+  double turnAlpha = 0.5;
   double turnAlpham1 = 1-turnAlpha;
   double alpham1 = 1 - alpha;
   double lastYPower = 0;
@@ -47,7 +47,7 @@ public class ArcadeDriveCommand extends CommandBase {
     // lastSteering = steering;
 
     double yValues = -Robot.oi.driver.getY(Hand.kLeft);
-    double xValues = -0.7 * Robot.oi.driver.getX(Hand.kRight);
+    double xValues = -0.5 * Robot.oi.driver.getX(Hand.kRight);
     if (Math.abs(yValues) < 0.1) yValues = 0;
     if (Math.abs(xValues) < 0.1) xValues = 0;
     double power = (alpha * yValues) + (alpham1 * lastYPower);
@@ -56,9 +56,9 @@ public class ArcadeDriveCommand extends CommandBase {
     	power = (0.4 * yValues) + (0.65 * lastYPower);   
     	turn = xValues;
     }
-    Robot.driveTrain.arcadeDrive(-power, -turn, true);
+    Robot.driveTrain.arcadeDrive(power, turn, true);
     lastYPower = power;
-    lastTurn = xValues;
+    lastTurn = turn;
   }
 
   @Override

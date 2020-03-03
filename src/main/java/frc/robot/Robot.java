@@ -74,6 +74,7 @@ public class Robot extends TimedRobot {
     colorSensor.setDefaultCommand(new ColorSensorCommand());
     */
     oi = new OI();
+    robotState.createTrackTarget();
   }
 
   @Override
@@ -95,7 +96,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = new CenterToOurTrench(); //ExecuteProfile("startcentertorsvp-profile.csv");  
+    m_autonomousCommand = new OpposingTrenchAuto();   
     robotState.setAuton(true);
     pneumatics.setState(Pneumatics.SHIFT, true);
     navx.resetGyro();
@@ -109,7 +110,9 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousPeriodic() {
-    SmartDashboard.putNumber("gyro", navx.getHeading());
+    position.updatePosition();
+    // System.out.println(position.getPosition()[0]);
+    // SmartDashboard.putNumber("gyro", navx.getHeading());
 
   }
 
@@ -126,7 +129,7 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    turret.resetHoodEncoder();
+    // turret.resetHoodEncoder();
     // navx.resetGyro();
     // position.resetPosition();
   }
@@ -142,17 +145,20 @@ public class Robot extends TimedRobot {
     lastTime = time;
     lastDriveEncoders = driveEncoders;
     // // System.out.println(velocity);
+    
+    /*
     SmartDashboard.putNumber("velocity", velocity);
     SmartDashboard.putNumber("left Drive", driveEncoders[0]);
     SmartDashboard.putNumber("right Drive", driveEncoders[1]);
     SmartDashboard.putNumber("gyro", navx.getHeading());
+    */
 
     double hoodPower = oi.driver.getTriggerAxis(Hand.kRight);
     double leftTrigger = -oi.driver.getTriggerAxis(Hand.kLeft);
     if (Math.abs(leftTrigger) > 0.25) hoodPower = leftTrigger;
     
-    position.updateGoalDistance(limelight.getY());
-    turret.setHoodPower(hoodPower);
+    // position.updateGoalDistance(limelight.getY());
+    // turret.setHoodPower(hoodPower);
     // System.out.println("shooter on = " + robotState.isShooterOn());
     
     SmartDashboard.putNumber("hood position", turret.getHoodEncoder());

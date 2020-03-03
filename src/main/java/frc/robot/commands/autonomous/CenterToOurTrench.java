@@ -24,16 +24,33 @@ public class CenterToOurTrench extends SequentialCommandGroup {
     // super(new FooCommand(), new BarCommand());
 
     ParallelCommandGroup initial = new ParallelCommandGroup(
-      new SetIntakeState(true),
       new SpinUpShooterCommand(),
-      new ShooterOnCommand(),
-      new TrackTarget()
+      new ToggleTrackTarget(),
+      new ShootForTime(4000)
+    );
+
+    ParallelCommandGroup driveThenIntake = new ParallelCommandGroup(
+      new SequentialCommandGroup(new WaitForTime(1500), new SetIntakeState(true)),
+      new ExecuteProfile("trench-profile.csv")
     );
 
     addCommands(
       initial,
-      new WaitForTime(3),
-      new ExecuteProfile("trench-profile.csv") // Not working?
+      new SpinUpShooterCommand(),
+      new ToggleTrackTarget(),
+      driveThenIntake,
+      //new ExecuteProfile("trench-profile.csv"),
+      new SwitchDirection(),
+      new SpinUpShooterCommand(),
+      new ToggleTrackTarget(),
+      new DriveForDistance(0.7, 75, 180),
+      new SetIntakeState(false),
+      new ShootForTime(4000),
+      new SpinUpShooterCommand(),
+      new ToggleTrackTarget()
+      
+      //new WaitForTime(3),
+      //new ExecuteProfile("trench-profile.csv") // Not working?
     );
   }
 }

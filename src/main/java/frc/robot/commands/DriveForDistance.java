@@ -9,6 +9,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
+import frc.robot.utilities.VectorMath;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveForDistance extends CommandBase {
@@ -20,6 +21,7 @@ public class DriveForDistance extends CommandBase {
   long stopTime;
   double speedRamp = 10.0;
   double kAngle = 0.02;
+  double initialDistance;
   /**
    * Creates a new DriveForDistance.
    */
@@ -35,7 +37,7 @@ public class DriveForDistance extends CommandBase {
   @Override
   public void initialize() {
     stopTime = System.currentTimeMillis() + 2000;
-    stopDistance = Robot.driveTrain.getLeftDistance() + distance;
+    stopDistance = Robot.driveTrain.getDriveTotalDistance() + distance;
     currentPower = 0.2;
   }
 
@@ -48,6 +50,7 @@ public class DriveForDistance extends CommandBase {
     SmartDashboard.putNumber("remainingDistance", remainingDistance);
     if (remainingDistance<speedRamp) currentPower = power * remainingDistance / speedRamp;
     double angleError = heading - Robot.navx.getHeading();
+    angleError = VectorMath.normalizeAngle(angleError, 180);
     double correction = kAngle*angleError;
     Robot.driveTrain.setPower(currentPower - correction, currentPower + correction);
   }
@@ -61,6 +64,6 @@ public class DriveForDistance extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Robot.driveTrain.getLeftDistance()>stopDistance || System.currentTimeMillis() > stopTime;
+    return Robot.driveTrain.getDriveTotalDistance() > stopDistance || System.currentTimeMillis() > stopTime;
   }
 }

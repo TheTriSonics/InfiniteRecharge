@@ -10,19 +10,22 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 
-public class SpinUpShooterCommand extends CommandBase {
+public class ShootForTime extends CommandBase {
   /**
-   * Creates a new SpinUpShooterCommand.
+   * Creates a new ShootForTime.
    */
-  public SpinUpShooterCommand() {
+  int time;
+  long stopTime;
+  public ShootForTime(int time) {
     // Use addRequirements() here to declare subsystem dependencies.
+    this.time = time;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Robot.robotState.toggleSpinUpShooter();
-    // Robot.pneumatics.toggleState(Robot.pneumatics.SHOOTER_HOOD);
+    Robot.robotState.toggleShooterOn();
+    stopTime = System.currentTimeMillis() + time;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -33,11 +36,12 @@ public class SpinUpShooterCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    Robot.robotState.toggleShooterOn();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return System.currentTimeMillis() > stopTime;
   }
 }

@@ -27,14 +27,28 @@ public class OpposingTrenchAuto extends SequentialCommandGroup {
     );
 
     addCommands(
-      new WaitForTime(1),
+      //new WaitForTime(1),
       initial,
       new SwitchDirection(),
+      new SetTurretTarget(2700),
+      new SpinUpShooterCommand(),
       new ExecuteProfile("trenchtocenter-profile.csv"),
+      new ToggleTrackTarget(),
+      new ShootForTime(4000),
+      new ToggleTrackTarget(),
+      new SetTurretTarget(3800),
       new SwitchDirection(),
       new RotateToHeading(0.5, 22.5),
-      new DriveForDistance(0.6, 55, 22.5),
-      new SetIntakeState(false)
+      new DriveForDistance(0.5, 48, 22.5),
+      new SwitchDirection(),
+      new DriveForDistance(0.4, 10, -180+22),
+      new RotateToHeading(0.4, 180-22),
+      new ToggleTrackTarget(),
+      new ShootForTime(4000),
+      new SetIntakeState(false),
+      new ToggleTrackTarget(),
+      new SpinUpShooterCommand()
+      
     );
   }
 }

@@ -14,6 +14,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.*;
+import frc.robot.utilities.VectorMath;
 
 public class InfiniteDriveTrain extends SubsystemBase {
   TalonFX leftMaster, leftSlave1, leftSlave2, rightMaster, rightSlave1, rightSlave2;
@@ -66,6 +67,7 @@ public class InfiniteDriveTrain extends SubsystemBase {
     rightDriveOffset = rightDriveEncoder.get();
     leftDistanceOffset = leftDriveEncoder.getDistance();
     rightDistanceOffset = rightDriveEncoder.getDistance();
+    Robot.position.resetLastDistances();
   }
 
   public double[] getDriveEncoder() {
@@ -82,6 +84,10 @@ public class InfiniteDriveTrain extends SubsystemBase {
       return new double[] {-getRightDistance() , -getLeftDistance()};
     }
     return new double[] { getLeftDistance(), getRightDistance() };
+  }
+
+  public double getDriveTotalDistance() {
+    return VectorMath.avg(getDriveDistance());
   }
 
   public double getLeftDistance() {

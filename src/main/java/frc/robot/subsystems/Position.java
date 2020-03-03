@@ -34,6 +34,10 @@ public class Position extends SubsystemBase {
     return new double[] {positionX, positionY};
   }
 
+  public void resetLastDistances() {
+    lastDriveDistance = Robot.driveTrain.getDriveDistance();
+  }
+
   public void resetPosition() {
     positionX = 0;
     positionY = 0;
@@ -52,9 +56,11 @@ public class Position extends SubsystemBase {
     lastDriveDistance = driveDistance;
   }
 
+  /*
   public void updateGoalDistance(double goalY) {
-    goalDistance = (Constants.TARGET_HEIGHT - Constants.CAMERA_HEIGHT) / (Math.tan(Math.toRadians(Constants.CAMERA_ANGLE + goalY)));
+    // goalDistance = (Constants.TARGET_HEIGHT - Constants.CAMERA_HEIGHT) / (Math.tan(Math.toRadians(Constants.CAMERA_ANGLE + goalY)));
   }
+  */
 
   @Override
   public void periodic() {

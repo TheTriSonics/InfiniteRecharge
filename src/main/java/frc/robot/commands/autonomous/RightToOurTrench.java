@@ -22,13 +22,28 @@ public class RightToOurTrench extends SequentialCommandGroup {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
     ParallelCommandGroup initial = new ParallelCommandGroup(
-      new SetIntakeState(true),
-      new ExecuteProfile("straight2trench-profile.csv")
+      new SetTurretTarget(3270),
+      new SpinUpShooterCommand(),
+      new ToggleTrackTarget(),
+      new ShootForTime(4000)
     );
 
     addCommands(
-      new WaitForTime(1),
-      initial
+      initial,
+      new SpinUpShooterCommand(),
+      new ToggleTrackTarget(),
+      new SetIntakeState(true),
+      new ExecuteProfile("straight2trench-profile.csv"),
+      new SwitchDirection(),
+      new SpinUpShooterCommand(),
+      new ToggleTrackTarget(),
+      new DriveToPoint(50,0,0.7),
+      new SetIntakeState(false),
+      new ShootForTime(4000),
+      new SpinUpShooterCommand(),
+      new ToggleTrackTarget()
+
+
     );
   }
 }

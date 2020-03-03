@@ -16,6 +16,7 @@ public class DriveToPoint extends CommandBase {
   double speed;
   double distance;
   double lastDistance = 10000;
+  double currentSpeed = 0.2;
 
   public DriveToPoint(double x, double y, double speed) {
     addRequirements(Robot.driveTrain);
@@ -30,6 +31,8 @@ public class DriveToPoint extends CommandBase {
 
   @Override
   public void execute() {
+    currentSpeed += 0.05;
+    if (currentSpeed > speed) currentSpeed = speed;
     double[] position = Robot.position.getPosition();
     double changeInX = targetX - position[0];
     double changeInY = targetY - position[1];
@@ -41,7 +44,7 @@ public class DriveToPoint extends CommandBase {
     double correction = 0.02 * error;
     double ramp = 0.05 * distance;
     if(ramp > 1) ramp = 1;
-    Robot.driveTrain.setPower((speed - correction) * ramp, (speed + correction) * ramp);
+    Robot.driveTrain.setPower((currentSpeed - correction) * ramp, (currentSpeed + correction) * ramp);
   }
 
   @Override

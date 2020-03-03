@@ -28,10 +28,11 @@ public class TurretCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if (Robot.robotState.inAuton()) return;
     double spinPower = Robot.oi.operator.getX(Hand.kRight);
     if (Math.abs(spinPower)<0.03)spinPower=0;
     else Robot.turret.setTurretTarget(Double.NaN);
-    Robot.turret.setSpinPower(spinPower);
+    Robot.turret.setSpinPower(0.5*spinPower);
   }
 
   // Called once the command ends or is interrupted.
