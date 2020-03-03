@@ -18,7 +18,6 @@ import frc.robot.commands.autonomous.*;
 import frc.robot.subsystems.*;
 import frc.robot.utilities.*;
 
-
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand; 
   public static OI oi; 
@@ -38,6 +37,7 @@ public class Robot extends TimedRobot {
   public static SingulatorSubsystem singulatorSubsystem;
   public static ShooterFeederSubsystem shooterFeederSubsystem;
   public static PhotoEyes photoEyes;
+  // public static LEDSubsystem leds;
 
   @Override
   public void robotInit() {
@@ -59,6 +59,7 @@ public class Robot extends TimedRobot {
 
     turret = new Turret();
     limelight = new LimeLight();
+    // leds = new LEDSubsystem();
     /*
     colorSensor = new ColorSensor();
     colorWheelRotateSubsystem = new ColorWheelRotateSubsystem(); 
@@ -83,6 +84,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     turret.setRawHoodPower(0);
+    limelight.setLEDState(false);
   }
 
   @Override
@@ -149,11 +151,13 @@ public class Robot extends TimedRobot {
     double leftTrigger = -oi.driver.getTriggerAxis(Hand.kLeft);
     if (Math.abs(leftTrigger) > 0.25) hoodPower = leftTrigger;
     
+    position.updateGoalDistance(limelight.getY());
     turret.setHoodPower(hoodPower);
     // System.out.println("shooter on = " + robotState.isShooterOn());
     
     SmartDashboard.putNumber("hood position", turret.getHoodEncoder());
     SmartDashboard.putNumber("turret position", turret.getTurretPosition());
+    SmartDashboard.putNumber("Goal Distance", position.getDistance());
   }
 
   @Override

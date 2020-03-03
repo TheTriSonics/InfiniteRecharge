@@ -13,8 +13,8 @@ import frc.robot.Robot;
 
 public class ArcadeDriveCommand extends CommandBase {
 
-  double alpha = 0.1;
-  double turnAlpha = 0.7;
+  double alpha = 0.9;
+  double turnAlpha = 0.9;
   double lastTurn = 0;
   double turnAlpham1 = 1-turnAlpha;
   double alpham1 = 1 - alpha;

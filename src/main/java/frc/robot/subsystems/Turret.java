@@ -23,15 +23,19 @@ public class Turret extends SubsystemBase {
   final double TURRET_UPPER_LIMIT = 4096;//Check these values
   final double TURRET_LOWER_LIMIT = -4096;
   final double TURRET_HOME = 0;
-  final double HOOD_LOWER_LIMIT = 0;
-  final double HOOD_UPPER_LIMIT = 3.1;
+  final double TURRET_TOLERANCE = 30;
+  final double HOOD_LOWER_LIMIT = 15;
+  final double HOOD_UPPER_LIMIT = 1000;
   final double HOOD_RETRACT = HOOD_LOWER_LIMIT;
-  final double HOOD_DEFAULT = 2;
-  final double HOOD_TOLERANCE = 0.5;
+  final double HOOD_DEFAULT = HOOD_UPPER_LIMIT / 2;
+  final double HOOD_TOLERANCE = 15;
   final double DEGREES_PER_ENCODER = 360.0/4096;
-  final double kHood = 1;
-  final double kTurret = 0.003;
+  final double kHood = .005;
+  final double kTurret = 0.0033;
   private volatile int lastValue = Integer.MIN_VALUE;
+
+  // Distance = 132, Angle = 800
+  // Distance = 212, Angle = 600
 
   double hoodOffset = 0;
   Servo hood;
@@ -115,29 +119,28 @@ public class Turret extends SubsystemBase {
   }
 
   public void moveHood() {
-    /*
     double hoodPosition = getHoodEncoder();
     double error = hoodTarget - hoodPosition;
     if (hoodPosition < HOOD_LOWER_LIMIT && error < 0) error = 0;
     if (hoodPosition > HOOD_UPPER_LIMIT && error > 0) error = 0;
     // System.out.println("hood power = " + kHood*error + " " + hoodPosition + " " + hoodTarget);
     setRawHoodPower(kHood * error);
-    if(error <= 50 || errro >= -50) hoodAligned = true;
+    if(error <= HOOD_TOLERANCE || error >= -HOOD_TOLERANCE) hoodAligned = true;
     else hoodAligned = false;
-    */
-    hoodAligned = true; // TODO
   }
 
   public void moveTurret() {
     double turretPosition = getTurretPosition();
     double error = turretTarget - turretPosition;
     setSpinPower(kTurret * error);
-    if(error <= 50 || error >= -50) turretAligned = true;
+    if(error <= TURRET_TOLERANCE || error >= -TURRET_TOLERANCE) turretAligned = true;
     else turretAligned = false;
   }
 
-  public double determineHoodPositionFromCamera(double y) {
-    return HOOD_DEFAULT; // TODO - We need to figure out what this value should be, approximately...
+  public double determineHoodPositionFromCamera(double distance) {
+    double slope = (Constants.farAngle - Constants.closeAngle) / (Constants.farDistance - Constants.closeDistance);
+    double b = 348.936; // Computed.
+    return (slope * distance) + b;
   }
 
   @Override
@@ -161,7 +164,7 @@ public class Turret extends SubsystemBase {
     }
     
     turretTargetSet = false;
-    hoodTarget = determineHoodPositionFromCamera(targetLocation[1]);
+    hoodTarget = determineHoodPositionFromCamera(Robot.position.getDistance());
     moveHood();
 
         turretTarget = getTurretPosition() + targetLocation[0]/DEGREES_PER_ENCODER;

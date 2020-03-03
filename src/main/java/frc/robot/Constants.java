@@ -64,6 +64,20 @@ public final class Constants {
     public static final int PHOTOEYE_TOP = 0;
     public static final int PHOTOEYE_BOTTOM = 1;
 
-    //OTHER
+    //OTHER - PWM
+    public static final int LED_STRIP = 10;
+
+    // OTHER
     public static final double INCHES_PER_REV = (6.0 * Math.PI) * (100.0/97.0);
+    public static final int LED_STRIP_LENGTH = 60;
+    public static final double CAMERA_HEIGHT = 24.5; // 22.25 inches
+    public static final double TARGET_HEIGHT = 98.25; // inches
+    public static final double CAMERA_ANGLE = 19.0;
+
+    // Temporary Points
+    public static final double closeDistance = 118;
+    public static final double farDistance = 239;
+
+    public static final double closeAngle = 600;
+    public static final double farAngle = 730;
 }

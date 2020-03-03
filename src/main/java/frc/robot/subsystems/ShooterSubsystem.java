@@ -18,9 +18,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class ShooterSubsystem extends SubsystemBase {
+  private static final double SHOOTER_TOLERANCE = 0.94;
+
   TalonFX master, follower;
   TalonFXSensorCollection sensors;
-  public final int shooterSpeed = 19000;
+  public final int shooterSpeed = 19600;
 
   public ShooterSubsystem() {
     master = new TalonFX(Constants.SHOOTER_MASTER);
@@ -34,7 +36,7 @@ public class ShooterSubsystem extends SubsystemBase {
     follower.set(TalonFXControlMode.Follower, Constants.SHOOTER_MASTER);;
 
     double kF = 1023.0/20600.0;
-    double kP = 0.28;
+    double kP = 0.31; // Was 0.28
     master.config_kF(0, kF);
     master.config_kP(0, kP);
     master.config_kF(1, kF);
@@ -67,7 +69,7 @@ public class ShooterSubsystem extends SubsystemBase {
     else setShooterVelocity(0);
   } 
   public boolean isShooterAtSpeed(){
-    return sensors.getIntegratedSensorVelocity() > 0.9 * shooterSpeed;
+    return sensors.getIntegratedSensorVelocity() > SHOOTER_TOLERANCE * shooterSpeed;
   }
 
   @Override

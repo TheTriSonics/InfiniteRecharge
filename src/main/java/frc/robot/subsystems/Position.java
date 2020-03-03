@@ -10,16 +10,24 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
+import frc.robot.Constants;
 import frc.robot.utilities.VectorMath;
+
+import java.lang.Math;
 
 public class Position extends SubsystemBase {
   double positionX = 0;
   double positionY = 0;
+  double goalDistance = 0;
   double[] lastDriveDistance;
 
   public Position() {
     // lastDriveDistance = Robot.infiniteDriveTrain.getDriveDistance();
     lastDriveDistance = Robot.driveTrain.getDriveDistance();
+  }
+
+  public double getDistance() {
+    return goalDistance;
   }
 
   public double[] getPosition(){
@@ -42,6 +50,10 @@ public class Position extends SubsystemBase {
     positionX += distance * Math.cos(heading);
     positionY += distance * Math.sin(heading);
     lastDriveDistance = driveDistance;
+  }
+
+  public void updateGoalDistance(double goalY) {
+    goalDistance = (Constants.TARGET_HEIGHT - Constants.CAMERA_HEIGHT) / (Math.tan(Math.toRadians(Constants.CAMERA_ANGLE + goalY)));
   }
 
   @Override
