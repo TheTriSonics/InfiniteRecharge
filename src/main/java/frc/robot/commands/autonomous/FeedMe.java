@@ -32,16 +32,17 @@ public class FeedMe extends SequentialCommandGroup {
       new ShootForTime(6000),
       new SpinUpShooterCommand(),
       new ToggleTrackTarget(),
-      new RotateToHeading(0.6, 90),
-      new DriveForDistance(0.5, 150, 90),
+      new RotateToHeading(0.5, 90),
+      new DriveForDistance(0.7, 180, 90, 4000),
       new SwitchDirection(),
       new SetTurretTarget(3270),
       new SpinUpShooterCommand(),
-      new DriveForDistance(0.5, 150, -90),
+      new DriveForDistance(0.5, 120, -90, 3000),
       new ToggleTrackTarget(),
       new ShootForTime(4000),
       new SpinUpShooterCommand(),
-      new ToggleTrackTarget()
+      new ToggleTrackTarget(),
+      new SetIntakeState(false)
     );
   }
 }

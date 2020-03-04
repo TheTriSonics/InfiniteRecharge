@@ -22,6 +22,7 @@ public class DriveForDistance extends CommandBase {
   double speedRamp = 10.0;
   double kAngle = 0.02;
   double initialDistance;
+  int timeout = 2000;
   /**
    * Creates a new DriveForDistance.
    */
@@ -33,10 +34,19 @@ public class DriveForDistance extends CommandBase {
     this.heading = heading;
   }
 
+  public DriveForDistance(double power, int distance, double heading, int timeout) {
+    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(Robot.driveTrain);
+    this.power = power;
+    this.distance = distance;
+    this.heading = heading;
+    this.timeout = timeout;
+  }
+
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    stopTime = System.currentTimeMillis() + 2000;
+    stopTime = System.currentTimeMillis() + timeout;
     stopDistance = Robot.driveTrain.getDriveTotalDistance() + distance;
     currentPower = 0.2;
   }
