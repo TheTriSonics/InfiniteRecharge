@@ -20,13 +20,14 @@ import frc.robot.Constants;
 import frc.robot.Robot;
  
 public class Turret extends SubsystemBase {
-  final double TURRET_UPPER_LIMIT = 4096;//Check these values
-  final double TURRET_LOWER_LIMIT = 1880;
+  final double TURRET_OFFSET = 1500;
+  final double TURRET_UPPER_LIMIT = 4096+TURRET_OFFSET;//Check these values
+  final double TURRET_LOWER_LIMIT = TURRET_OFFSET;
   final double TURRET_HOME = 0;
-  final double TURRET_TOLERANCE = 30;
+  final double TURRET_TOLERANCE = 50;
   final double HOOD_LOWER_LIMIT = 15;
   final double HOOD_UPPER_LIMIT = 1000;
-  final double HOOD_RETRACT = HOOD_LOWER_LIMIT;
+  final double HOOD_RETRACT = 440;// HOOD_LOWER_LIMIT;
   final double HOOD_DEFAULT = HOOD_UPPER_LIMIT / 2;
   final double HOOD_TOLERANCE = 15;
   final double DEGREES_PER_ENCODER = 360.0/4096;
@@ -68,17 +69,16 @@ public class Turret extends SubsystemBase {
     }
     int actualValue = Math.min(4096, raw - 128);
     lastValue = actualValue;
+    while(actualValue > 4096+TURRET_OFFSET) actualValue -= 4096;
+    while(actualValue < TURRET_OFFSET) actualValue += 4096;
     return actualValue;
   }
 
   public void setSpinPower(double power) {
-    return;
-    /*
     int turretPosition = getTurretPosition();
     if (turretPosition > TURRET_UPPER_LIMIT && power > 0) power = 0;
     if (turretPosition < TURRET_LOWER_LIMIT && power < 0) power = 0;
     spin.set(ControlMode.PercentOutput, power);
-    */
   }
 
   public void resetTurret() {
@@ -168,7 +168,8 @@ public class Turret extends SubsystemBase {
       sum += hoodCoefficients[i] * monomial;
       monomial *= distance;
     }
-    return Math.max(sum, 875);
+    // return Math.max(sum, 875)-50;
+    return HOOD_DEFAULT;
 
     /*
     double slope = (Constants.farAngle - Constants.closeAngle) / (Constants.farDistance - Constants.closeDistance);
@@ -181,7 +182,7 @@ public class Turret extends SubsystemBase {
   public void periodic() {
     boolean shooterOn = Robot.robotState.isShooterSpinning();
     if (shooterOn) {
-      Robot.pneumatics.setState(Pneumatics.SHOOTER_HOOD, true); 
+      // Robot.pneumatics.setState(Pneumatics.SHOOTER_HOOD, true); 
     } 
 
     if(targetSeen == false) {
@@ -190,7 +191,7 @@ public class Turret extends SubsystemBase {
         hoodTarget = HOOD_RETRACT;
         if (Math.abs(getHoodEncoder() - HOOD_RETRACT) < HOOD_TOLERANCE) {
           // System.out.println("retracting hood");
-          Robot.pneumatics.setState(Pneumatics.SHOOTER_HOOD, false);
+          // Robot.pneumatics.setState(Pneumatics.SHOOTER_HOOD, false);
         }
       }
       moveHood();

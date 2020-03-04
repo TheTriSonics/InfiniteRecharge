@@ -43,19 +43,13 @@ public class BallDeliverySubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     if (Robot.robotState.isShooterReady()) {
-      setPower(0.5);
+      setPower(0.75);
       return;
     }
     
     if (Robot.robotState.isIntakeOn() && getTopPhotoeye() == false) {
       setPower(1);
       return;
-    }
-
-    if (Robot.robotState.isShooterReady() && !getTopPhotoeye() && !getBottomPhotoeye()) {
-      // No balls are present, send white led status.
-      Robot.leds.setPrimaryRGB(255, 255, 255);
-      Robot.leds.enterMode(LEDMode.SOLID);
     }
 
     setPower(0);

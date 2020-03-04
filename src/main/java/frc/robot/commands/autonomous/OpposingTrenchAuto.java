@@ -36,7 +36,7 @@ public class OpposingTrenchAuto extends SequentialCommandGroup {
       new ToggleTrackTarget(),
       new ShootForTime(4000),
       new ToggleTrackTarget(),
-      new SetTurretTarget(3800),
+      new SetTurretTarget(3540),
       new SwitchDirection(),
       new RotateToHeading(0.5, 22.5),
       new DriveForDistance(0.5, 48, 22.5),

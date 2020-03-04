@@ -54,6 +54,6 @@ public class Pneumatics extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     setState(INTAKE, Robot.robotState.isIntakeOn());
-    // setState(SHOOTER_HOOD, Robot.robotState.isShooterSpinning());
+    setState(SHOOTER_HOOD, Robot.robotState.isShooterSpinning());
   }
 }

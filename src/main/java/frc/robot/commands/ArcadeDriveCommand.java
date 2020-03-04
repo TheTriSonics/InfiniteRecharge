@@ -47,7 +47,7 @@ public class ArcadeDriveCommand extends CommandBase {
     // lastSteering = steering;
 
     double yValues = -Robot.oi.driver.getY(Hand.kLeft);
-    double xValues = -0.5 * Robot.oi.driver.getX(Hand.kRight);
+    double xValues = -0.7 * Robot.oi.driver.getX(Hand.kRight);
     if (Math.abs(yValues) < 0.1) yValues = 0;
     if (Math.abs(xValues) < 0.1) xValues = 0;
     double power = (alpha * yValues) + (alpham1 * lastYPower);

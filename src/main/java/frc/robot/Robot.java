@@ -96,12 +96,12 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = new OpposingTrenchAuto();   
+    m_autonomousCommand = new FeedMe();
     robotState.setAuton(true);
     pneumatics.setState(Pneumatics.SHIFT, true);
     navx.resetGyro();
     position.resetPosition();
-    turret.resetHoodEncoder();
+    // turret.resetHoodEncoder();
     
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
@@ -111,6 +111,8 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     position.updatePosition();
+    controlLEDs();    
+
     // System.out.println(position.getPosition()[0]);
     // SmartDashboard.putNumber("gyro", navx.getHeading());
 
@@ -157,6 +159,8 @@ public class Robot extends TimedRobot {
     double leftTrigger = -oi.driver.getTriggerAxis(Hand.kLeft);
     if (Math.abs(leftTrigger) > 0.25) hoodPower = leftTrigger;
     
+    this.controlLEDs();
+
     // position.updateGoalDistance(limelight.getY());
     // turret.setHoodPower(hoodPower);
     // System.out.println("shooter on = " + robotState.isShooterOn());
@@ -173,5 +177,28 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testPeriodic() {
+  }
+
+  private void controlLEDs() {
+    if (Robot.robotState.isShooterOn() && Robot.robotState.isShooterReady() && Robot.robotState.isTurretReady() && !Robot.ballDelivery.getTopPhotoeye() && !Robot.ballDelivery.getBottomPhotoeye()) {
+      // No balls are present, send white led status.
+      Robot.leds.setPrimaryRGB(255, 255, 255);
+      Robot.leds.enterMode(LEDMode.SOLID);
+    } else if (Robot.robotState.isShooterOn() && Robot.robotState.isShooterReady() && Robot.robotState.isTurretReady()) {
+      Robot.leds.setPrimaryRGB(0, 255, 0);
+      Robot.leds.enterMode(LEDMode.SOLID);
+    } else if (Robot.robotState.isShooterOn() && (Robot.robotState.isShooterReady() || Robot.robotState.isTurretReady())) {
+      Robot.leds.setPrimaryRGB(255, 0, 255);
+      Robot.leds.enterMode(LEDMode.SOLID);
+    } else if (Robot.robotState.isShooterOn()) {
+      Robot.leds.setPrimaryRGB(255, 0, 255);
+      Robot.leds.enterMode(LEDMode.FLASH);
+    } else if (Robot.robotState.isIntakeOn()) {
+      Robot.leds.setPrimaryRGB(255, 0, 0);
+      Robot.leds.enterMode(LEDMode.FLASH);
+    } else {
+      Robot.leds.setPrimaryRGB(255, 0, 0);
+      Robot.leds.enterMode(LEDMode.SOLID);
+    }
   }
 }

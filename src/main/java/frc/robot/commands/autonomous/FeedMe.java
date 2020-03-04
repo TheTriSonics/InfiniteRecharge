@@ -10,47 +10,38 @@ package frc.robot.commands.autonomous;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.*;
-import frc.robot.Robot;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-public class CenterToOurTrench extends SequentialCommandGroup {
+public class FeedMe extends SequentialCommandGroup {
   /**
-   * Creates a new CenterToOurTrench.
+   * Creates a new FeedMe.
    */
-  public CenterToOurTrench() {
+  public FeedMe() {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
-
     ParallelCommandGroup initial = new ParallelCommandGroup(
+      new SetIntakeState(true),
       new SpinUpShooterCommand(),
       new ToggleTrackTarget()
-    );
-
-    ParallelCommandGroup driveThenIntake = new ParallelCommandGroup(
-      new SequentialCommandGroup(new WaitForTime(1500), new SetIntakeState(true)),
-      new ExecuteProfile("trench-profile.csv")
     );
 
     addCommands(
       initial,
-      new ShootForTime(4000),
+      new ShootForTime(6000),
       new SpinUpShooterCommand(),
       new ToggleTrackTarget(),
-      driveThenIntake,
-      //new ExecuteProfile("trench-profile.csv"),
+      new RotateToHeading(0.6, 90),
+      new DriveForDistance(0.5, 150, 90),
       new SwitchDirection(),
+      new SetTurretTarget(3270),
       new SpinUpShooterCommand(),
+      new DriveForDistance(0.5, 150, -90),
       new ToggleTrackTarget(),
-      new DriveForDistance(0.7, 75, 180),
-      new SetIntakeState(false),
       new ShootForTime(4000),
       new SpinUpShooterCommand(),
       new ToggleTrackTarget()
-      
-      //new WaitForTime(3),
-      //new ExecuteProfile("trench-profile.csv") // Not working?
     );
   }
 }

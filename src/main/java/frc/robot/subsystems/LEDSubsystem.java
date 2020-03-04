@@ -40,7 +40,7 @@ public class LEDSubsystem extends SubsystemBase {
 
     // Initializing defaults
     this.timer = new Timer();
-    this.period = 1.0;
+    this.period = 0.5;
     this.ledMode = LEDMode.SOLID;
     this.usingRGB = true;
     this.cleared = false;
@@ -115,6 +115,8 @@ public class LEDSubsystem extends SubsystemBase {
             }
             this.timer.start();
         }
+    } else if (this.ledMode == LEDMode.SOLID) {
+      this.setToCurrentConfig();
     }
   }
 
