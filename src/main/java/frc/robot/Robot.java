@@ -8,8 +8,10 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -39,13 +41,17 @@ public class Robot extends TimedRobot {
   public static PhotoEyes photoEyes;
   public static LEDSubsystem leds;
 
+  // private PowerDistributionPanel pdp;
+
+  SendableChooser chooser;
+
   @Override
   public void robotInit() {
     Compressor compressor = new Compressor(0);
     compressor.setClosedLoopControl(true);
 
     driveTrain = new InfiniteDriveTrain();
-    shooterFeederSubsystem = new ShooterFeederSubsystem();
+    // shooterFeederSubsystem = new ShooterFeederSubsystem();
     intakeSubsystem = new IntakeSubsystem();
     singulatorSubsystem = new SingulatorSubsystem();
     ballDelivery = new BallDeliverySubsystem();
@@ -60,21 +66,30 @@ public class Robot extends TimedRobot {
     turret = new Turret();
     limelight = new LimeLight();
     leds = new LEDSubsystem();
-    /*
-    colorSensor = new ColorSensor();
-    colorWheelRotateSubsystem = new ColorWheelRotateSubsystem(); 
-    */
     
+    // colorSensor = new ColorSensor();
+    // colorWheelRotateSubsystem = new ColorWheelRotateSubsystem(); 
     
     driveTrain.setDefaultCommand(new ArcadeDriveCommand());
     
     turret.setDefaultCommand(new TurretCommand());
     limelight.setDefaultCommand(new LimeLightCommand());
-    /*
-    colorSensor.setDefaultCommand(new ColorSensorCommand());
-    */
+    
+    // colorSensor.setDefaultCommand(new ColorSensorCommand());
+    
     oi = new OI();
     robotState.createTrackTarget();
+
+    chooser = new SendableChooser();
+    chooser.addDefaultOption("Right to our Trench", new RightToOurTrench());
+    chooser.addOption("Center to our Trench", new CenterToOurTrench());
+    chooser.addOption("Center to rendezvous", new CenterToRendezvous());
+    chooser.addOption("Opposing Trench", new OpposingTrenchAuto());
+    chooser.addOption("Feed me!", new FeedMe());
+    SmartDashboard.putData("Auto selector", chooser);
+
+
+    // pdp = new PowerDistributionPanel();
   }
 
   @Override
@@ -96,12 +111,11 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = new FeedMe();
+    m_autonomousCommand = (Command) chooser.getSelected();
     robotState.setAuton(true);
     pneumatics.setState(Pneumatics.SHIFT, true);
     navx.resetGyro();
     position.resetPosition();
-    // turret.resetHoodEncoder();
     
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
@@ -158,6 +172,7 @@ public class Robot extends TimedRobot {
     double hoodPower = oi.driver.getTriggerAxis(Hand.kRight);
     double leftTrigger = -oi.driver.getTriggerAxis(Hand.kLeft);
     if (Math.abs(leftTrigger) > 0.25) hoodPower = leftTrigger;
+    // turret.setHoodPower(hoodPower);
     
     this.controlLEDs();
 
@@ -180,6 +195,11 @@ public class Robot extends TimedRobot {
   }
 
   private void controlLEDs() {
+    //SmartDashboard.putNumber("Intake Current", pdp.getCurrent(2));
+    // if (pdp.getCurrent(2) > 10) {
+    //   Robot.leds.setPrimaryRGB(0, 0, 255);
+    //   Robot.leds.enterMode(LEDMode.SOLID);
+    // } else 
     if (Robot.robotState.isShooterOn() && Robot.robotState.isShooterReady() && Robot.robotState.isTurretReady() && !Robot.ballDelivery.getTopPhotoeye() && !Robot.ballDelivery.getBottomPhotoeye()) {
       // No balls are present, send white led status.
       Robot.leds.setPrimaryRGB(255, 255, 255);

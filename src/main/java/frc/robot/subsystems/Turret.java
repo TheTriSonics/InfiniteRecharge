@@ -25,6 +25,8 @@ public class Turret extends SubsystemBase {
   final double TURRET_LOWER_LIMIT = TURRET_OFFSET;
   final double TURRET_HOME = 0;
   final double TURRET_TOLERANCE = 50;
+  final double TURRET_MANUAL = 3380;
+  final double HOOD_MANUAL = 500;
   final double HOOD_LOWER_LIMIT = 15;
   final double HOOD_UPPER_LIMIT = 1000;
   final double HOOD_RETRACT = 440;// HOOD_LOWER_LIMIT;
@@ -32,7 +34,7 @@ public class Turret extends SubsystemBase {
   final double HOOD_TOLERANCE = 15;
   final double DEGREES_PER_ENCODER = 360.0/4096;
   final double kHood = .01;
-  final double kTurret = 0.0033;
+  final double kTurret = 0.0075; //0.0033;
   private volatile int lastValue = Integer.MIN_VALUE;
 
   // Distance = 132, Angle = 800
@@ -146,19 +148,22 @@ public class Turret extends SubsystemBase {
       if (power > 1) power = 1;
       else power = -1;
     }
+    //System.out.println(power);
     setSpinPower(kTurret * error);
+    Robot.robotState.setTargetAligned(Math.abs(error) < TURRET_TOLERANCE);
     if(error <= TURRET_TOLERANCE || error >= -TURRET_TOLERANCE) turretAligned = true;
     else turretAligned = false;
   }
 
   double[] hoodCoefficients = new double[] {
-    838.6632608548555, 46.78377594750139, -11.048245886107175,
-    1.361766568082913, -0.1333479051261225, 0.010847534356822737,
-    -0.0004360171566707618};
+    736.0559214774742, -34.596635146405546, 4.025394384508232,
+    4.464876570594562, -0.9066887422459833, 0.05905653856800916,
+    -0.001274507653020055};
     /*
-    838.9674564072276, 47.20574076810072, -11.132804359946896,
-    1.2672489463871908, -0.13057197831011302, 0.013533915146250138,
-    -0.0006151092093004042};
+    734.2017583806572, -29.113723283574636, 3.178476041921085,
+    3.8276278763239837, -0.7133292453820426, 0.04055262922071082,
+  -0.0006877119500577162};
+  
     */
 
   public double determineHoodPositionFromCamera(double distance) {
@@ -168,8 +173,9 @@ public class Turret extends SubsystemBase {
       sum += hoodCoefficients[i] * monomial;
       monomial *= distance;
     }
+    return sum;
     // return Math.max(sum, 875)-50;
-    return HOOD_DEFAULT;
+    //return HOOD_DEFAULT;
 
     /*
     double slope = (Constants.farAngle - Constants.closeAngle) / (Constants.farDistance - Constants.closeDistance);
@@ -180,6 +186,17 @@ public class Turret extends SubsystemBase {
 
   @Override
   public void periodic() {
+
+    // targetSeen = false; 
+    // if (targetSeen == false) return; // remove
+
+    if (Robot.robotState.isManualShooting()) {
+      hoodTarget = HOOD_MANUAL;
+      turretTarget = TURRET_MANUAL;
+      moveHood();
+      moveTurret();
+      return;
+    }
     boolean shooterOn = Robot.robotState.isShooterSpinning();
     if (shooterOn) {
       // Robot.pneumatics.setState(Pneumatics.SHOOTER_HOOD, true); 
@@ -205,7 +222,7 @@ public class Turret extends SubsystemBase {
     // System.out.println(hoodTarget + " " + getHoodEncoder());
     moveHood();
 
-    turretTarget = getTurretPosition() + targetLocation[0]/DEGREES_PER_ENCODER;
+    turretTarget = getTurretPosition() + (targetLocation[0]+0)/DEGREES_PER_ENCODER;
     moveTurret();
     Robot.robotState.setTargetAligned(turretAligned && hoodAligned);
   }

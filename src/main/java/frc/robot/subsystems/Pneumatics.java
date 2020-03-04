@@ -41,6 +41,10 @@ public class Pneumatics extends SubsystemBase {
     setState(PHOTOEYE_TRANSMITTER, true);
   }
 
+  public boolean getState(int valve) {
+    return solenoids[valve].get();
+  }
+
   public void setState(int valve, boolean state){
     if (valve == SHIFT) state = !state;
     solenoids[valve].set(state);

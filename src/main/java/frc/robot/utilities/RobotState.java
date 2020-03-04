@@ -7,6 +7,7 @@
 
 package frc.robot.utilities;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.commands.TrackTarget;
 import frc.robot.utilities.LEDMode;
@@ -24,6 +25,7 @@ public class RobotState {
     boolean nothing = true;
     boolean auton = false;
     boolean tracking = false;
+    boolean manualShooting = false;
     TrackTarget trackTarget;
 
     public void createTrackTarget() {
@@ -43,6 +45,15 @@ public class RobotState {
         else trackTarget.cancel();
     }
 
+    public void toggleManualShooting() {
+        manualShooting = !manualShooting;
+        toggleSpinUpShooter();
+    }
+
+    public boolean isManualShooting() {
+        return manualShooting;
+    }
+
     public boolean inAuton() {
         return auton;
     }
@@ -56,6 +67,7 @@ public class RobotState {
         return nothing;
     }
     public boolean isShooterReady() {
+        // return shooterOn && Robot.shooter.isShooterAtSpeed();// remove
         return shooterOn && Robot.shooter.isShooterAtSpeed() && isTurretReady();
     }
 

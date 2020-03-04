@@ -40,13 +40,13 @@ public class ColorWheelRotateSubsystem extends SubsystemBase {
   }
 
   public void displayEncoder(){
-    SmartDashboard.putNumber("Encoder:", rotateWheel.getEncoder().getPosition());
+    SmartDashboard.putNumber("Wheel Encoder:", rotateWheel.getEncoder().getPosition());
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     //setPower(Robot.oi.driver.getY(Hand.kLeft));
-    displayEncoder();
+    // displayEncoder();
   }
 }

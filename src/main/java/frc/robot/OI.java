@@ -26,6 +26,18 @@ public class OI {
         shiftHighButton.whenActive(shiftHighCommand);
         shiftLowButton.whenActive(shiftLowCommand);
 
+        /*
+        XboxTrigger raiseCWRotation = new XboxTrigger(driver, XboxTrigger.DPADUP);
+        XboxTrigger lowerCWRotation = new XboxTrigger(driver, XboxTrigger.DPADDOWN);
+        raiseCWRotation.whenActive(new RaiseColorWheelRotation(true));
+        lowerCWRotation.whenActive(new RaiseColorWheelRotation(false));
+
+        XboxTrigger colorWheelRotate = new XboxTrigger(driver, XboxTrigger.DPADLEFT);
+        XboxTrigger colorWheelColor = new XboxTrigger(driver, XboxTrigger.DPADRIGHT);
+        raiseCWRotation.whenActive(new ColorWheelRotation());
+        lowerCWRotation.whenActive(new ColorWheelChooseColor());
+        */
+
         ToggleTrackTarget toggleTrackTarget = new ToggleTrackTarget();
         XboxTrigger trackingOnOff = new XboxTrigger(operator, XboxTrigger.Y);
         trackingOnOff.toggleWhenActive(toggleTrackTarget, true);
@@ -49,6 +61,9 @@ public class OI {
         ResetTurretToHome resetTurret = new ResetTurretToHome();
         XboxTrigger resetTurretButton = new XboxTrigger(operator, XboxTrigger.A);
         resetTurretButton.whenActive(resetTurret);
+
+        XboxTrigger toggleManualShooting = new XboxTrigger(operator, XboxTrigger.DPADLEFT);
+        toggleManualShooting.whenActive(new ToggleManualShooting());
         
         /*
         XboxTrigger colorCount = new XboxTrigger(operator, XboxTrigger.DPADLEFT);
