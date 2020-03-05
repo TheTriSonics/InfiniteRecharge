@@ -31,7 +31,7 @@ public class Pneumatics extends SubsystemBase {
     solenoids[INTAKE] = new Solenoid(Constants.INTAKE);
     solenoids[SHIFT] = new Solenoid(Constants.SHIFT);
     solenoids[SHOOTER_HOOD] = new Solenoid(Constants.SHOOTER_HOOD);
-    solenoids[CONTROL_WHEEL] = new Solenoid(Constants.CONTROL_WHEEL_EXTEND);
+    // solenoids[CONTROL_WHEEL] = new Solenoid(Constants.CONTROL_WHEEL_EXTEND);
     solenoids[HANGING_TILT] = new Solenoid(Constants.HANGING_TILT);
     solenoids[HANGING_LOCK] = new Solenoid(Constants.HANGING_LOCK);
     solenoids[PHOTOEYE_RECEIVER] = new Solenoid(PHOTOEYE_RECEIVER);

@@ -33,8 +33,8 @@ public class Turret extends SubsystemBase {
   final double HOOD_DEFAULT = HOOD_UPPER_LIMIT / 2;
   final double HOOD_TOLERANCE = 15;
   final double DEGREES_PER_ENCODER = 360.0/4096;
-  final double kHood = .01;
-  final double kTurret = 0.0075; //0.0033;
+  final double kHood = 0.003; // .01;
+  final double kTurret = 0.002; //0.0033;
   private volatile int lastValue = Integer.MIN_VALUE;
 
   // Distance = 132, Angle = 800
@@ -148,7 +148,7 @@ public class Turret extends SubsystemBase {
       if (power > 1) power = 1;
       else power = -1;
     }
-    //System.out.println(power);
+    System.out.println(power);
     setSpinPower(kTurret * error);
     Robot.robotState.setTargetAligned(Math.abs(error) < TURRET_TOLERANCE);
     if(error <= TURRET_TOLERANCE || error >= -TURRET_TOLERANCE) turretAligned = true;

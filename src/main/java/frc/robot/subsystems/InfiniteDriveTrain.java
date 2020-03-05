@@ -12,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.*;
 import frc.robot.utilities.VectorMath;
@@ -115,8 +116,11 @@ public class InfiniteDriveTrain extends SubsystemBase {
       leftPower *= -1;
       rightPower *= -1;
     }
-    leftMaster.set(ControlMode.PercentOutput, leftPower);
-    rightMaster.set(ControlMode.PercentOutput, rightPower);
+    double maxSpeed = 1;
+    if (Math.abs(Robot.oi.driver.getTriggerAxis(Hand.kRight)) > 0.3 ||
+        Robot.robotState.isEndGame()) maxSpeed = 0.4;
+    leftMaster.set(ControlMode.PercentOutput, maxSpeed*leftPower);
+    rightMaster.set(ControlMode.PercentOutput, maxSpeed*rightPower);
   }
 
   public void arcadeDrive(double moveValue, double rotateValue, boolean squaredInputs) {

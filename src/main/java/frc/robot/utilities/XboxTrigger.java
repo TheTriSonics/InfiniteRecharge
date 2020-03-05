@@ -34,6 +34,7 @@ public class XboxTrigger extends Trigger {
     public static final int DPADNW = 15;
     public static final int LT = 16;
     public static final int RT = 17;
+    public static final int ENDGAME = 18;
 
     XboxController xbox;
     int button;
@@ -45,6 +46,8 @@ public class XboxTrigger extends Trigger {
 
     public boolean get() {
         switch (button) {
+        case ENDGAME:
+            return xbox.getBButton() && xbox.getYButton();
         case A:
             return xbox.getAButton();
         case B:

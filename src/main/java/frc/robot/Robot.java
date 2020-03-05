@@ -40,10 +40,11 @@ public class Robot extends TimedRobot {
   public static ShooterFeederSubsystem shooterFeederSubsystem;
   public static PhotoEyes photoEyes;
   public static LEDSubsystem leds;
+  public static HangingSubsystem hangingSubsystem;
 
   // private PowerDistributionPanel pdp;
 
-  SendableChooser chooser;
+  SendableChooser<Command> chooser;
 
   @Override
   public void robotInit() {
@@ -66,6 +67,7 @@ public class Robot extends TimedRobot {
     turret = new Turret();
     limelight = new LimeLight();
     leds = new LEDSubsystem();
+    hangingSubsystem = new HangingSubsystem();
     
     // colorSensor = new ColorSensor();
     // colorWheelRotateSubsystem = new ColorWheelRotateSubsystem(); 
@@ -80,14 +82,13 @@ public class Robot extends TimedRobot {
     oi = new OI();
     robotState.createTrackTarget();
 
-    chooser = new SendableChooser();
-    chooser.addDefaultOption("Right to our Trench", new RightToOurTrench());
+    chooser = new SendableChooser<Command>();
+    chooser.setDefaultOption("Right to our Trench", new RightToOurTrench());
     chooser.addOption("Center to our Trench", new CenterToOurTrench());
     chooser.addOption("Center to rendezvous", new CenterToRendezvous());
     chooser.addOption("Opposing Trench", new OpposingTrenchAuto());
     chooser.addOption("Feed me!", new FeedMe());
     SmartDashboard.putData("Auto selector", chooser);
-
 
     // pdp = new PowerDistributionPanel();
   }
@@ -111,7 +112,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = (Command) chooser.getSelected();
+    m_autonomousCommand = chooser.getSelected();
     robotState.setAuton(true);
     pneumatics.setState(Pneumatics.SHIFT, true);
     navx.resetGyro();

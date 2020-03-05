@@ -7,32 +7,28 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
+import frc.robot.subsystems.Pneumatics;
 
-public class TurretCommand extends CommandBase {
+public class ReleaseHanging extends CommandBase {
   /**
-   * Creates a new TurretCommand.
+   * Creates a new ReleaseHanging.
    */
-  public TurretCommand() {
+  public ReleaseHanging() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(Robot.turret);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    Robot.pneumatics.setState(Pneumatics.HANGING_LOCK, true);
+    Robot.robotState.setEndGame(true);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (Robot.robotState.inAuton() || Robot.robotState.isManualShooting()) return;
-    double spinPower = Robot.oi.operator.getX(Hand.kRight);
-    if (Math.abs(spinPower)<0.03)spinPower=0;
-    else Robot.turret.setTurretTarget(Double.NaN);
-    Robot.turret.setSpinPower(0.5*spinPower);
   }
 
   // Called once the command ends or is interrupted.
@@ -43,6 +39,6 @@ public class TurretCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

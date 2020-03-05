@@ -26,6 +26,9 @@ public class OI {
         shiftHighButton.whenActive(shiftHighCommand);
         shiftLowButton.whenActive(shiftLowCommand);
 
+        XboxTrigger switchDirection = new XboxTrigger(driver, XboxTrigger.DPADDOWN);
+        switchDirection.whenActive(new SwitchDirection());
+
         /*
         XboxTrigger raiseCWRotation = new XboxTrigger(driver, XboxTrigger.DPADUP);
         XboxTrigger lowerCWRotation = new XboxTrigger(driver, XboxTrigger.DPADDOWN);
@@ -37,6 +40,8 @@ public class OI {
         raiseCWRotation.whenActive(new ColorWheelRotation());
         lowerCWRotation.whenActive(new ColorWheelChooseColor());
         */
+        XboxTrigger hangingRelease = new XboxTrigger(driver, XboxTrigger.ENDGAME);
+        hangingRelease.whenActive(new ReleaseHanging());
 
         ToggleTrackTarget toggleTrackTarget = new ToggleTrackTarget();
         XboxTrigger trackingOnOff = new XboxTrigger(operator, XboxTrigger.Y);

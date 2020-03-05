@@ -26,10 +26,20 @@ public class RobotState {
     boolean auton = false;
     boolean tracking = false;
     boolean manualShooting = false;
+    boolean endGame = false;
     TrackTarget trackTarget;
 
     public void createTrackTarget() {
         trackTarget = new TrackTarget();
+    }
+
+    public boolean isEndGame() {
+        return endGame;
+    }
+
+    public void setEndGame(boolean b){
+        endGame = b;
+        if (endGame) Robot.hangingSubsystem.resetEncoders();
     }
 
     public boolean isShooterSpinning(){

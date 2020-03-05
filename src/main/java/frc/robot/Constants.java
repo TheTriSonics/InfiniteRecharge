@@ -44,6 +44,8 @@ public final class Constants {
 
     // Talons
     public static final int TURRET_ROTATE = 9;
+    public static final int LEFT_HANGING = 11;
+    public static final int RIGHT_HANGING = 10;
 
     // Servo
     public static final int SHOOTER_HOOD_SERVO = 0;
@@ -58,7 +60,7 @@ public final class Constants {
     public static final int CONTROL_WHEEL_EXTEND = 1;
     public static final int SHOOTER_HOOD = 0;
     public static final int HANGING_TILT = 4;
-    public static final int HANGING_LOCK = 5;
+    public static final int HANGING_LOCK = 1;
 
     //AIO
     public static final int PHOTOEYE_TOP = 0;
