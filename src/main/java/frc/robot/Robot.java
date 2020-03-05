@@ -183,7 +183,7 @@ public class Robot extends TimedRobot {
     
     SmartDashboard.putNumber("hood position", turret.getHoodEncoder());
     SmartDashboard.putNumber("turret position", turret.getTurretPosition());
-    SmartDashboard.putNumber("Goal Distance", position.getDistance());
+    // SmartDashboard.putNumber("Goal Distance", position.getDistance());
   }
 
   @Override

@@ -76,6 +76,6 @@ public class ShooterSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     // if(Robot.oi.driver.getBButton()) setShooterPower(1);
-    SmartDashboard.putNumber("shooterSpeed", sensors.getIntegratedSensorVelocity());
+    // SmartDashboard.putNumber("shooterSpeed", sensors.getIntegratedSensorVelocity());
   }
 }

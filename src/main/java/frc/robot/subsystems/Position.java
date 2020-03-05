@@ -66,8 +66,8 @@ public class Position extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     updatePosition();
-    double[] position = getPosition();
-    SmartDashboard.putNumber("X", position[0]);
-    SmartDashboard.putNumber("Y", position[1]);
+    // double[] position = getPosition();
+    // SmartDashboard.putNumber("X", position[0]);
+    // SmartDashboard.putNumber("Y", position[1]);
   }
 }
