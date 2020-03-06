@@ -89,6 +89,7 @@ public class Robot extends TimedRobot {
     chooser.addOption("Center to rendezvous", new CenterToRendezvous());
     chooser.addOption("Opposing Trench", new OpposingTrenchAuto());
     chooser.addOption("Feed me!", new FeedMe());
+    chooser.addOption("Shoot and Drive", new ShootAndDrive());
     SmartDashboard.putData("Auto selector", chooser);
 
     // pdp = new PowerDistributionPanel();

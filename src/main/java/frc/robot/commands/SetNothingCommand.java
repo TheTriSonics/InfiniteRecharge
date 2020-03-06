@@ -23,7 +23,7 @@ public class SetNothingCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Robot.limelight.setLEDState(!state); // If nothing, set led off. If not nothing, set led on.
+    // Robot.limelight.setLEDState(!state); // If nothing, set led off. If not nothing, set led on.
     Robot.robotState.setNothing(state);
   }
 

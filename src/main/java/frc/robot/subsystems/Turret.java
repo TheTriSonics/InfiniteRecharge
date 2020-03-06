@@ -173,7 +173,8 @@ public class Turret extends SubsystemBase {
       sum += hoodCoefficients[i] * monomial;
       monomial *= distance;
     }
-    return sum;
+
+    return Math.min(sum, 670);
     // return Math.max(sum, 875)-50;
     //return HOOD_DEFAULT;
 
