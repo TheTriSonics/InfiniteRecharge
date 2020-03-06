@@ -174,7 +174,7 @@ public class Turret extends SubsystemBase {
       monomial *= distance;
     }
 
-    return Math.min(sum, 670);
+    return Math.min(sum, 630);
     // return Math.max(sum, 875)-50;
     //return HOOD_DEFAULT;
 
