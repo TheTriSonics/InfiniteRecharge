@@ -29,8 +29,8 @@ public final class Constants {
     public static final int SHOOTER_SLAVE = 8;
 
     // Victors
-    public static final int BALL_DELIVERY = 6;
-    public static final int SHOOTER_FEEDER = 5;
+    public static final int BALL_DELIVERY1 = 6;
+    public static final int BALL_DELIVERY2 = 5;
     public static final int HANGING_MOTOR1 = 4;
     public static final int HANGING_MOTOR2 = 3;
     public static final int THE_SINGULATOR = 1;
@@ -51,8 +51,8 @@ public final class Constants {
     public static final int SHOOTER_HOOD_SERVO = 0;
 
     // Encoders
-    public static final int DRIVE_TRAIN_LEFT = 2;
-    public static final int DRIVE_TRAIN_RIGHT = 6;
+    public static final int DRIVE_TRAIN_LEFT = 6;
+    public static final int DRIVE_TRAIN_RIGHT = 2;
 
     // Pneumatics
     public static final int SHIFT = 3;

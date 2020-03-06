@@ -14,14 +14,14 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.*;
 
 public class ShooterFeederSubsystem extends SubsystemBase {
-  VictorSPX turretFeederVictor;
+  // VictorSPX turretFeederVictor;
   
   public ShooterFeederSubsystem() {
-    turretFeederVictor = new VictorSPX(Constants.SHOOTER_FEEDER);
+    // turretFeederVictor = new VictorSPX(Constants.SHOOTER_FEEDER);
   }
 
   public void setPower(double power){
-    turretFeederVictor.set(ControlMode.PercentOutput, power);
+    // turretFeederVictor.set(ControlMode.PercentOutput, power);
   }
 
   @Override

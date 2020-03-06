@@ -21,8 +21,8 @@ import frc.robot.Robot;
  
 public class Turret extends SubsystemBase {
   final double TURRET_OFFSET = 1500;
-  final double TURRET_UPPER_LIMIT = 4096+TURRET_OFFSET;//Check these values
-  final double TURRET_LOWER_LIMIT = TURRET_OFFSET;
+  final double TURRET_UPPER_LIMIT = 5150; // 4096+TURRET_OFFSET;//Check these values
+  final double TURRET_LOWER_LIMIT = 1700;
   final double TURRET_HOME = 0;
   final double TURRET_TOLERANCE = 50;
   final double TURRET_MANUAL = 3380;
@@ -148,7 +148,7 @@ public class Turret extends SubsystemBase {
       if (power > 1) power = 1;
       else power = -1;
     }
-    System.out.println(power);
+    // System.out.println(power);
     setSpinPower(kTurret * error);
     Robot.robotState.setTargetAligned(Math.abs(error) < TURRET_TOLERANCE);
     if(error <= TURRET_TOLERANCE || error >= -TURRET_TOLERANCE) turretAligned = true;

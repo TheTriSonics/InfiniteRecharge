@@ -64,7 +64,7 @@ public class HangingSubsystem extends SubsystemBase {
     double rightPosition = getRightPosition();
     if (Robot.robotState.isEndGame()){
       double power = - Robot.oi.operator.getY(Hand.kLeft);
-      if ((leftPosition < 0 || rightPosition < 0) && power < 0) power = 0;
+      if ((leftPosition < 0 || rightPosition < 0) && power < 0 && !Robot.oi.operator.getAButton()) power = 0;
       if (Math.abs(leftPosition - rightPosition) > 150) {
         if (leftPosition > rightPosition) {
           if (power > 0) {
@@ -85,7 +85,7 @@ public class HangingSubsystem extends SubsystemBase {
         }
       } else setPower(power);
     }
-    SmartDashboard.putNumber("left hanging", getLeftPosition());
-    SmartDashboard.putNumber("right hanging", getRightPosition());
+  //   SmartDashboard.putNumber("left hanging", getLeftPosition());
+  //   SmartDashboard.putNumber("right hanging", getRightPosition());
   }
 }

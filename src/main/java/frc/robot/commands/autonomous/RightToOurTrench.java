@@ -37,7 +37,7 @@ public class RightToOurTrench extends SequentialCommandGroup {
       new SwitchDirection(),
       new SpinUpShooterCommand(),
       new ToggleTrackTarget(),
-      new DriveToPoint(50,0,0.7),
+      new DriveToPoint(40,0,0.7),
       new SetIntakeState(false),
       new ShootForTime(4000),
       new SpinUpShooterCommand(),

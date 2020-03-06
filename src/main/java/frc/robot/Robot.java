@@ -113,6 +113,8 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     m_autonomousCommand = chooser.getSelected();
+    System.out.println(m_autonomousCommand);
+
     robotState.setAuton(true);
     pneumatics.setState(Pneumatics.SHIFT, true);
     navx.resetGyro();
@@ -137,15 +139,17 @@ public class Robot extends TimedRobot {
   long lastTime;
   @Override
   public void teleopInit() {
+    if (m_autonomousCommand != null) {
+      m_autonomousCommand.cancel();
+    }
+
     robotState.setAuton(false);
     if (driveTrain.isSwitched()) driveTrain.switchDirection();
     
     driveTrain.resetDriveEncoders();
     lastDriveEncoders = driveTrain.getDriveDistance();
     lastTime = System.currentTimeMillis();
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
-    }
+    
     // turret.resetHoodEncoder();
     // navx.resetGyro();
     // position.resetPosition();
@@ -161,6 +165,9 @@ public class Robot extends TimedRobot {
     double velocity = distance/(time - lastTime) * 1000;
     lastTime = time;
     lastDriveEncoders = driveEncoders;
+
+    double[] encoders = driveTrain.getDriveDistance();
+    System.out.println(encoders[0] + " " + encoders[1]);
     // // System.out.println(velocity);
     
     /*

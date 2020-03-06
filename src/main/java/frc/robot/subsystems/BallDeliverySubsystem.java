@@ -16,18 +16,20 @@ import frc.robot.*;
 import frc.robot.utilities.LEDMode;
 
 public class BallDeliverySubsystem extends SubsystemBase {
-  VictorSPX ballDeliveryVictor;
+  VictorSPX ballDeliveryVictor1, ballDeliveryVictor2;
   // AnalogInput photoeyeTop;
   // AnalogInput photoeyeBottom;
 
   public BallDeliverySubsystem() {
-    ballDeliveryVictor = new VictorSPX(Constants.BALL_DELIVERY);
+    ballDeliveryVictor1 = new VictorSPX(Constants.BALL_DELIVERY1);
+    ballDeliveryVictor2 = new VictorSPX(Constants.BALL_DELIVERY2);
     // photoeyeTop = new AnalogInput(1);
     // photoeyeBottom = new AnalogInput(Constants.PHOTOEYE_BOTTOM);
   }
 
   public void setPower(double power){
-    ballDeliveryVictor.set(ControlMode.PercentOutput, power);
+    ballDeliveryVictor1.set(ControlMode.PercentOutput, power);
+    ballDeliveryVictor2.set(ControlMode.PercentOutput, -power);
   }
 
   public boolean getTopPhotoeye(){
