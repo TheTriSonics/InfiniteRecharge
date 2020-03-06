@@ -48,6 +48,7 @@ public class TrackTarget extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     Robot.turret.setTargetSeen(false);
+    Robot.limelight.setLEDState(false);
   }
 
   @Override

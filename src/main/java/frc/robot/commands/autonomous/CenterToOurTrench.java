@@ -29,7 +29,7 @@ public class CenterToOurTrench extends SequentialCommandGroup {
     );
 
     ParallelCommandGroup driveThenIntake = new ParallelCommandGroup(
-      new SequentialCommandGroup(new WaitForTime(1500), new SetIntakeState(true)),
+      new SequentialCommandGroup(new WaitForTime(500), new SetIntakeState(true)),
       new ExecuteProfile("trench-profile.csv")
     );
 
