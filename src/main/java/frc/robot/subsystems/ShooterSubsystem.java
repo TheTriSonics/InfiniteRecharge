@@ -22,7 +22,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   TalonFX master, follower;
   TalonFXSensorCollection sensors;
-  public final int shooterSpeed = 19000;
+  public final int shooterSpeed = 20000;
 
   public ShooterSubsystem() {
     master = new TalonFX(Constants.SHOOTER_MASTER);

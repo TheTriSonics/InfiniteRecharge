@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.TalonSRXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -57,6 +58,7 @@ public class HangingSubsystem extends SubsystemBase {
   public double getRightPosition() {
     return right.getSelectedSensorPosition() - rightOffset;
   }
+  double powerFactor = 0.8;
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
@@ -68,18 +70,18 @@ public class HangingSubsystem extends SubsystemBase {
       if (Math.abs(leftPosition - rightPosition) > 150) {
         if (leftPosition > rightPosition) {
           if (power > 0) {
-            setLeftPower(0.8*power);
+            setLeftPower(powerFactor*power);
             setRightPower(power);
           } else {
             setLeftPower(power);
-            setRightPower(0.8*power);
+            setRightPower(powerFactor*power);
           }
         } else {
           if (power > 0) {
             setLeftPower(power);
-            setRightPower(0.8*power);
+            setRightPower(powerFactor*power);
           } else {
-            setLeftPower(0.8*power);
+            setLeftPower(powerFactor*power);
             setRightPower(power);
           }
         }
