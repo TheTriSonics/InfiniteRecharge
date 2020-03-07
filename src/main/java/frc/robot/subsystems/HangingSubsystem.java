@@ -62,6 +62,7 @@ public class HangingSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    /*
     double leftPosition = getLeftPosition();
     double rightPosition = getRightPosition();
     if (Robot.robotState.isEndGame()){
@@ -86,7 +87,11 @@ public class HangingSubsystem extends SubsystemBase {
           }
         }
       } else setPower(power);
+
     }
+    */
+    double power = - Robot.oi.operator.getY(Hand.kLeft);
+    setPower(power);
   //   SmartDashboard.putNumber("left hanging", getLeftPosition());
   //   SmartDashboard.putNumber("right hanging", getRightPosition());
   }
