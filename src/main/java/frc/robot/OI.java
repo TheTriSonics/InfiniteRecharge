@@ -63,9 +63,9 @@ public class OI {
         XboxTrigger setIntakeButton = new XboxTrigger(operator, XboxTrigger.B);
         setIntakeButton.whenActive(setIntakeState);
 
-        ResetTurretToHome resetTurret = new ResetTurretToHome();
-        XboxTrigger resetTurretButton = new XboxTrigger(operator, XboxTrigger.A);
-        resetTurretButton.whenActive(resetTurret);
+        // ResetTurretToHome resetTurret = new ResetTurretToHome();
+        // XboxTrigger resetTurretButton = new XboxTrigger(operator, XboxTrigger.A);
+        // resetTurretButton.whenActive(resetTurret);
 
         XboxTrigger toggleManualShooting = new XboxTrigger(operator, XboxTrigger.DPADLEFT);
         toggleManualShooting.whenActive(new ToggleManualShooting());

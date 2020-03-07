@@ -23,7 +23,7 @@ public class ResetTurretToHome extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Robot.pneumatics.toggleState(Robot.pneumatics.SHOOTER_HOOD);
+    // Robot.pneumatics.toggleState(Robot.pneumatics.SHOOTER_HOOD);
   }
 
   // Called once the command ends or is interrupted.

@@ -107,12 +107,15 @@ public class Robot extends TimedRobot {
   public void disabledInit() {
     turret.setRawHoodPower(0);
     limelight.setLEDState(false);
+    Robot.leds.setPrimaryRGB(255, 0, 0);
+      Robot.leds.enterMode(LEDMode.SOLID);
   }
 
   @Override
   public void disabledPeriodic() {
     pneumatics.setState(Pneumatics.PHOTOEYE_RECEIVER, false);
     limelight.setLEDState(false);
+    
   }
 
   @Override
@@ -142,11 +145,14 @@ public class Robot extends TimedRobot {
 
   double[] lastDriveEncoders;
   long lastTime;
+  long endGameTime;
   @Override
   public void teleopInit() {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+
+    endGameTime = System.currentTimeMillis() + 105000;
 
     robotState.setAuton(false);
     if (driveTrain.isSwitched()) driveTrain.switchDirection();
@@ -172,7 +178,7 @@ public class Robot extends TimedRobot {
     lastDriveEncoders = driveEncoders;
 
     double[] encoders = driveTrain.getDriveDistance();
-    System.out.println(encoders[0] + " " + encoders[1]);
+    // System.out.println(encoders[0] + " " + encoders[1]);
     // // System.out.println(velocity);
     
     /*
@@ -213,7 +219,11 @@ public class Robot extends TimedRobot {
     //   Robot.leds.setPrimaryRGB(0, 0, 255);
     //   Robot.leds.enterMode(LEDMode.SOLID);
     // } else 
-    if (Robot.robotState.isShooterOn() && Robot.robotState.isShooterReady() && Robot.robotState.isTurretReady() && !Robot.ballDelivery.getTopPhotoeye() && !Robot.ballDelivery.getBottomPhotoeye()) {
+    if(System.currentTimeMillis() >= endGameTime){
+      Robot.leds.setPrimaryRGB(127, 0, 255);
+      Robot.leds.enterMode(LEDMode.FLASH);
+      return;
+    } else if (Robot.robotState.isShooterOn() && Robot.robotState.isShooterReady() && Robot.robotState.isTurretReady() && !Robot.ballDelivery.getTopPhotoeye() && !Robot.ballDelivery.getBottomPhotoeye()) {
       // No balls are present, send white led status.
       Robot.leds.setPrimaryRGB(255, 255, 255);
       Robot.leds.enterMode(LEDMode.SOLID);
