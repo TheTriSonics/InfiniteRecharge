@@ -188,8 +188,8 @@ public class Turret extends SubsystemBase {
   @Override
   public void periodic() {
 
-    // targetSeen = false; 
-    // if (targetSeen == false) return; // remove
+    targetSeen = false; 
+    if (targetSeen == false) return; // remove
 
     if (Robot.robotState.isManualShooting()) {
       hoodTarget = HOOD_MANUAL;

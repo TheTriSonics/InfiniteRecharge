@@ -16,6 +16,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Robot;
 
 public class ShooterSubsystem extends SubsystemBase {
   private static final double SHOOTER_TOLERANCE = 0.90;
@@ -36,7 +37,7 @@ public class ShooterSubsystem extends SubsystemBase {
     follower.set(TalonFXControlMode.Follower, Constants.SHOOTER_MASTER);;
 
     double kF = 1023.0/20600.0;
-    double kP = 0.31; // Was 0.28
+    double kP = 0.4; // 0.31; // Was 0.28
     master.config_kF(0, kF);
     master.config_kP(0, kP);
     master.config_kF(1, kF);
@@ -50,7 +51,7 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public void setShooterVelocity(double velocity) {
-    
+    /*
     if (velocity >= 2000) {
       master.selectProfileSlot(0, 0);
     } else {
@@ -59,6 +60,7 @@ public class ShooterSubsystem extends SubsystemBase {
     
     master.set(TalonFXControlMode.Velocity, velocity);
     // System.out.println(velocity);
+    */
   }
 
   public void setShooterPower(double power) {
@@ -69,7 +71,8 @@ public class ShooterSubsystem extends SubsystemBase {
     else setShooterVelocity(0);
   } 
   public boolean isShooterAtSpeed(){
-    return sensors.getIntegratedSensorVelocity() > SHOOTER_TOLERANCE * shooterSpeed;
+    // return sensors.getIntegratedSensorVelocity() > SHOOTER_TOLERANCE * shooterSpeed;
+    return true;
   }
 
   @Override
@@ -77,5 +80,7 @@ public class ShooterSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
     // if(Robot.oi.driver.getBButton()) setShooterPower(1);
     SmartDashboard.putNumber("shooterSpeed", sensors.getIntegratedSensorVelocity());
+    if (Robot.robotState.isShooterSpinning()) master.set(TalonFXControlMode.Velocity, 18000);
+    else setShooterPower(0);
   }
 }

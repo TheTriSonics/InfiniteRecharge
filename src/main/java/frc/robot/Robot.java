@@ -191,7 +191,8 @@ public class Robot extends TimedRobot {
     double hoodPower = oi.driver.getTriggerAxis(Hand.kRight);
     double leftTrigger = -oi.driver.getTriggerAxis(Hand.kLeft);
     if (Math.abs(leftTrigger) > 0.25) hoodPower = leftTrigger;
-    // turret.setHoodPower(hoodPower);
+    hoodPower *= 0.4;
+    turret.setHoodPower(hoodPower);
     
     this.controlLEDs();
 

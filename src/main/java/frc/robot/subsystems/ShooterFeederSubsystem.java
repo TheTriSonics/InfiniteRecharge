@@ -28,7 +28,7 @@ public class ShooterFeederSubsystem extends SubsystemBase {
   public void periodic() {
     // System.out.println(Robot.robotState.isShooterReady());
     if (Robot.robotState.isShooterReady()) {
-      setPower(0.75);
+      setPower(1);
       return;
     }
     setPower(0);

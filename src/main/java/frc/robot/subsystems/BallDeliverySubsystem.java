@@ -45,7 +45,7 @@ public class BallDeliverySubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     if (Robot.robotState.isShooterReady()) {
-      setPower(0.75);
+      setPower(1);
       return;
     }
     

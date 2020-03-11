@@ -78,7 +78,8 @@ public class RobotState {
     }
     public boolean isShooterReady() {
         // return shooterOn && Robot.shooter.isShooterAtSpeed();// remove
-        return shooterOn && Robot.shooter.isShooterAtSpeed() && isTurretReady();
+        // return shooterOn && Robot.shooter.isShooterAtSpeed() && isTurretReady();
+        return shooterOn;
     }
 
     public boolean isTurretReady() {
