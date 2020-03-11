@@ -28,7 +28,7 @@ public class ShooterSubsystem extends SubsystemBase {
   public ShooterSubsystem() {
     master = new TalonFX(Constants.SHOOTER_MASTER);
     follower = new TalonFX(Constants.SHOOTER_SLAVE);
-
+ 
     sensors = master.getSensorCollection();
 
     master.setInverted(false);
