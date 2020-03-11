@@ -19,7 +19,7 @@ import frc.robot.Constants;
 import frc.robot.Robot;
 
 public class ShooterSubsystem extends SubsystemBase {
-  private static final double SHOOTER_TOLERANCE = 0.90;
+  private static final double SHOOTER_TOLERANCE = 0.82;
 
   TalonFX master, follower;
   TalonFXSensorCollection sensors;
