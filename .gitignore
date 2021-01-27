@@ -157,7 +157,6 @@ gradle-app.setting
 \vendordeps
 \.wpilib
 \build
-\gradle
 \bin
 \.vscode
 .classpath
