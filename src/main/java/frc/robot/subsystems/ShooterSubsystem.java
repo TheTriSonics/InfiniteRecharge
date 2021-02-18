@@ -23,7 +23,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   TalonFX master, follower;
   TalonFXSensorCollection sensors;
-  
+
   private int shooterSpeed = 18000;
 
   public ShooterSubsystem() {
@@ -53,6 +53,16 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public void setShooterVelocity(int velocity) {
     shooterSpeed = velocity;
+    /*
+    if (velocity >= 2000) {
+      master.selectProfileSlot(0, 0);
+    } else {
+      master.selectProfileSlot(1, 0);
+    }
+    
+    master.set(TalonFXControlMode.Velocity, velocity);
+    // System.out.println(velocity);
+    */
   }
 
   public void setShooterPower(double power) {
