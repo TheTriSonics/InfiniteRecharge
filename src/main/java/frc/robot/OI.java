@@ -23,6 +23,14 @@ public class OI {
         ShiftCommand shiftLowCommand = new ShiftCommand(true);
         XboxTrigger shiftHighButton = new XboxTrigger(driver, XboxTrigger.RB);
         XboxTrigger shiftLowButton = new XboxTrigger(driver, XboxTrigger.LB);
+        XboxTrigger goToGreen = new XboxTrigger(driver, XboxTrigger.A);
+        XboxTrigger goToYellow = new XboxTrigger(driver, XboxTrigger.X);
+        XboxTrigger goToOrange = new XboxTrigger(driver, XboxTrigger.Y);
+        XboxTrigger goToRed = new XboxTrigger(driver, XboxTrigger.B);
+        goToGreen.whenActive(new SetShooterData(0,18000));
+        goToYellow.whenActive(new SetShooterData(900, 18000));
+        goToOrange.whenActive(new SetShooterData(1100,18000));
+        goToRed.whenActive(new SetShooterData(1100,16200));
         shiftHighButton.whenActive(shiftHighCommand);
         shiftLowButton.whenActive(shiftLowCommand);
 

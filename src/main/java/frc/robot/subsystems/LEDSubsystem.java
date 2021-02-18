@@ -36,7 +36,7 @@ public class LEDSubsystem extends SubsystemBase {
 
     this.ledStrip.setLength(this.ledBuffer.getLength());
     this.ledStrip.setData(this.ledBuffer);
-    this.ledStrip.start();
+    //this.ledStrip.start();
 
     // Initializing defaults
     this.timer = new Timer();
@@ -104,7 +104,7 @@ public class LEDSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    if (this.ledMode == LEDMode.FLASH) {
+    /* if (this.ledMode == LEDMode.FLASH) {
         if (this.timer.get() >= this.period) {
             if (cleared) {
                 this.setToCurrentConfig();
@@ -117,7 +117,7 @@ public class LEDSubsystem extends SubsystemBase {
         }
     } else if (this.ledMode == LEDMode.SOLID) {
       this.setToCurrentConfig();
-    }
+    } */
   }
 
   private void clear() {

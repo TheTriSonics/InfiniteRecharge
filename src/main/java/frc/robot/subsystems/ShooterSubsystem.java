@@ -23,7 +23,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   TalonFX master, follower;
   TalonFXSensorCollection sensors;
-  public final int shooterSpeed = 20000;
+  public int shooterSpeed = 18000;
 
   public ShooterSubsystem() {
     master = new TalonFX(Constants.SHOOTER_MASTER);
@@ -50,7 +50,8 @@ public class ShooterSubsystem extends SubsystemBase {
     follower.config_kP(1, 0);
   }
 
-  public void setShooterVelocity(double velocity) {
+  public void setShooterVelocity(int velocity) {
+    shooterSpeed = velocity;
     /*
     if (velocity >= 2000) {
       master.selectProfileSlot(0, 0);
@@ -80,7 +81,8 @@ public class ShooterSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
     // if(Robot.oi.driver.getBButton()) setShooterPower(1);
     SmartDashboard.putNumber("shooterSpeed", sensors.getIntegratedSensorVelocity());
-    if (Robot.robotState.isShooterSpinning()) master.set(TalonFXControlMode.Velocity, 18000);
+    // if (Robot.robotState.isShooterSpinning()) master.set(TalonFXControlMode.Velocity, 18000);
+    if (Robot.robotState.isShooterSpinning()) master.set(TalonFXControlMode.Velocity, shooterSpeed);
     else setShooterPower(0);
   }
 }

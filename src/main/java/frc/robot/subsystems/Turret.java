@@ -28,8 +28,8 @@ public class Turret extends SubsystemBase {
   final double TURRET_MANUAL = 3380;
   final double HOOD_MANUAL = 500;
   final double HOOD_LOWER_LIMIT = 15;
-  final double HOOD_UPPER_LIMIT = 1000;
-  final double HOOD_RETRACT = 440;// HOOD_LOWER_LIMIT;
+  final double HOOD_UPPER_LIMIT = 1100;
+  final double HOOD_RETRACT = HOOD_LOWER_LIMIT;
   final double HOOD_DEFAULT = HOOD_UPPER_LIMIT / 2;
   final double HOOD_TOLERANCE = 15;
   final double DEGREES_PER_ENCODER = 360.0/4096;
@@ -124,6 +124,7 @@ public class Turret extends SubsystemBase {
   }
 
   public void moveHood() {
+    //System.out.println(hoodTarget);
     double hoodPosition = getHoodEncoder();
     double error = hoodTarget - hoodPosition;
     if (hoodPosition < HOOD_LOWER_LIMIT && error < 0) error = 0;
@@ -165,6 +166,10 @@ public class Turret extends SubsystemBase {
   -0.0006877119500577162};
   
     */
+    public void setHoodTarget(double target){
+      hoodTarget = target;
+
+    }
 
   public double determineHoodPositionFromCamera(double distance) {
     double sum = 0;
@@ -173,8 +178,8 @@ public class Turret extends SubsystemBase {
       sum += hoodCoefficients[i] * monomial;
       monomial *= distance;
     }
-
-    return Math.min(sum, 600);
+    return sum;
+    //return Math.min(sum, 600);
     // return Math.max(sum, 875)-50;
     //return HOOD_DEFAULT;
 
@@ -187,10 +192,7 @@ public class Turret extends SubsystemBase {
 
   @Override
   public void periodic() {
-
-    targetSeen = false; 
-    if (targetSeen == false) return; // remove
-
+    /*
     if (Robot.robotState.isManualShooting()) {
       hoodTarget = HOOD_MANUAL;
       turretTarget = TURRET_MANUAL;
@@ -198,15 +200,17 @@ public class Turret extends SubsystemBase {
       moveTurret();
       return;
     }
+    */
     boolean shooterOn = Robot.robotState.isShooterSpinning();
     if (shooterOn) {
       // Robot.pneumatics.setState(Pneumatics.SHOOTER_HOOD, true); 
     } 
 
+    /*
     if(targetSeen == false) {
-      if (shooterOn) hoodTarget = HOOD_DEFAULT;
+      // if (shooterOn) hoodTarget = HOOD_DEFAULT;
       else {
-        hoodTarget = HOOD_RETRACT;
+        // hoodTarget = HOOD_RETRACT;
         if (Math.abs(getHoodEncoder() - HOOD_RETRACT) < HOOD_TOLERANCE) {
           // System.out.println("retracting hood");
           // Robot.pneumatics.setState(Pneumatics.SHOOTER_HOOD, false);
@@ -217,14 +221,24 @@ public class Turret extends SubsystemBase {
       else setSpinPower(0);
       return;
     }
+    */
     
     turretTargetSet = false;
-    hoodTarget = determineHoodPositionFromCamera(targetLocation[1]);
-    // System.out.println(hoodTarget + " " + getHoodEncoder());
+    //System.out.println(targetLocation[1]);
+    //hoodTarget = determineHoodPositionFromCamera(targetLocation[1]);
+    //System.out.println(hoodTarget + " " + getHoodEncoder());
+
+   //if (Robot.oi.driver.getBButton()) hoodTarget -= 3;
+   //if (Robot.oi.driver.getXButton()) hoodTarget += 3;
+    if (Robot.oi.operator.getPOV() == 0) {
+      System.out.println("TURNING SHOOTER OFF!!");
+      Robot.robotState.setShooterOff();
+    }
+    //System.out.println(targetLocation[1] + " " + hoodTarget);
     moveHood();
 
-    turretTarget = getTurretPosition() + (targetLocation[0]+0)/DEGREES_PER_ENCODER;
-    moveTurret();
+    //turretTarget = getTurretPosition() + (targetLocation[0]+0)/DEGREES_PER_ENCODER;
+    //moveTurret();
     Robot.robotState.setTargetAligned(turretAligned && hoodAligned);
   }
 }
