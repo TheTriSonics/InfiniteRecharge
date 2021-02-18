@@ -154,13 +154,11 @@ gradle-app.setting
 \.gradle
 \.settings
 .project
-\vendordeps
 \.wpilib
 \build
 \bin
 \.vscode
 .classpath
-build.gradle
 imgui.ini
 
 
