@@ -109,13 +109,14 @@ public class RobotState {
             intakeOn = false;
         }
     }
+
     public void setTargetAligned(boolean aligned){
         targetAligned = aligned;
     }
+
     public void toggleSpinUpShooter() {
         spinUpShooter = !spinUpShooter;
         if (spinUpShooter == false) shooterOn = false;
-        Robot.shooter.setShooterOn(spinUpShooter);
         if (tracking && !inAuton()) toggleTracking();
     }
 
