@@ -228,8 +228,8 @@ public class Turret extends SubsystemBase {
     //hoodTarget = determineHoodPositionFromCamera(targetLocation[1]);
     //System.out.println(hoodTarget + " " + getHoodEncoder());
 
-   //if (Robot.oi.driver.getBButton()) hoodTarget -= 3;
-   //if (Robot.oi.driver.getXButton()) hoodTarget += 3;
+    // if (Robot.oi.driver.getBButton()) hoodTarget -= 3;
+    // if (Robot.oi.driver.getXButton()) hoodTarget += 3;
     if (Robot.oi.operator.getPOV() == 0) {
       System.out.println("TURNING SHOOTER OFF!!");
       Robot.robotState.setShooterOff();

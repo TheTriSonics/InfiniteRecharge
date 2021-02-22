@@ -122,7 +122,8 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     m_autonomousCommand = chooser.getSelected();
     System.out.println(m_autonomousCommand);
-    m_autonomousCommand = new ExecuteProfile("gs-b_blue.profile.csv");
+    // m_autonomousCommand = new GalaticSearch(GalaticSearch.Path.REDA); 
+    m_autonomousCommand = new ExecuteProfile("barrel-profile.csv");
     robotState.setAuton(true);
     pneumatics.setState(Pneumatics.SHIFT, true);
     navx.resetGyro();
