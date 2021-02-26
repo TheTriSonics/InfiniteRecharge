@@ -8,9 +8,9 @@
 package frc.robot;
 
 
-//import org.usfirst.frc.team103.pixy.Pixy;
-//import org.usfirst.frc.team103.pixy.Pixy.ExposureSetting;
-//import org.usfirst.frc.team103.pixy.Pixy.WhiteBalanceSetting;
+import frc.robot.pixy.Pixy;
+import frc.robot.pixy.Pixy.ExposureSetting;
+import frc.robot.pixy.Pixy.WhiteBalanceSetting;
 
 
 import edu.wpi.first.wpilibj.Compressor;
@@ -52,6 +52,8 @@ public class Robot extends TimedRobot {
   // private PowerDistributionPanel pdp;
 
   SendableChooser<Command> chooser;
+
+  Pixy pixy1;
 
   @Override
   public void robotInit() {
