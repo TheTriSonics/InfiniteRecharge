@@ -50,8 +50,8 @@ public class InfiniteDriveTrain extends SubsystemBase {
     rightSlave1.follow(rightMaster);
     // rightSlave2.follow(rightMaster);
 
-    leftMaster.setNeutralMode(NeutralMode.Brake);
-    rightMaster.setNeutralMode(NeutralMode.Brake);
+    leftMaster.setNeutralMode(NeutralMode.Coast);
+    rightMaster.setNeutralMode(NeutralMode.Coast);
     leftSlave1.setNeutralMode(NeutralMode.Coast);
     // leftSlave2.setNeutralMode(NeutralMode.Coast);
     rightSlave1.setNeutralMode(NeutralMode.Coast);

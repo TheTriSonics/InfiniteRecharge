@@ -47,6 +47,9 @@ dependencies {
     nativeZip wpi.deps.wpilibJni(wpi.platforms.roborio)
     nativeDesktopZip wpi.deps.wpilibJni(wpi.platforms.desktop)
 
+    // Pixy libraries
+    nativeLib fileTree(dir: 'libs', include:'*.so')
+    compile fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation wpi.deps.vendor.java()
     nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)

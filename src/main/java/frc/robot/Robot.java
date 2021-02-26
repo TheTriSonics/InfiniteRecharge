@@ -7,6 +7,12 @@
 
 package frc.robot;
 
+
+//import org.usfirst.frc.team103.pixy.Pixy;
+//import org.usfirst.frc.team103.pixy.Pixy.ExposureSetting;
+//import org.usfirst.frc.team103.pixy.Pixy.WhiteBalanceSetting;
+
+
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -122,8 +128,9 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     m_autonomousCommand = chooser.getSelected();
     System.out.println(m_autonomousCommand);
-    // m_autonomousCommand = new GalaticSearch(GalaticSearch.Path.REDA); 
-    m_autonomousCommand = new ExecuteProfile("barrel-profile.csv");
+    //m_autonomousCommand = new GalaticSearch(GalaticSearch.Path.BLUEA); 
+    m_autonomousCommand = new ExecuteProfile("demo-profile.csv");
+    //m_autonomousCommand = new Bounce();
     robotState.setAuton(true);
     pneumatics.setState(Pneumatics.SHIFT, true);
     navx.resetGyro();
@@ -137,10 +144,11 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     position.updatePosition();
-    controlLEDs();    
+    controlLEDs();
+        
 
     // System.out.println(position.getPosition()[0]);
-    // SmartDashboard.putNumber("gyro", navx.getHeading());
+    SmartDashboard.putNumber("gyro", navx.getHeading());
 
   }
 

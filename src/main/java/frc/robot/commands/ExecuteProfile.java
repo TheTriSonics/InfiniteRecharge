@@ -71,7 +71,7 @@ public class ExecuteProfile extends CommandBase implements Runnable {
     isNotifierRunning = false;
   }
 
-  double kAngle = 0.01;
+  double kAngle = 0.03;
   double kDrive = 0.04;
   public void run() {
     double vmax = 2.2;
