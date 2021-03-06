@@ -7,10 +7,20 @@
 
 package frc.robot;
 
+import frc.robot.pixy.PixyBlock;
 
-//import org.usfirst.frc.team103.pixy.Pixy;
-//import org.usfirst.frc.team103.pixy.Pixy.ExposureSetting;
-//import org.usfirst.frc.team103.pixy.Pixy.WhiteBalanceSetting;
+import java.util.List;
+import java.util.Arrays;
+
+/*
+import frc.robot.pixy.Pixy;
+import frc.robot.pixy.Pixy.ExposureSetting;
+import frc.robot.pixy.Pixy.WhiteBalanceSetting;
+*/
+
+
+
+
 
 
 import edu.wpi.first.wpilibj.Compressor;
@@ -20,12 +30,14 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpiutil.net.PortForwarder;
 import frc.robot.commands.*;
 import frc.robot.commands.autonomous.*;
 import frc.robot.subsystems.*;
 import frc.robot.utilities.*;
+import frc.robot.utilities.RobotState.GSField;
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand; 
@@ -48,10 +60,20 @@ public class Robot extends TimedRobot {
   public static PhotoEyes photoEyes;
   public static LEDSubsystem leds;
   public static HangingSubsystem hangingSubsystem;
+  public static Pixycam pixycam;
+  // public static Pixy pixy;
 
   // private PowerDistributionPanel pdp;
 
   SendableChooser<Command> chooser;
+
+ 
+	
+
+  private int uid = 0xD8C2D197;
+
+
+  private int skipCounter = 0;
 
   @Override
   public void robotInit() {
@@ -102,11 +124,85 @@ public class Robot extends TimedRobot {
     PortForwarder.add(5801, "limelight.local", 5801);
     PortForwarder.add(5800, "limelight.local", 5800);
     PortForwarder.add(5805, "limelight.local", 5805);
+    /*
+    Pixy.ensureAvailable(0xD8C2D197);
+    pixy = new Pixy(0xD8C2D197);
+    */
+    
+    int cams[] = Pixycam.enumerate();
+    System.out.println("Camera list");
+    for(int c=0; c < cams.length; c++) {
+      System.out.println(Integer.toHexString(cams[c]));
+    }
+    if (cams.length > 0) {
+      // pixycam = new Pixycam(0xD8C2D197);
+      pixycam = new Pixycam(cams[0]);
+      pixycam.init();
+    }
+  
+    
+    
   }
+  
+  
+  
 
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
+    // int wb = PIXY_NATIVE.pixy_cam_get_white_balance_value(uid);
+    // System.out.println("white balance: " + wb);
+
+    skipCounter++;
+    if (skipCounter == 50) {
+      List<PixyBlock> blocks = pixycam.getBlocks();
+      System.out.println("Blocks found: " + blocks.size());
+      boolean red = false;
+      PixyBlock threeBlock = null;
+      PixyBlock sixBlock = null;
+      for(int c = 0; c < blocks.size(); c++) {
+        // System.out.println(c + ": " + blocks.get(c));
+        PixyBlock b = blocks.get(c);
+        int threeDist = Math.abs(184 - b.y);
+        if (b.x > 120) {
+          int sixDist = Math.abs(140 - b.y);
+          if(sixDist < 10){
+            sixBlock = b;
+          }
+        }
+        if(threeDist < 10){
+          threeBlock = b;
+        }
+        int area = b.width*b.height;
+        if(area > 400){
+          red = true;
+        }
+
+      }
+      if(red && threeBlock != null){
+        if(threeBlock.x < 170){
+          Robot.robotState.detectedField = GSField.REDB;
+        }
+        else{
+          Robot.robotState.detectedField = GSField.REDA;
+        }
+      }
+      else if(sixBlock != null){
+        if(sixBlock.x < 160){
+          Robot.robotState.detectedField = GSField.BLUEB;
+        }
+        else{
+          Robot.robotState.detectedField = GSField.BLUEA;
+        }
+      }
+
+      if (sixBlock == null) {
+        System.out.println("sixblock not found, but we're on blue");
+      }
+      SmartDashboard.putString("Field Detected", Robot.robotState.detectedField.toString());
+      skipCounter = 0;
+    }
+  
   }
 
   @Override
@@ -121,6 +217,10 @@ public class Robot extends TimedRobot {
   public void disabledPeriodic() {
     pneumatics.setState(Pneumatics.PHOTOEYE_RECEIVER, false);
     limelight.setLEDState(false);
+    /*
+    int t[] = Pixy.enumerate();
+    System.out.println(t);
+    */
     
   }
 
@@ -128,9 +228,21 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     m_autonomousCommand = chooser.getSelected();
     System.out.println(m_autonomousCommand);
-    //m_autonomousCommand = new GalaticSearch(GalaticSearch.Path.BLUEA); 
-    m_autonomousCommand = new ExecuteProfile("demo-profile.csv");
-    //m_autonomousCommand = new Bounce();
+    if(Robot.robotState.detectedField == GSField.BLUEB){
+      m_autonomousCommand = new GalaticSearch(GalaticSearch.Path.BLUEB);
+    }
+    if(Robot.robotState.detectedField == GSField.BLUEA){
+      m_autonomousCommand = new GalaticSearch(GalaticSearch.Path.BLUEA);
+    }
+    if(Robot.robotState.detectedField == GSField.REDA){
+      m_autonomousCommand = new GalaticSearch(GalaticSearch.Path.REDA);
+    }
+    if(Robot.robotState.detectedField == GSField.REDB){
+      m_autonomousCommand = new GalaticSearch(GalaticSearch.Path.REDB);
+    }
+     
+    // m_autonomousCommand = new ExecuteProfile("barrel-profile.csv");
+    // m_autonomousCommand = new Bounce();
     robotState.setAuton(true);
     pneumatics.setState(Pneumatics.SHIFT, true);
     navx.resetGyro();

@@ -28,6 +28,12 @@ public class RobotState {
     boolean manualShooting = false;
     boolean endGame = false;
     TrackTarget trackTarget;
+    
+    public enum GSField{
+        REDA, REDB, BLUEA, BLUEB
+    };
+
+    public GSField detectedField = null;
 
     public void createTrackTarget() {
         trackTarget = new TrackTarget();
