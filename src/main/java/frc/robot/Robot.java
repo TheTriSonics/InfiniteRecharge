@@ -26,18 +26,18 @@ import frc.robot.utilities.*;
 import frc.robot.utilities.RobotState.GSField;
 
 public class Robot extends TimedRobot {
-  private Command m_autonomousCommand; 
-  public static OI oi; 
+  private Command m_autonomousCommand;
+  public static OI oi;
   public static RobotState robotState = new RobotState();
-  
+
   public static InfiniteDriveTrain driveTrain;
   public static Turret turret;
-  public static ShooterSubsystem shooter; 
+  public static ShooterSubsystem shooter;
   public static LimeLight limelight;
   public static NavX navx;
   public static ColorSensor colorSensor;
   public static Pneumatics pneumatics;
-  public static ColorWheelRotateSubsystem colorWheelRotateSubsystem; 
+  public static ColorWheelRotateSubsystem colorWheelRotateSubsystem;
   public static Position position;
   public static BallDeliverySubsystem ballDelivery;
   public static IntakeSubsystem intakeSubsystem;
@@ -75,17 +75,17 @@ public class Robot extends TimedRobot {
     limelight = new LimeLight();
     leds = new LEDSubsystem();
     hangingSubsystem = new HangingSubsystem();
-    
+
     // colorSensor = new ColorSensor();
-    // colorWheelRotateSubsystem = new ColorWheelRotateSubsystem(); 
-    
+    // colorWheelRotateSubsystem = new ColorWheelRotateSubsystem();
+
     driveTrain.setDefaultCommand(new ArcadeDriveCommand());
-    
+
     turret.setDefaultCommand(new TurretCommand());
     limelight.setDefaultCommand(new LimeLightCommand());
-    
+
     // colorSensor.setDefaultCommand(new ColorSensorCommand());
-    
+
     oi = new OI();
     robotState.createTrackTarget();
 
@@ -101,10 +101,10 @@ public class Robot extends TimedRobot {
     PortForwarder.add(5801, "limelight.local", 5801);
     PortForwarder.add(5800, "limelight.local", 5800);
     PortForwarder.add(5805, "limelight.local", 5805);
-    
+
     int cams[] = Pixycam.enumerate();
     System.out.println("Pixy Camera list");
-    for(int c=0; c < cams.length; c++) {
+    for (int c = 0; c < cams.length; c++) {
       System.out.println(Integer.toHexString(cams[c]));
     }
     if (cams.length > 0) {
@@ -113,13 +113,11 @@ public class Robot extends TimedRobot {
       pixycam.init();
     }
   }
-  
 
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
 
-  
   }
 
   @Override
@@ -127,7 +125,7 @@ public class Robot extends TimedRobot {
     turret.setRawHoodPower(0);
     limelight.setLEDState(false);
     Robot.leds.setPrimaryRGB(255, 0, 0);
-      Robot.leds.enterMode(LEDMode.SOLID);
+    Robot.leds.enterMode(LEDMode.SOLID);
   }
 
   @Override
@@ -135,10 +133,9 @@ public class Robot extends TimedRobot {
     pneumatics.setState(Pneumatics.PHOTOEYE_RECEIVER, false);
     limelight.setLEDState(false);
     /*
-    int t[] = Pixy.enumerate();
-    System.out.println(t);
-    */
-    
+     * int t[] = Pixy.enumerate(); System.out.println(t);
+     */
+
     if (pixycam != null) {
       detectGSField();
     }
@@ -150,46 +147,42 @@ public class Robot extends TimedRobot {
     boolean red = false;
     PixyBlock threeBlock = null;
     PixyBlock sixBlock = null;
-    for(int c = 0; c < blocks.size(); c++) {
+    for (int c = 0; c < blocks.size(); c++) {
       PixyBlock b = blocks.get(c);
       // System.out.println(c + ": " + b);
       int threeDist = Math.abs(184 - b.y);
-
-      if (b.x > 130) {
-        int sixDist = Math.abs(140 - b.y);
-        if(sixDist < 10){
-          sixBlock = b;
-        }
-      }
-      if(threeDist < 10){
-        threeBlock = b;
-      }
-      int area = b.width*b.height;
-      if (area > 400){
+      int sixDist = Math.abs(140 - b.y);
+      int area = b.width * b.height;
+      
+      if (area > 400) {
         red = true;
       }
 
-    }
-    if(red && threeBlock != null){
-      if(threeBlock.x < 170){
-        Robot.robotState.detectedField = GSField.REDB;
+      if (sixDist < 10 && b.x > 130) {
+        sixBlock = b;
       }
-      else{
-        Robot.robotState.detectedField = GSField.REDA;
-      }
-    }
-    else if(sixBlock != null){
-      if(sixBlock.x < 170){
-        Robot.robotState.detectedField = GSField.BLUEB;
-      }
-      else{
-        Robot.robotState.detectedField = GSField.BLUEA;
+
+      if (threeDist < 10) {
+        threeBlock = b;
       }
     }
 
-    if (sixBlock == null) {
-      System.out.println("sixblock not found, but we're on blue");
+    if (red && threeBlock != null) {
+      if (threeBlock.x < 170) {
+        Robot.robotState.detectedField = GSField.REDB;
+      } else {
+        Robot.robotState.detectedField = GSField.REDA;
+      }
+    } 
+    
+    if (!red && sixBlock != null) {
+      if (sixBlock.x < 170) {
+        Robot.robotState.detectedField = GSField.BLUEB;
+      } else {
+        Robot.robotState.detectedField = GSField.BLUEA;
+      }
     }
+   
     SmartDashboard.putString("Field Detected", Robot.robotState.detectedField.toString());
 
   }
@@ -198,26 +191,26 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     m_autonomousCommand = chooser.getSelected();
     System.out.println(m_autonomousCommand);
-    if(Robot.robotState.detectedField == GSField.BLUEB){
+    if (Robot.robotState.detectedField == GSField.BLUEB) {
       m_autonomousCommand = new GalaticSearch(GalaticSearch.Path.BLUEB);
     }
-    if(Robot.robotState.detectedField == GSField.BLUEA){
+    if (Robot.robotState.detectedField == GSField.BLUEA) {
       m_autonomousCommand = new GalaticSearch(GalaticSearch.Path.BLUEA);
     }
-    if(Robot.robotState.detectedField == GSField.REDA){
+    if (Robot.robotState.detectedField == GSField.REDA) {
       m_autonomousCommand = new GalaticSearch(GalaticSearch.Path.REDA);
     }
-    if(Robot.robotState.detectedField == GSField.REDB){
+    if (Robot.robotState.detectedField == GSField.REDB) {
       m_autonomousCommand = new GalaticSearch(GalaticSearch.Path.REDB);
     }
-     
+
     // m_autonomousCommand = new ExecuteProfile("barrel-profile.csv");
     // m_autonomousCommand = new Bounce();
     robotState.setAuton(true);
     pneumatics.setState(Pneumatics.SHIFT, true);
     navx.resetGyro();
     position.resetPosition();
-    
+
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
@@ -227,7 +220,6 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {
     position.updatePosition();
     controlLEDs();
-        
 
     // System.out.println(position.getPosition()[0]);
     SmartDashboard.putNumber("gyro", navx.getHeading());
@@ -237,6 +229,7 @@ public class Robot extends TimedRobot {
   double[] lastDriveEncoders;
   long lastTime;
   long endGameTime;
+
   @Override
   public void teleopInit() {
     if (m_autonomousCommand != null) {
@@ -246,12 +239,13 @@ public class Robot extends TimedRobot {
     endGameTime = System.currentTimeMillis() + 105000;
 
     robotState.setAuton(false);
-    if (driveTrain.isSwitched()) driveTrain.switchDirection();
-    
+    if (driveTrain.isSwitched())
+      driveTrain.switchDirection();
+
     driveTrain.resetDriveEncoders();
     lastDriveEncoders = driveTrain.getDriveDistance();
     lastTime = System.currentTimeMillis();
-    
+
     // turret.resetHoodEncoder();
     // navx.resetGyro();
     // position.resetPosition();
@@ -265,34 +259,35 @@ public class Robot extends TimedRobot {
     long time = System.currentTimeMillis();
     lastTime = time;
     lastDriveEncoders = driveEncoders;
-    
+
     /*
-    double distance = VectorMath.avg(VectorMath.sub(driveEncoders, lastDriveEncoders));
-    double velocity = distance/(time - lastTime) * 1000;
-    double[] encoders = driveTrain.getDriveDistance();
-    System.out.println(encoders[0] + " " + encoders[1]);
-    System.out.println(velocity);
-    */
-    
+     * double distance = VectorMath.avg(VectorMath.sub(driveEncoders,
+     * lastDriveEncoders)); double velocity = distance/(time - lastTime) * 1000;
+     * double[] encoders = driveTrain.getDriveDistance();
+     * System.out.println(encoders[0] + " " + encoders[1]);
+     * System.out.println(velocity);
+     */
+
     /*
-    SmartDashboard.putNumber("velocity", velocity);
-    SmartDashboard.putNumber("left Drive", driveEncoders[0]);
-    SmartDashboard.putNumber("right Drive", driveEncoders[1]);
-    SmartDashboard.putNumber("gyro", navx.getHeading());
-    */
+     * SmartDashboard.putNumber("velocity", velocity);
+     * SmartDashboard.putNumber("left Drive", driveEncoders[0]);
+     * SmartDashboard.putNumber("right Drive", driveEncoders[1]);
+     * SmartDashboard.putNumber("gyro", navx.getHeading());
+     */
 
     double hoodPower = oi.driver.getTriggerAxis(Hand.kRight);
     double leftTrigger = -oi.driver.getTriggerAxis(Hand.kLeft);
-    if (Math.abs(leftTrigger) > 0.25) hoodPower = leftTrigger;
+    if (Math.abs(leftTrigger) > 0.25)
+      hoodPower = leftTrigger;
     hoodPower *= 0.4;
     turret.setHoodPower(hoodPower);
-    
+
     this.controlLEDs();
 
     // position.updateGoalDistance(limelight.getY());
     // turret.setHoodPower(hoodPower);
     // System.out.println("shooter on = " + robotState.isShooterOn());
-    
+
     SmartDashboard.putNumber("hood position", turret.getHoodEncoder());
     SmartDashboard.putNumber("turret position", turret.getTurretPosition());
     // SmartDashboard.putNumber("Goal Distance", position.getDistance());
@@ -308,23 +303,26 @@ public class Robot extends TimedRobot {
   }
 
   private void controlLEDs() {
-    //SmartDashboard.putNumber("Intake Current", pdp.getCurrent(2));
+    // SmartDashboard.putNumber("Intake Current", pdp.getCurrent(2));
     // if (pdp.getCurrent(2) > 10) {
-    //   Robot.leds.setPrimaryRGB(0, 0, 255);
-    //   Robot.leds.enterMode(LEDMode.SOLID);
-    // } else 
-    if(System.currentTimeMillis() >= endGameTime){
+    // Robot.leds.setPrimaryRGB(0, 0, 255);
+    // Robot.leds.enterMode(LEDMode.SOLID);
+    // } else
+    if (System.currentTimeMillis() >= endGameTime) {
       Robot.leds.setPrimaryRGB(127, 0, 255);
       Robot.leds.enterMode(LEDMode.FLASH);
       return;
-    } else if (Robot.robotState.isShooterOn() && Robot.robotState.isShooterReady() && Robot.robotState.isTurretReady() && !Robot.ballDelivery.getTopPhotoeye() && !Robot.ballDelivery.getBottomPhotoeye()) {
+    } else if (Robot.robotState.isShooterOn() && Robot.robotState.isShooterReady() && Robot.robotState.isTurretReady()
+        && !Robot.ballDelivery.getTopPhotoeye() && !Robot.ballDelivery.getBottomPhotoeye()) {
       // No balls are present, send white led status.
       Robot.leds.setPrimaryRGB(255, 255, 255);
       Robot.leds.enterMode(LEDMode.SOLID);
-    } else if (Robot.robotState.isShooterOn() && Robot.robotState.isShooterReady() && Robot.robotState.isTurretReady()) {
+    } else if (Robot.robotState.isShooterOn() && Robot.robotState.isShooterReady()
+        && Robot.robotState.isTurretReady()) {
       Robot.leds.setPrimaryRGB(0, 255, 0);
       Robot.leds.enterMode(LEDMode.SOLID);
-    } else if (Robot.robotState.isShooterOn() && (Robot.robotState.isShooterReady() || Robot.robotState.isTurretReady())) {
+    } else if (Robot.robotState.isShooterOn()
+        && (Robot.robotState.isShooterReady() || Robot.robotState.isTurretReady())) {
       Robot.leds.setPrimaryRGB(255, 0, 255);
       Robot.leds.enterMode(LEDMode.SOLID);
     } else if (Robot.robotState.isShooterOn()) {
