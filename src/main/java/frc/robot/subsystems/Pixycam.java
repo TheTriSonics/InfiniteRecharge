@@ -10,9 +10,7 @@ import java.util.stream.Collectors;
 import frc.robot.pixy.PixyBlock;
 import frc.robot.pixy.PixyLibrary;
 import com.sun.jna.Native;
-import com.sun.jna.ptr.ByteByReference;
 import com.sun.jna.ptr.IntByReference;
-import com.sun.jna.ptr.ShortByReference;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -22,18 +20,14 @@ import java.util.Arrays;
 
 /** Add your docs here. */
 public class Pixycam extends SubsystemBase {
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
   private int uid;
-  public static final PixyLibrary PIXY_NATIVE = (PixyLibrary) Native.loadLibrary("pixyusb", PixyLibrary.class);
-  private final ByteBuffer blocksBuffer = ByteBuffer.allocateDirect(MAX_BLOCKS * BLOCK_STRUCT_SIZE).order(ByteOrder.nativeOrder());
   private static final int MAX_PIXIES = 10;
-	private static final int MAX_ENUMERATE_RETRIES = 10;
-	private static final int FRAME_WIDTH = 320, FRAME_HEIGHT = 200;
-	private static final int FRAME_RATE_PERIOD = 100;
-	private static final int FRAME_MAX_RETRIES = 2, COMMAND_MAX_RETRIES = 10;
+	private static final int COMMAND_MAX_RETRIES = 10;
 	private static final short MAX_BLOCKS = 200;
   private static final int BLOCK_STRUCT_SIZE = 14;
+  
+  public static final PixyLibrary PIXY_NATIVE = (PixyLibrary) Native.loadLibrary("pixyusb", PixyLibrary.class);
+  private final ByteBuffer blocksBuffer = ByteBuffer.allocateDirect(MAX_BLOCKS * BLOCK_STRUCT_SIZE).order(ByteOrder.nativeOrder());
 
   private boolean initialized = false;
 
@@ -42,8 +36,7 @@ public class Pixycam extends SubsystemBase {
   }
 
   public void init() {
-    for (int c = 0; c < 2; c++) {
-      System.out.println(Integer.toHexString(uid));
+    for (int c = 0; c < COMMAND_MAX_RETRIES; c++) {
       int ret = PIXY_NATIVE.pixy_command(uid, "run", 0, new IntByReference(), 0);
       if (ret == 0) {
         initialized = true;

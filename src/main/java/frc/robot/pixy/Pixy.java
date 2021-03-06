@@ -9,44 +9,21 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedTransferQueue;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TransferQueue;
 import java.util.function.IntSupplier;
 import java.util.stream.Collectors;
-
-import org.opencv.core.CvType;
-import org.opencv.core.Mat;
-import org.opencv.core.Point;
-import org.opencv.core.Scalar;
-import org.opencv.imgproc.Imgproc;
 
 import com.sun.jna.Native;
 import com.sun.jna.ptr.ByteByReference;
 import com.sun.jna.ptr.IntByReference;
 import com.sun.jna.ptr.ShortByReference;
 
-import edu.wpi.cscore.CvSource;
-import edu.wpi.first.wpilibj.CameraServer;
-
 public class Pixy {
 	private static final int MAX_PIXIES = 10;
 	private static final int MAX_ENUMERATE_RETRIES = 10;
-	private static final int FRAME_WIDTH = 320, FRAME_HEIGHT = 200;
-	private static final int FRAME_RATE_PERIOD = 100;
-	private static final int FRAME_MAX_RETRIES = 2, COMMAND_MAX_RETRIES = 10;
+	private static final int COMMAND_MAX_RETRIES = 10;
 	private static final short MAX_BLOCKS = 200;
 	private static final int BLOCK_STRUCT_SIZE = 14;
-	
-	private static final Scalar[] BLOCK_COLORS = {
-			new Scalar(0xFF, 0xFF, 0xFF),
-			new Scalar(0x00, 0x00, 0xFF),
-			new Scalar(0x00, 0x80, 0xFF),
-			new Scalar(0x00, 0xFF, 0xFF),
-			new Scalar(0x00, 0xFF, 0x00),
-			new Scalar(0xFF, 0xFF, 0x00),
-			new Scalar(0xFF, 0x00, 0x00),
-			new Scalar(0xFF, 0x00, 0xFF),
-	};
 	
 	private static final PixyLibrary PIXY_NATIVE = (PixyLibrary) Native.loadLibrary("pixyusb", PixyLibrary.class);
 	
@@ -61,9 +38,6 @@ public class Pixy {
 	
 	public final int uid;
 	
-	private final byte[] pixels = new byte[FRAME_WIDTH * FRAME_HEIGHT];
-	private final Mat rawFrame = new Mat(FRAME_HEIGHT, FRAME_WIDTH, CvType.CV_8UC1);
-	private final Mat colorFrame = new Mat(FRAME_HEIGHT, FRAME_WIDTH, CvType.CV_8UC3);
 	// private final CvSource frameSource;
 	
 	private final ByteBuffer blocksBuffer = ByteBuffer.allocateDirect(MAX_BLOCKS * BLOCK_STRUCT_SIZE).order(ByteOrder.nativeOrder());
@@ -76,43 +50,6 @@ public class Pixy {
 			return t;
 		}
 	});
-	
-	private final Runnable frameGrabberTask = new Runnable() {
-		@Override
-		public void run() {
-			if (isFrameGrabberRunning) {
-				int ret = PIXY_NATIVE.pixy_cam_update_frame(uid);
-				if (ret == 0) {
-					frameErrorCount = 0;
-				} else {
-					frameErrorCount++;
-					if (frameErrorCount >= FRAME_MAX_RETRIES) {
-						PIXY_NATIVE.pixy_cam_reset_frame_wait(uid);
-					}
-				}
-				
-				PIXY_NATIVE.pixy_cam_get_frame(uid, pixels);
-				
-				rawFrame.put(0, 0, pixels);
-				Imgproc.cvtColor(rawFrame, colorFrame, Imgproc.COLOR_BayerBG2RGB);
-				for (PixyBlock block : getBlocks()) {
-					if (block.signature >= 0 && block.signature < BLOCK_COLORS.length) {
-						Imgproc.rectangle(
-								colorFrame,
-								new Point(block.x - block.width / 2, block.y - block.height / 2),
-								new Point(block.x + block.width / 2, block.y + block.height / 2),
-								BLOCK_COLORS[block.signature],
-								2
-						);
-					}
-				}
-				
-				// frameSource.putFrame(colorFrame);
-			}
-		}
-	};
-	private volatile boolean isFrameGrabberRunning = false;
-	private int frameErrorCount = 0;
 	
 	private final Runnable commandTask = new Runnable() {
 		@Override
@@ -164,15 +101,6 @@ public class Pixy {
 	
 	public void clearCommandQueue() {
 		commandQueue.clear();
-	}
-	
-	public void startFrameGrabber() {
-		PIXY_NATIVE.pixy_cam_reset_frame_wait(uid);
-		isFrameGrabberRunning = true;
-	}
-	
-	public void stopFrameGrabber() {
-		isFrameGrabberRunning = false;
 	}
 	
 	public void startBlockProgram() {

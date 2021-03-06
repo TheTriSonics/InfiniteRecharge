@@ -13,7 +13,6 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.*;
-import frc.robot.utilities.LEDMode;
 
 public class BallDeliverySubsystem extends SubsystemBase {
   VictorSPX ballDeliveryVictor1, ballDeliveryVictor2;

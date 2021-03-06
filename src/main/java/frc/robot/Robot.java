@@ -10,16 +10,13 @@ package frc.robot;
 import frc.robot.pixy.PixyBlock;
 
 import java.util.List;
-import java.util.Arrays;
 
 import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpiutil.net.PortForwarder;
 import frc.robot.commands.*;
@@ -55,8 +52,6 @@ public class Robot extends TimedRobot {
   // private PowerDistributionPanel pdp;
 
   SendableChooser<Command> chooser;
-
-  private int skipCounter = 0;
 
   @Override
   public void robotInit() {
@@ -103,17 +98,12 @@ public class Robot extends TimedRobot {
     chooser.addOption("Shoot and Drive", new ShootAndDrive());
     SmartDashboard.putData("Auto selector", chooser);
 
-    // pdp = new PowerDistributionPanel();
     PortForwarder.add(5801, "limelight.local", 5801);
     PortForwarder.add(5800, "limelight.local", 5800);
     PortForwarder.add(5805, "limelight.local", 5805);
-    /*
-    Pixy.ensureAvailable(0xD8C2D197);
-    pixy = new Pixy(0xD8C2D197);
-    */
     
     int cams[] = Pixycam.enumerate();
-    System.out.println("Camera list");
+    System.out.println("Pixy Camera list");
     for(int c=0; c < cams.length; c++) {
       System.out.println(Integer.toHexString(cams[c]));
     }
@@ -122,70 +112,13 @@ public class Robot extends TimedRobot {
       pixycam = new Pixycam(cams[0]);
       pixycam.init();
     }
-  
-    
-    
   }
-  
-  
   
 
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
-    // int wb = PIXY_NATIVE.pixy_cam_get_white_balance_value(uid);
-    // System.out.println("white balance: " + wb);
 
-    skipCounter++;
-    if (skipCounter == 50) {
-      List<PixyBlock> blocks = pixycam.getBlocks();
-      // System.out.println("Blocks found: " + blocks.size());
-      boolean red = false;
-      PixyBlock threeBlock = null;
-      PixyBlock sixBlock = null;
-      for(int c = 0; c < blocks.size(); c++) {
-        // System.out.println(c + ": " + blocks.get(c));
-        PixyBlock b = blocks.get(c);
-        int threeDist = Math.abs(184 - b.y);
-
-        if (b.x > 130) {
-          int sixDist = Math.abs(140 - b.y);
-          if(sixDist < 10){
-            sixBlock = b;
-          }
-        }
-        if(threeDist < 10){
-          threeBlock = b;
-        }
-        int area = b.width*b.height;
-        if(area > 400){
-          red = true;
-        }
-
-      }
-      if(red && threeBlock != null){
-        if(threeBlock.x < 170){
-          Robot.robotState.detectedField = GSField.REDB;
-        }
-        else{
-          Robot.robotState.detectedField = GSField.REDA;
-        }
-      }
-      else if(sixBlock != null){
-        if(sixBlock.x < 170){
-          Robot.robotState.detectedField = GSField.BLUEB;
-        }
-        else{
-          Robot.robotState.detectedField = GSField.BLUEA;
-        }
-      }
-
-      if (sixBlock == null) {
-        System.out.println("sixblock not found, but we're on blue");
-      }
-      SmartDashboard.putString("Field Detected", Robot.robotState.detectedField.toString());
-      skipCounter = 0;
-    }
   
   }
 
@@ -206,6 +139,59 @@ public class Robot extends TimedRobot {
     System.out.println(t);
     */
     
+    if (pixycam != null) {
+      detectGSField();
+    }
+  }
+
+  public void detectGSField() {
+    List<PixyBlock> blocks = pixycam.getBlocks();
+    // System.out.println("Blocks found: " + blocks.size());
+    boolean red = false;
+    PixyBlock threeBlock = null;
+    PixyBlock sixBlock = null;
+    for(int c = 0; c < blocks.size(); c++) {
+      PixyBlock b = blocks.get(c);
+      // System.out.println(c + ": " + b);
+      int threeDist = Math.abs(184 - b.y);
+
+      if (b.x > 130) {
+        int sixDist = Math.abs(140 - b.y);
+        if(sixDist < 10){
+          sixBlock = b;
+        }
+      }
+      if(threeDist < 10){
+        threeBlock = b;
+      }
+      int area = b.width*b.height;
+      if (area > 400){
+        red = true;
+      }
+
+    }
+    if(red && threeBlock != null){
+      if(threeBlock.x < 170){
+        Robot.robotState.detectedField = GSField.REDB;
+      }
+      else{
+        Robot.robotState.detectedField = GSField.REDA;
+      }
+    }
+    else if(sixBlock != null){
+      if(sixBlock.x < 170){
+        Robot.robotState.detectedField = GSField.BLUEB;
+      }
+      else{
+        Robot.robotState.detectedField = GSField.BLUEA;
+      }
+    }
+
+    if (sixBlock == null) {
+      System.out.println("sixblock not found, but we're on blue");
+    }
+    SmartDashboard.putString("Field Detected", Robot.robotState.detectedField.toString());
+
   }
 
   @Override
@@ -277,14 +263,16 @@ public class Robot extends TimedRobot {
     // SmartDashboard.putNumber("gyro", navx.readGyro());
     double[] driveEncoders = driveTrain.getDriveDistance();
     long time = System.currentTimeMillis();
-    double distance = VectorMath.avg(VectorMath.sub(driveEncoders, lastDriveEncoders));
-    double velocity = distance/(time - lastTime) * 1000;
     lastTime = time;
     lastDriveEncoders = driveEncoders;
-
+    
+    /*
+    double distance = VectorMath.avg(VectorMath.sub(driveEncoders, lastDriveEncoders));
+    double velocity = distance/(time - lastTime) * 1000;
     double[] encoders = driveTrain.getDriveDistance();
-    // System.out.println(encoders[0] + " " + encoders[1]);
-    // // System.out.println(velocity);
+    System.out.println(encoders[0] + " " + encoders[1]);
+    System.out.println(velocity);
+    */
     
     /*
     SmartDashboard.putNumber("velocity", velocity);
