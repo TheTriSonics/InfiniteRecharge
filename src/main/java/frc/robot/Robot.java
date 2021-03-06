@@ -139,7 +139,7 @@ public class Robot extends TimedRobot {
     skipCounter++;
     if (skipCounter == 50) {
       List<PixyBlock> blocks = pixycam.getBlocks();
-      System.out.println("Blocks found: " + blocks.size());
+      // System.out.println("Blocks found: " + blocks.size());
       boolean red = false;
       PixyBlock threeBlock = null;
       PixyBlock sixBlock = null;
@@ -147,7 +147,8 @@ public class Robot extends TimedRobot {
         // System.out.println(c + ": " + blocks.get(c));
         PixyBlock b = blocks.get(c);
         int threeDist = Math.abs(184 - b.y);
-        if (b.x > 120) {
+
+        if (b.x > 130) {
           int sixDist = Math.abs(140 - b.y);
           if(sixDist < 10){
             sixBlock = b;
@@ -171,7 +172,7 @@ public class Robot extends TimedRobot {
         }
       }
       else if(sixBlock != null){
-        if(sixBlock.x < 160){
+        if(sixBlock.x < 170){
           Robot.robotState.detectedField = GSField.BLUEB;
         }
         else{
