@@ -12,17 +12,6 @@ import frc.robot.pixy.PixyBlock;
 import java.util.List;
 import java.util.Arrays;
 
-/*
-import frc.robot.pixy.Pixy;
-import frc.robot.pixy.Pixy.ExposureSetting;
-import frc.robot.pixy.Pixy.WhiteBalanceSetting;
-*/
-
-
-
-
-
-
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -66,12 +55,6 @@ public class Robot extends TimedRobot {
   // private PowerDistributionPanel pdp;
 
   SendableChooser<Command> chooser;
-
- 
-	
-
-  private int uid = 0xD8C2D197;
-
 
   private int skipCounter = 0;
 
