@@ -51,6 +51,9 @@ public class Robot extends TimedRobot {
   public static HangingSubsystem hangingSubsystem;
   public static Pixycam pixycam;
   // public static Pixy pixy;
+  static final int numAreas = 10;
+  int[] blockAreas = new int[numAreas];
+  int blockCounter = 0;
 
   // private PowerDistributionPanel pdp;
 
@@ -137,57 +140,58 @@ public class Robot extends TimedRobot {
     // System.out.println("white balance: " + wb);
 
     skipCounter++;
+    skipCounter = 50;
     if (skipCounter == 50) {
       List<PixyBlock> blocks = pixycam.getBlocks();
+      if(blocks.size() == 0) return;
       // System.out.println("Blocks found: " + blocks.size());
       boolean red = false;
       PixyBlock threeBlock = null;
       PixyBlock sixBlock = null;
+      int maxBlockY = 0;
+      int maxBlockYIndex = 0;
       for(int c = 0; c < blocks.size(); c++) {
         // System.out.println(c + ": " + blocks.get(c));
         PixyBlock b = blocks.get(c);
-        int threeDist = Math.abs(184 - b.y);
-
-        if (b.x > 130) {
-          int sixDist = Math.abs(140 - b.y);
-          if(sixDist < 10){
-            sixBlock = b;
-          }
+        if(b.y > maxBlockY){
+          maxBlockY = b.y;
+          maxBlockYIndex = c;
         }
-        if(threeDist < 10){
-          threeBlock = b;
-        }
-        int area = b.width*b.height;
-        if(area > 400){
-          red = true;
-        }
-
       }
-      if(red && threeBlock != null){
-        if(threeBlock.x < 170){
-          Robot.robotState.detectedField = GSField.REDB;
-        }
+      PixyBlock b = blocks.get(maxBlockYIndex); 
+      boolean aFlag = b.x > 160;
+
+      int area = b.width*b.height;
+      blockAreas[blockCounter] = area;
+      blockCounter ++;
+      blockCounter = blockCounter % numAreas;
+      double areaSum = 0;
+      for(int i = 0; i < numAreas; i++) areaSum += blockAreas[i];
+      System.out.println(area);
+      if(areaSum / numAreas > 200){
+        red = true;
+      }
+
+      if(red){
+        if (aFlag) Robot.robotState.detectedField = GSField.REDA;
+        else Robot.robotState.detectedField = GSField.REDB;
+      }
         else{
-          Robot.robotState.detectedField = GSField.REDA;
+          if (aFlag) Robot.robotState.detectedField = GSField.BLUEA;
+          else Robot.robotState.detectedField = GSField.BLUEB;
         }
       }
-      else if(sixBlock != null){
-        if(sixBlock.x < 170){
-          Robot.robotState.detectedField = GSField.BLUEB;
-        }
-        else{
-          Robot.robotState.detectedField = GSField.BLUEA;
-        }
+     
+      if(Robot.robotState.detectedField != null){
+        SmartDashboard.putString("Field Detected", Robot.robotState.detectedField.toString());
       }
-
-      if (sixBlock == null) {
-        System.out.println("sixblock not found, but we're on blue");
+      else{
+        SmartDashboard.putString("Field Detected", "Nothing");
       }
-      SmartDashboard.putString("Field Detected", Robot.robotState.detectedField.toString());
+      
       skipCounter = 0;
     }
   
-  }
 
   @Override
   public void disabledInit() {
@@ -225,8 +229,8 @@ public class Robot extends TimedRobot {
       m_autonomousCommand = new GalaticSearch(GalaticSearch.Path.REDB);
     }
      
-    // m_autonomousCommand = new ExecuteProfile("barrel-profile.csv");
-    // m_autonomousCommand = new Bounce();
+    //m_autonomousCommand = new ExecuteProfile("slalom-profile.csv");
+    m_autonomousCommand = new Bounce();
     robotState.setAuton(true);
     pneumatics.setState(Pneumatics.SHIFT, true);
     navx.resetGyro();
